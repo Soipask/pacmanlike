@@ -1,14 +1,19 @@
 package com.example.pacmanlike;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Tile {
+public abstract class Tile {
     public String type;
     public int rotation;
     public Food content;
 
-    private List<Vector> possibleMoves;
+    protected List<Vector> possibleMoves = new ArrayList<Vector>();
     public List<Vector> getPossibleMoves(){
         return possibleMoves;
+    }
+
+    public Tile(int rotation){
+        this.rotation = rotation;
     }
 }
