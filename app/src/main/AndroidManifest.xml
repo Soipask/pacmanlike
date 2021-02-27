@@ -9,6 +9,15 @@
         android:roundIcon="@drawable/straight"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pacmanlike">
+        <activity android:name=".LevelMaker"
+            android:parentActivityName=".SelectionScreen">
+        </activity>
+        <activity android:name=".GameScreen"
+            android:parentActivityName=".SelectionScreen">
+        </activity>
+        <activity
+            android:name=".SelectionScreen"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

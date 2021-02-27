@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Pacmanlike</string>
     <string name="start_button">Start</string>
-    <string name="game_started">The game has started!</string>
+    <string name="game_started">" has started!"</string>
+    <string name="game_name">The game</string>
+    <string name="exit_button">Exit</string>
+    <string name="play_button">Play</string>
+    <string name="create_level_button">Create New Level...</string>
+    <string name="basic_map_name">Basic map</string>
+    <string name="select_level">Please, select which level you want to play</string>
 </resources>
