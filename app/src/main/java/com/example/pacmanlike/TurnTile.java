@@ -1,8 +1,8 @@
 package com.example.pacmanlike;
 
 public class TurnTile extends Tile {
-    public TurnTile(int rotation) {
-        super(rotation);
+    public TurnTile(String rotation) {
+        super(Integer.parseInt(rotation));
         type = "Turn";
         fillMoves();
     }
@@ -27,5 +27,10 @@ public class TurnTile extends Tile {
                 possibleMoves.add(new Vector(1,0));
                 break;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "T" + rotation;
     }
 }

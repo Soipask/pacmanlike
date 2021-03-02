@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import java.io.File;
+
 public class SelectionScreen extends AppCompatActivity {
     public static final String SELECTED_LEVEL = "com.example.pacmanlike.SELECTED_LEVEL";
 
@@ -29,7 +31,9 @@ public class SelectionScreen extends AppCompatActivity {
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         int level = radioGroup.getCheckedRadioButtonId();
         // look at dictionary which level has this id, then get this level's path and put it to intent
-        String levelPath = "basicmap";
+
+        String levelPath = "basicmap.csv";
+
         intent.putExtra(SELECTED_LEVEL, levelPath);
 
         startActivity(intent);

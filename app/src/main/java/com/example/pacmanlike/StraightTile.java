@@ -1,8 +1,8 @@
 package com.example.pacmanlike;
 
 public class StraightTile extends Tile {
-    public StraightTile(int rotation) {
-        super(rotation);
+    public StraightTile(String rotation) {
+        super(Integer.parseInt(rotation));
         type = "Straight";
         fillMoves();
     }
@@ -18,5 +18,10 @@ public class StraightTile extends Tile {
                 possibleMoves.add(new Vector(-1,0));
                 break;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "S" + rotation;
     }
 }
