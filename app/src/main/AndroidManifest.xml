@@ -9,7 +9,7 @@
         android:roundIcon="@drawable/straight"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pacmanlike">
-        <activity android:name=".LevelMaker"
+        <activity android:name=".LevelMakerActivity"
             android:parentActivityName=".SelectionScreen">
         </activity>
         <activity android:name=".GameScreen"

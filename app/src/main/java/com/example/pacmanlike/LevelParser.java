@@ -13,11 +13,10 @@ public class LevelParser {
     public LevelParser(){
     }
 
-    public GameMap Parse(InputStream stream) throws Exception {
+    public GameMap Parse(Scanner reader) throws Exception {
         GameMap map = new GameMap();
 
         /* try {*/
-        Scanner reader = new Scanner(stream);
         if (reader.hasNextLine()){
             ParseHead(map, reader.nextLine());
         }
