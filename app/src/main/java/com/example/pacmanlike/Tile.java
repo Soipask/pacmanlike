@@ -16,4 +16,6 @@ public abstract class Tile {
     public Tile(int rotation){
         this.rotation = rotation;
     }
+
+    public abstract String toString();
 }

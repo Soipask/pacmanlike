@@ -1,8 +1,8 @@
 package com.example.pacmanlike;
 
 public class HalfcrossroadTile extends Tile {
-    public HalfcrossroadTile(int rotation) {
-        super(rotation);
+    public HalfcrossroadTile(String rotation) {
+        super(Integer.parseInt(rotation));
         type = "Turn";
         fillMoves();
     }
@@ -31,5 +31,10 @@ public class HalfcrossroadTile extends Tile {
                 possibleMoves.add(new Vector(-1,0));
                 break;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "H" + rotation;
     }
 }

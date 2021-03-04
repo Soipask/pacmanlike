@@ -11,4 +11,9 @@ public class LeftTeleportTile extends Tile {
         possibleMoves.add(new Vector(1,0));
         possibleMoves.add(new Vector(-1,0));
     }
+
+    @Override
+    public String toString() {
+        return "L";
+    }
 }
