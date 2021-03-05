@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class SelectionScreen extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class SelectionScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection_screen);
 
+        // Find radio group and populate it with basic map
         RadioGroup rgp = (RadioGroup) findViewById(R.id.radioGroup);
         mapDictionary.put(R.id.radioButton, BASIC_MAP);
 
@@ -35,6 +37,7 @@ public class SelectionScreen extends AppCompatActivity {
         String[] files = context.fileList();
         ArrayList<String> mapNames = filterMaps(files);
 
+        // Populate radio group with map names
         for (int i = 0; i < mapNames.size(); i++) {
             RadioButton rbn = new RadioButton(this);
             int id = View.generateViewId();
@@ -54,13 +57,14 @@ public class SelectionScreen extends AppCompatActivity {
     public void startGame(View view){
         Intent intent = new Intent(this, GameScreen.class);
 
-        // TODO: Send some basic info to GameScreen through intent like
+        // Get RadioGroup for selecting level and see what's checked
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         int level = radioGroup.getCheckedRadioButtonId();
-        // look at dictionary which level has this id, then get this level's path and put it to intent
 
         String levelPath = mapDictionary.get(level);
 
+        // Select which storage type should be used as the basic map is stored in Assets
+        // Custom maps are stored in internal storage
         intent.putExtra(SELECTED_LEVEL, levelPath);
         if (level == R.id.radioButton){
             intent.putExtra(STORAGE_TYPE, ASSETS);
@@ -75,9 +79,7 @@ public class SelectionScreen extends AppCompatActivity {
     private ArrayList<String> filterMaps (String[] files){
         ArrayList<String> maps = new ArrayList<String>();
 
-        for (int i = 0; i < files.length; i++){
-            maps.add(files[i]);
-        }
+        Collections.addAll(maps, files);
 
         return maps;
     }
