@@ -4,6 +4,7 @@ public class HalfcrossroadTile extends Tile {
     public HalfcrossroadTile(String rotation) {
         super(Integer.parseInt(rotation));
         type = "Turn";
+        drawableId = R.drawable.halfcrossroad;
         fillMoves();
     }
 

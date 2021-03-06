@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class LevelParser {
-    int MAP_SIZE_X = 7;
-    int MAP_SIZE_Y = 9;
+    public static final int MAP_SIZE_X = 7;
+    public static final int MAP_SIZE_Y = 9;
     File mapFile;
 
     public GameMap Parse(Scanner reader) throws Exception {

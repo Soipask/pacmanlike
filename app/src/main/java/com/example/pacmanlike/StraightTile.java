@@ -4,6 +4,7 @@ public class StraightTile extends Tile {
     public StraightTile(String rotation) {
         super(Integer.parseInt(rotation));
         type = "Straight";
+        drawableId = R.drawable.straight;
         fillMoves();
     }
 

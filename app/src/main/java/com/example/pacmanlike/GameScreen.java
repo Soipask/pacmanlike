@@ -41,5 +41,8 @@ public class GameScreen extends AppCompatActivity {
             super.finish();
             String x = e.getMessage();
         }
+
+        LevelView levelView = new LevelView(this, map);
+        levelView.CreateLevel();
     }
 }

@@ -4,6 +4,7 @@ public class TurnTile extends Tile {
     public TurnTile(String rotation) {
         super(Integer.parseInt(rotation));
         type = "Turn";
+        drawableId = R.drawable.turn;
         fillMoves();
     }
 

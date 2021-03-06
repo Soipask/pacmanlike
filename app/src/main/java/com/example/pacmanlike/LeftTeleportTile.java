@@ -4,6 +4,7 @@ public class LeftTeleportTile extends Tile {
     public LeftTeleportTile() {
         super(0);
         type = "LeftTeleport";
+        drawableId = R.drawable.leftteleport;
         fillMoves();
     }
 

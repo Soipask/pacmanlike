@@ -7,6 +7,7 @@ public abstract class Tile {
     public String type;
     public int rotation;
     public Food content;
+    public int drawableId;
 
     protected List<Vector> possibleMoves = new ArrayList<Vector>();
     public List<Vector> getPossibleMoves(){
