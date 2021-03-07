@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import java.io.File;
 import java.io.InputStream;
@@ -44,5 +47,6 @@ public class GameScreen extends AppCompatActivity {
 
         LevelView levelView = new LevelView(this, map);
         levelView.CreateLevel();
+
     }
 }

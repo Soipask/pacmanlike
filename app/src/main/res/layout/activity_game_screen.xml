@@ -5,23 +5,32 @@
     android:id="@+id/table_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="@color/black"
+    android:foregroundGravity="center"
+    app:layout_anchorGravity="center"
     tools:context=".GameScreen">
 
     <TableLayout
         android:id="@+id/table"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
-        android:background="@color/white"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:foregroundGravity="center"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center">
 
         </TableRow>
@@ -29,16 +38,7 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-        </TableRow>
+            android:gravity="center" />
 
         <TableRow
             android:layout_width="match_parent"
@@ -91,9 +91,10 @@
                 android:id="@+id/imageView5"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/arrow_height"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="32dp"
                 app:srcCompat="@drawable/down_arrow_frame1" />
         </TableRow>
+
     </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
