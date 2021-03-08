@@ -33,17 +33,6 @@
         app:layout_constraintStart_toEndOf="@+id/button3"
         app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="@dimen/preview_size_width"
-        android:layout_height="@dimen/preview_size_height"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/radioGroup"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.353"
-        app:srcCompat="@drawable/basicmap" />
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="@dimen/choose_level_width"
@@ -61,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/tertiary_text_light"
+            android:checked="true"
             android:text="@string/basic_map_name" />
     </RadioGroup>
 
@@ -81,5 +71,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/table"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

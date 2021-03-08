@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TableLayout;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class SelectionScreen extends AppCompatActivity {
     public static final String SELECTED_LEVEL = "com.example.pacmanlike.SELECTED_LEVEL";
@@ -21,7 +24,9 @@ public class SelectionScreen extends AppCompatActivity {
     public static final String ASSETS = "Assets";
     public static final String INTERNAL = "Internal";
     public static final String BASIC_MAP = "basicmap.csv";
-    private HashMap<Integer, String> mapDictionary = new HashMap<Integer, String>();
+
+    private final HashMap<Integer, String> mapDictionary = new HashMap<Integer, String>();
+    public static final ArrayList<String> internalMaps = new ArrayList<String>();
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -32,6 +37,7 @@ public class SelectionScreen extends AppCompatActivity {
         // Find radio group and populate it with basic map
         RadioGroup rgp = (RadioGroup) findViewById(R.id.radioGroup);
         mapDictionary.put(R.id.radioButton, BASIC_MAP);
+        internalMaps.add(BASIC_MAP);
 
         Context context = getApplicationContext();
         String[] files = context.fileList();
@@ -42,10 +48,36 @@ public class SelectionScreen extends AppCompatActivity {
             RadioButton rbn = new RadioButton(this);
             int id = View.generateViewId();
             String mapName = mapNames.get(i);
-            mapDictionary.put(id,mapName);
+            mapDictionary.put(id, mapName);
             rbn.setId(id);
             rbn.setText(mapName);
             rgp.addView(rbn);
+        }
+
+        LevelParser parser = new LevelParser();
+        showMapPreview(R.id.radioButton, parser);
+
+        rgp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                TableLayout table = (TableLayout) findViewById(R.id.table);
+                table.removeAllViews();
+                showMapPreview(checkedId, parser);
+            }
+        });
+    }
+
+    public void showMapPreview(int checkedId, LevelParser parser){
+        try {
+            parser.Init(mapDictionary.get(checkedId), this);
+            GameMap map = parser.Parse();
+            LevelView levelView = new LevelView(this, map);
+            levelView.tileSize = 70;
+            levelView.CreateLevel();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -66,12 +98,6 @@ public class SelectionScreen extends AppCompatActivity {
         // Select which storage type should be used as the basic map is stored in Assets
         // Custom maps are stored in internal storage
         intent.putExtra(SELECTED_LEVEL, levelPath);
-        if (level == R.id.radioButton){
-            intent.putExtra(STORAGE_TYPE, ASSETS);
-        }
-        else{
-            intent.putExtra(STORAGE_TYPE, INTERNAL);
-        }
 
         startActivity(intent);
     }

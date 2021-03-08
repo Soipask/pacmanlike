@@ -23,26 +23,13 @@ public class GameScreen extends AppCompatActivity {
 
         Intent intent = getIntent();
         String levelPath = intent.getStringExtra(SelectionScreen.SELECTED_LEVEL);
-        String storageType = intent.getStringExtra(SelectionScreen.STORAGE_TYPE);
 
         try {
-            Scanner reader = null;
-            if (storageType.equals(SelectionScreen.ASSETS)) {
-                InputStream stream = getAssets().open(levelPath);
-                reader = new Scanner(stream);
-            }
-            else if (storageType.equals(SelectionScreen.INTERNAL)){
-                File file = new File(getApplicationContext().getFilesDir(), levelPath);
-                reader = new Scanner(file);
-            }
-            else{
-                throw new Exception("Wrong storage type");
-            }
-            map = parser.Parse(reader);
+            parser.Init(levelPath, this);
+            map = parser.Parse();
         } catch (Exception e) {
             e.printStackTrace();
             super.finish();
-            String x = e.getMessage();
         }
 
         LevelView levelView = new LevelView(this, map);
