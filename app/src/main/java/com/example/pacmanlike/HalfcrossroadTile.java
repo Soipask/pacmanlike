@@ -1,5 +1,7 @@
 package com.example.pacmanlike;
 
+import com.example.pacmanlike.objects.Direction;
+
 public class HalfcrossroadTile extends Tile {
     public HalfcrossroadTile(String rotation) {
         super(Integer.parseInt(rotation));
@@ -11,24 +13,24 @@ public class HalfcrossroadTile extends Tile {
     private void fillMoves(){
         switch (rotation){
             case 0:
-                possibleMoves.add(new Vector(0,-1));
-                possibleMoves.add(new Vector(-1,0));
-                possibleMoves.add(new Vector(0,1));
+                possibleMoves.add(Direction.UP);
+                possibleMoves.add(Direction.LEFT);
+                possibleMoves.add(Direction.RIGHT);
                 break;
             case 90:
-                possibleMoves.add(new Vector(1,0));
-                possibleMoves.add(new Vector(-1,0));
-                possibleMoves.add(new Vector(0,1));
+                possibleMoves.add(Direction.RIGHT);
+                possibleMoves.add(Direction.UP);
+                possibleMoves.add(Direction.DOWN);
                 break;
             case 180:
-                possibleMoves.add(new Vector(1,0));
-                possibleMoves.add(new Vector(0,-1));
-                possibleMoves.add(new Vector(0,1));
+                possibleMoves.add(Direction.RIGHT);
+                possibleMoves.add(Direction.LEFT);
+                possibleMoves.add(Direction.DOWN);
                 break;
             case 270:
-                possibleMoves.add(new Vector(1,0));
-                possibleMoves.add(new Vector(0,-1));
-                possibleMoves.add(new Vector(-1,0));
+                possibleMoves.add(Direction.DOWN);
+                possibleMoves.add(Direction.UP);
+                possibleMoves.add(Direction.LEFT);
                 break;
         }
     }

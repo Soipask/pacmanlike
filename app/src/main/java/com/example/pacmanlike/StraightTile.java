@@ -1,5 +1,7 @@
 package com.example.pacmanlike;
 
+import com.example.pacmanlike.objects.Direction;
+
 public class StraightTile extends Tile {
     public StraightTile(String rotation) {
         super(Integer.parseInt(rotation));
@@ -10,12 +12,12 @@ public class StraightTile extends Tile {
     private void fillMoves(){
         switch (rotation){
             case 0:
-                possibleMoves.add(new Vector(0,1));
-                possibleMoves.add(new Vector(0,-1));
+                possibleMoves.add(Direction.LEFT);
+                possibleMoves.add(Direction.RIGHT);
                 break;
             case 90:
-                possibleMoves.add(new Vector(1,0));
-                possibleMoves.add(new Vector(-1,0));
+                possibleMoves.add(Direction.UP);
+                possibleMoves.add(Direction.DOWN);
                 break;
         }
     }

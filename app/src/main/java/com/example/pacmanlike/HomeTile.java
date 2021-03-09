@@ -1,5 +1,7 @@
 package com.example.pacmanlike;
 
+import com.example.pacmanlike.objects.Direction;
+
 public class HomeTile extends Tile {
     int number;
 
@@ -12,9 +14,9 @@ public class HomeTile extends Tile {
 
     private void fillMoves(){
         switch (number){
-            case 1: possibleMoves.add(new Vector(1,0));
-            case 2: possibleMoves.add(new Vector(0,-1));
-            case 3: possibleMoves.add(new Vector(-1,0));
+            case 1: possibleMoves.add(Direction.RIGHT);
+            case 2: possibleMoves.add(Direction.UP);
+            case 3: possibleMoves.add(Direction.LEFT);
         }
     }
 
