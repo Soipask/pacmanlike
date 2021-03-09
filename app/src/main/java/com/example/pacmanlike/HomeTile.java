@@ -3,12 +3,13 @@ package com.example.pacmanlike;
 import com.example.pacmanlike.objects.Direction;
 
 public class HomeTile extends Tile {
-    int number;
+    public int number;
 
     public HomeTile(String number) {
         super(0);
         type = "Home";
         this.number = Integer.parseInt(number);
+        drawableId = R.drawable.empty;
         fillMoves();
     }
 

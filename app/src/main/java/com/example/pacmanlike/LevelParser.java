@@ -1,16 +1,38 @@
 package com.example.pacmanlike;
 
+import android.app.Activity;
+import android.content.Context;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
 public class LevelParser {
-    int MAP_SIZE_X = 7;
-    int MAP_SIZE_Y = 9;
+    public static final int MAP_SIZE_X = 7;
+    public static final int MAP_SIZE_Y = 9;
     File mapFile;
+    Scanner reader;
 
-    public GameMap Parse(Scanner reader) throws Exception {
+    public void Init(String fileName, Context context) throws Exception {
+        String storageType = SelectionScreen.INTERNAL;
+        if (SelectionScreen.internalMaps.contains(fileName)) {
+            storageType = SelectionScreen.ASSETS;
+        }
+
+        reader = null;
+        if (storageType.equals(SelectionScreen.ASSETS)) {
+            InputStream stream = context.getAssets().open(fileName);
+            reader = new Scanner(stream);
+        } else if (storageType.equals(SelectionScreen.INTERNAL)) {
+            File file = new File(context.getApplicationContext().getFilesDir(), fileName);
+            reader = new Scanner(file);
+        } else{
+            throw new Exception("Wrong storage type");
+        }
+    }
+
+    public GameMap Parse() throws Exception {
         GameMap map = new GameMap();
 
         // At first, parse header (where's home, where's starting pac position...)

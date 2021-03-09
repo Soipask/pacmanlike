@@ -6,6 +6,7 @@ public class CrossroadTile extends Tile{
     public CrossroadTile() {
         super(0);
         type = "Crossroad";
+        drawableId = R.drawable.crossroad;
         fillMoves();
     }
 

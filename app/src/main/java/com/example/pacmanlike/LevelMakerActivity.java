@@ -17,7 +17,6 @@ public class LevelMakerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_maker);
 
-        copyFileToStorage();
     }
 
     private void copyFileToStorage(){

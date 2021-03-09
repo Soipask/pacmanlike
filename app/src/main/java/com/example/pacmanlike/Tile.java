@@ -9,6 +9,7 @@ public abstract class Tile {
     public String type;
     public int rotation;
     public Food content;
+    public int drawableId;
 
     protected List<Direction> possibleMoves = new ArrayList<Direction>();
     public List<Direction> getPossibleMoves(){

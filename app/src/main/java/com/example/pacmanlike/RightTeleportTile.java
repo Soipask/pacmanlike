@@ -6,6 +6,7 @@ public class RightTeleportTile extends Tile {
     public RightTeleportTile() {
         super(0);
         type = "RightTeleport";
+        drawableId = R.drawable.rightteleport;
         fillMoves();
     }
 
