@@ -1,5 +1,7 @@
 package com.example.pacmanlike;
 
+import com.example.pacmanlike.objects.Direction;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +11,8 @@ public abstract class Tile {
     public Food content;
     public int drawableId;
 
-    protected List<Vector> possibleMoves = new ArrayList<Vector>();
-    public List<Vector> getPossibleMoves(){
+    protected List<Direction> possibleMoves = new ArrayList<Direction>();
+    public List<Direction> getPossibleMoves(){
         return possibleMoves;
     }
 

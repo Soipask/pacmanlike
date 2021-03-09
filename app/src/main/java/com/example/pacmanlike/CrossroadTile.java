@@ -1,5 +1,7 @@
 package com.example.pacmanlike;
 
+import com.example.pacmanlike.objects.Direction;
+
 public class CrossroadTile extends Tile{
     public CrossroadTile() {
         super(0);
@@ -9,10 +11,10 @@ public class CrossroadTile extends Tile{
     }
 
     private void fillMoves(){
-        possibleMoves.add(new Vector(1,0));
-        possibleMoves.add(new Vector(0,-1));
-        possibleMoves.add(new Vector(-1,0));
-        possibleMoves.add(new Vector(0,1));
+        possibleMoves.add(Direction.RIGHT);
+        possibleMoves.add(Direction.UP);
+        possibleMoves.add(Direction.LEFT);
+        possibleMoves.add(Direction.DOWN);
     }
 
     @Override

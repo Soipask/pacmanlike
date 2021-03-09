@@ -1,5 +1,7 @@
 package com.example.pacmanlike;
 
+import com.example.pacmanlike.objects.Direction;
+
 public class RightTeleportTile extends Tile {
     public RightTeleportTile() {
         super(0);
@@ -9,8 +11,8 @@ public class RightTeleportTile extends Tile {
     }
 
     private void fillMoves(){
-        possibleMoves.add(new Vector(1,0));
-        possibleMoves.add(new Vector(-1,0));
+        possibleMoves.add(Direction.RIGHT);
+        possibleMoves.add(Direction.LEFT);
     }
 
     @Override
