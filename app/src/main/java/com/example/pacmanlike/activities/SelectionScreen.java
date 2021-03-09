@@ -1,4 +1,4 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,11 +12,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
 
-import java.lang.reflect.Array;
+import com.example.pacmanlike.R;
+import com.example.pacmanlike.activities.GameScreen;
+import com.example.pacmanlike.activities.LevelMakerActivity;
+import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.view.LevelParser;
+import com.example.pacmanlike.view.LevelView;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class SelectionScreen extends AppCompatActivity {
     public static final String SELECTED_LEVEL = "com.example.pacmanlike.SELECTED_LEVEL";
@@ -74,7 +79,7 @@ public class SelectionScreen extends AppCompatActivity {
             parser.Init(mapDictionary.get(checkedId), this);
             GameMap map = parser.Parse();
             LevelView levelView = new LevelView(this, map);
-            levelView.tileSize = 70;
+            levelView.setTileSize(70);
             levelView.CreateLevel();
         } catch (Exception e) {
             e.printStackTrace();

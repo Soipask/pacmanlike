@@ -1,7 +1,5 @@
 package com.example.pacmanlike.objects;
 
-import com.example.pacmanlike.Vector;
-
 public enum Direction {
     UP(0),
     DOWN(1),

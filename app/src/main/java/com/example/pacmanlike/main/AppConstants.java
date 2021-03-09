@@ -1,14 +1,13 @@
-package com.example.pacmanlike.gamelogic;
+package com.example.pacmanlike.main;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.example.pacmanlike.GameMap;
-import com.example.pacmanlike.R;
+import com.example.pacmanlike.gamelogic.GameEngine;
+import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.view.LevelView;
 
 public class AppConstants {
 
@@ -19,13 +18,11 @@ public class AppConstants {
     public static int SCREEN_WIDTH,
             SCREEN_HEIGHT;
 
-    private static int MAP_SIZE_X = 7, MAP_SIZE_Y = 9;
+    public static int MAP_SIZE_X = 7, MAP_SIZE_Y = 9;
 
     private static int _blockSize;
 
-    private static int _center;
-
-    public static Bitmap m;
+    // public static Bitmap m;
 
     /**
      * Initiates the applciation constants
@@ -35,8 +32,12 @@ public class AppConstants {
         setScreenSize(context);
 
         _engine = new GameEngine(context);
-        int a = R.drawable.basicmap;
-        m = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), a), MAP_SIZE_X*_blockSize, MAP_SIZE_Y * _blockSize, false);
+        // int a = R.drawable.basicmap;
+       // m = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), a), MAP_SIZE_X*_blockSize, MAP_SIZE_Y * _blockSize, false);
+
+        LevelView levelView = new LevelView(map);
+
+        map.setBackground(levelView.CreateLevelBitmap(context));
     }
 
     /**

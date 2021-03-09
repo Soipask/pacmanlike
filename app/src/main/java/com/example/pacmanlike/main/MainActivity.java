@@ -1,11 +1,13 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
+
+import com.example.pacmanlike.R;
+import com.example.pacmanlike.activities.SelectionScreen;
 
 public class MainActivity extends AppCompatActivity {
 

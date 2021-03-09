@@ -1,4 +1,4 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.objects;
 
 public enum Food {
     None,

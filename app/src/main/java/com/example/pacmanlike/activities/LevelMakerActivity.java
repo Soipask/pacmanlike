@@ -1,9 +1,10 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.Bundle;
+
+import com.example.pacmanlike.R;
 
 import java.io.File;
 import java.io.FileWriter;

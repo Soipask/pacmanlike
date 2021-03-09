@@ -1,4 +1,6 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.gamemap;
+
+import com.example.pacmanlike.objects.Vector;
 
 public class Home {
     // Singleton
@@ -11,11 +13,14 @@ public class Home {
     // We can check them in parse
     public static String[][] SIGNATURE = {{"S0","S0","S0"},{"A1","A2","A3"}};
 
-    Vector firstCoords;
-    Vector lastCoords() {return new Vector(firstCoords.x + SIZE_X, firstCoords.y + SIZE_Y);}
+    private Vector _firstCoords;
+    Vector lastCoords() {return new Vector(_firstCoords.x + SIZE_X, _firstCoords.y + SIZE_Y);}
+
+
+    public Vector getFirstCoords() { return _firstCoords;}
 
     public Home(int x, int y) throws Exception {
-        firstCoords = new Vector(x,y);
+        _firstCoords = new Vector(x,y);
 
         if (instance == null) {
             instance = this;

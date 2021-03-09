@@ -2,12 +2,9 @@ package com.example.pacmanlike.objects;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import com.example.pacmanlike.R;
-import com.example.pacmanlike.Vector;
-import com.example.pacmanlike.gamelogic.AppConstants;
+import com.example.pacmanlike.main.AppConstants;
 
 public class PacMan extends  DrawalbeObjects{
 

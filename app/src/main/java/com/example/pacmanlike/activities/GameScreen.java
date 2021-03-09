@@ -1,21 +1,16 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 
-import com.example.pacmanlike.gamelogic.AppConstants;
+import com.example.pacmanlike.main.AppConstants;
+import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.view.GameView;
-
-import java.io.File;
-import java.io.InputStream;
-import java.util.Scanner;
+import com.example.pacmanlike.view.LevelParser;
 
 public class GameScreen extends AppCompatActivity {
     GameMap map;
@@ -37,6 +32,7 @@ public class GameScreen extends AppCompatActivity {
             parser.Init(levelPath, this);
             map = parser.Parse();
 
+
             // Initialization of the AppConstants class
             AppConstants.Initialization(this.getApplicationContext(), map);
 
@@ -47,10 +43,6 @@ public class GameScreen extends AppCompatActivity {
             e.printStackTrace();
             super.finish();
         }
-
-        LevelView levelView = new LevelView(this, map);
-        levelView.CreateLevel();
-
     }
 
 

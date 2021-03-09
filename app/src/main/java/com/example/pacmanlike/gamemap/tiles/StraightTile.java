@@ -1,5 +1,7 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.gamemap.tiles;
 
+import com.example.pacmanlike.R;
+import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.objects.Direction;
 
 public class StraightTile extends Tile {

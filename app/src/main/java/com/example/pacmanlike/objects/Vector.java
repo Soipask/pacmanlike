@@ -1,4 +1,4 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.objects;
 
 public class Vector{
     public int x = 0;

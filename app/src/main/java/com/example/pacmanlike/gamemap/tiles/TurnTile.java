@@ -1,5 +1,6 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.gamemap.tiles;
 
+import com.example.pacmanlike.R;
 import com.example.pacmanlike.objects.Direction;
 
 public class TurnTile extends Tile {
@@ -26,7 +27,7 @@ public class TurnTile extends Tile {
                 possibleMoves.add(Direction.RIGHT);
                 break;
             case 270:
-                possibleMoves.add(Direction.UP);
+                possibleMoves.add(Direction.DOWN);
                 possibleMoves.add(Direction.LEFT);
                 break;
         }

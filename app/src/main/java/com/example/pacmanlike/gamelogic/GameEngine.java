@@ -3,9 +3,10 @@ package com.example.pacmanlike.gamelogic;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import com.example.pacmanlike.GameMap;
-import com.example.pacmanlike.Tile;
-import com.example.pacmanlike.Vector;
+import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.gamemap.tiles.Tile;
+import com.example.pacmanlike.main.AppConstants;
+import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.objects.ArrowIndicator;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.PacMan;
@@ -157,7 +158,7 @@ public class GameEngine {
      * 			canvas on which will be drawn the bitmap
      **/
     private void drawBackground(Canvas canvas) {
-        canvas.drawBitmap(AppConstants.m, 0,0, _paint);
+        canvas.drawBitmap(AppConstants.getGameMap().getBackground(), 0,0, _paint);
     }
 
     /**

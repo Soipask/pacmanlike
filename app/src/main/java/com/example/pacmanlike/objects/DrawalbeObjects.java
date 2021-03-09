@@ -6,8 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.example.pacmanlike.Vector;
-
 public abstract class DrawalbeObjects {
 
     protected int _frameIndex;

@@ -1,13 +1,11 @@
 package com.example.pacmanlike.objects;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 
 import com.example.pacmanlike.R;
-import com.example.pacmanlike.gamelogic.AppConstants;
+import com.example.pacmanlike.main.AppConstants;
 
 public class ArrowIndicator  extends DrawalbeObjects {
 

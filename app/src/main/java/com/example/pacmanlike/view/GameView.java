@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.pacmanlike.gamelogic.AppConstants;
+import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.gamelogic.DisplayThread;
 import com.example.pacmanlike.gamelogic.GameEngine;
 

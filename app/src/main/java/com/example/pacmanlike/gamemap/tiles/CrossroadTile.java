@@ -1,8 +1,10 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.gamemap.tiles;
 
+import com.example.pacmanlike.R;
+import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.objects.Direction;
 
-public class CrossroadTile extends Tile{
+public class CrossroadTile extends Tile {
     public CrossroadTile() {
         super(0);
         type = "Crossroad";

@@ -5,6 +5,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
+import com.example.pacmanlike.main.AppConstants;
+
 /**
  * Responsible for screen painting.
  * */

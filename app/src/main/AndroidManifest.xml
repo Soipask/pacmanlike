@@ -9,16 +9,16 @@
         android:roundIcon="@drawable/straight"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pacmanlike">
-        <activity android:name=".LevelMakerActivity"
-            android:parentActivityName=".SelectionScreen">
+        <activity android:name=".activities.LevelMakerActivity"
+            android:parentActivityName=".activities.SelectionScreen">
         </activity>
-        <activity android:name=".GameScreen"
-            android:parentActivityName=".SelectionScreen">
+        <activity android:name=".activities.GameScreen"
+            android:parentActivityName=".activities.SelectionScreen">
         </activity>
         <activity
-            android:name=".SelectionScreen"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".MainActivity">
+            android:name=".activities.SelectionScreen"
+            android:parentActivityName=".main.MainActivity" />
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

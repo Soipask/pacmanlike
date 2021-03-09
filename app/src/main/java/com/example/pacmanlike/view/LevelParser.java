@@ -1,10 +1,22 @@
-package com.example.pacmanlike;
+package com.example.pacmanlike.view;
 
-import android.app.Activity;
 import android.content.Context;
 
+import com.example.pacmanlike.gamemap.Home;
+import com.example.pacmanlike.activities.SelectionScreen;
+import com.example.pacmanlike.objects.Vector;
+import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.gamemap.tiles.CrossroadTile;
+import com.example.pacmanlike.gamemap.tiles.EmptyTile;
+import com.example.pacmanlike.gamemap.tiles.HalfcrossroadTile;
+import com.example.pacmanlike.gamemap.tiles.HomeTile;
+import com.example.pacmanlike.gamemap.tiles.LeftTeleportTile;
+import com.example.pacmanlike.gamemap.tiles.RightTeleportTile;
+import com.example.pacmanlike.gamemap.tiles.StraightTile;
+import com.example.pacmanlike.gamemap.tiles.Tile;
+import com.example.pacmanlike.gamemap.tiles.TurnTile;
+
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -41,7 +53,7 @@ public class LevelParser {
         }
 
         // Create a map with set size
-        map.map = new Tile[MAP_SIZE_Y][MAP_SIZE_X];
+        map.setMap(new Tile[MAP_SIZE_Y][MAP_SIZE_X]);
 
         // Parse whole map line by line, element by element
         int y = 0;
@@ -51,7 +63,7 @@ public class LevelParser {
             // Loop parse lines
             String[] line = data.split(",");
             for(int i = 0; i < line.length; i++){
-                map.map[y][i] = ParseTile(line[i]);
+                map.getMap()[y][i] = ParseTile(line[i]);
             }
 
             y++;
@@ -88,7 +100,7 @@ public class LevelParser {
         String pac = head[1].split("=")[1];
 
         String[] pacCoords = pac.split(";");
-        map.startingPacPosition = new Vector(Integer.parseInt(pacCoords[0]),Integer.parseInt(pacCoords[1]));
+        map.setStartingPacPosition(new Vector(Integer.parseInt(pacCoords[0]),Integer.parseInt(pacCoords[1])));
     }
 
     public Tile ParseTile(String tileName) throws Exception {
@@ -113,9 +125,9 @@ public class LevelParser {
         boolean check = true;
         for (int i = 0; i < Home.SIZE_Y; i++){
             for (int j = 0; j < Home.SIZE_X; j++){
-                int y = Home.instance.firstCoords.y + i;
-                int x = Home.instance.firstCoords.x + j;
-                if (!map.map[y][x].toString().equals(Home.SIGNATURE[i][j])){
+                int y = Home.instance.getFirstCoords().y + i;
+                int x = Home.instance.getFirstCoords().x + j;
+                if (!map.getTile(x, y).toString().equals(Home.SIGNATURE[i][j])){
                     check = false;
                 }
             }
