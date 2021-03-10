@@ -45,15 +45,15 @@ public class GameEngine {
     public GameEngine(Context context) {
 
         _paint = new Paint();
-        _piantPills = new Paint();
-        _piantPills.setStyle(Paint.Style.FILL);
-        _piantPills.setColor(Color.rgb(255,165,0));
+        _piantPells = new Paint();
+        _piantPells.setStyle(Paint.Style.FILL);
+        _piantPells.setColor(Color.rgb(255,165,0));
         _pacman = new PacMan(context, AppConstants.getGameMap().getStartingPacPosition());
 
         // TODO: Not working
        // _ghosts.add( new Ghost(context, new Vector(200,200),0 ));
 
-        addPills(AppConstants.getGameMap());
+        addPells(AppConstants.getGameMap());
         _arrowIdenticator = new ArrowIndicator(context);
 
         _pacSpeed = 10;
@@ -64,10 +64,10 @@ public class GameEngine {
     }
 
     Paint _paint;
-    Paint _piantPills;
+    Paint _piantPells;
 
 
-    public void addPills(GameMap map) {
+    public void addPells(GameMap map) {
 
         for (int y = 0; y < AppConstants.MAP_SIZE_Y; y++) {
             for (int x = 0; x < AppConstants.MAP_SIZE_X; x++)
@@ -103,7 +103,7 @@ public class GameEngine {
                 updataPacmanDirection();
                 detectWallCollision();
 
-                updatePills();
+                updatePells();
                 movePacman(_pacStep);
             }
         }
@@ -153,7 +153,7 @@ public class GameEngine {
     }
 
 
-    private void updatePills(){
+    private void updatePells(){
         GameMap gameMap = AppConstants.getGameMap();
         Vector position = _pacman.getPosition();
 
@@ -205,14 +205,14 @@ public class GameEngine {
     public void draw(Canvas canvas) {
 
         drawBackground(canvas);
-        drawPills(canvas);
+        drawPells(canvas);
        // drawGhosts(canvas);
 
         _pacman.draw(canvas, _paint);
         _arrowIdenticator.draw(canvas, _paint);
     }
 
-    public void drawPills(Canvas canvas) {
+    public void drawPells(Canvas canvas) {
 
         GameMap map = AppConstants.getGameMap();
         int _blockSize = AppConstants.getBlockSize();
@@ -221,9 +221,9 @@ public class GameEngine {
             for (int x = 0; x < AppConstants.MAP_SIZE_X; x++)
             {
                 if(map.getTile(x,y).getFood() == Food.Pellet) {
-                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.1f, _piantPills);
+                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.1f, _piantPells);
                 } else if(map.getTile(x,y).getFood() == Food.PowerPellet) {
-                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.2f, _piantPills);
+                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.2f, _piantPells);
                 }
             }
         }
