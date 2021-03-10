@@ -25,25 +25,25 @@
         android:id="@+id/oneTimeButtonsScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
+        app:layout_constraintBottom_toTopOf="@+id/levelMakerButtonScrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="invisible">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:visibility="invisible">
 
             <ImageButton
-                android:id="@+id/imageButton6"
+                android:id="@+id/leftTeleportButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/leftteleport" />
 
             <ImageButton
-                android:id="@+id/imageButton7"
+                android:id="@+id/rightTeleportButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/rightteleport" />
@@ -65,6 +65,15 @@
             android:layout_marginBottom="0dp"
             android:background="@color/purple_700"
             android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rotateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/empty"
+                android:text="@string/rotate_button"
+                android:textColor="@color/white" />
 
             <RadioButton
                 android:id="@+id/straightButton"
@@ -110,11 +119,12 @@
                 android:background="@drawable/empty"
                 android:text="@string/none"
                 android:textColor="@color/white" />
+
         </RadioGroup>
     </HorizontalScrollView>
 
     <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
+        android:id="@+id/levelMakerButtonScrollView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black"

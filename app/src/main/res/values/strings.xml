@@ -18,4 +18,5 @@
     <string name="export_button">Export map...</string>
     <string name="save_button">Save</string>
     <string name="validate_button">Validate</string>
+    <string name="rotate_button">Rotate</string>
 </resources>
