@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.pacmanlike.gamemap.Home;
 import com.example.pacmanlike.activities.SelectionScreen;
+import com.example.pacmanlike.gamemap.tiles.DoorTile;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.gamemap.tiles.CrossroadTile;
@@ -18,6 +19,7 @@ import com.example.pacmanlike.gamemap.tiles.TurnTile;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class LevelParser {
@@ -25,6 +27,7 @@ public class LevelParser {
     public static final int MAP_SIZE_Y = 9;
     File mapFile;
     Scanner reader;
+    HashMap<String, String> dictionary = new HashMap<>();
 
     public void Init(String fileName, Context context) throws Exception {
         String storageType = SelectionScreen.INTERNAL;
@@ -62,8 +65,16 @@ public class LevelParser {
 
             // Loop parse lines
             String[] line = data.split(",");
-            for(int i = 0; i < line.length; i++){
-                map.getMap()[y][i] = ParseTile(line[i]);
+            for(int x = 0; x < line.length; x++){
+                Tile tile = ParseTile(line[x]);
+                map.getMap()[y][x] = tile;
+
+                // Some final things...
+                switch (line[x]){
+                    case "A2": new Home(x,y); break;
+                    case "L" : map.setLeftTeleportPosition(new Vector(x,y)); break;
+                    case "R" : map.setRightTeleportPosition(new Vector(x,y)); break;
+                }
             }
 
             y++;
@@ -84,23 +95,19 @@ public class LevelParser {
 
     public void ParseHead(GameMap map, String line) throws Exception {
         String[] head = line.split(",");
-        // First, there has to be HOME=x,y (where (x,y) are first coordinates of home)
-        if (!head[0].startsWith("HOME")){
-            throw new Exception("Wrong format of the map file!");
-        }
-        String homeString = head[0].split("=")[1];
 
-        String[] homeCoords = homeString.split(";");
-        new Home(Integer.parseInt(homeCoords[0]), Integer.parseInt(homeCoords[1]));
+        // Putting arguments to dictionary
+        for (String arg : head) {
+            String[] pair = arg.split("=");
+            dictionary.put(pair[0], pair[1]);
+        }
 
         // Then PAC=x,y (where (x,y) are the starting coordinates of pacman)
-        if (!head[1].startsWith("PAC")){
-            throw new Exception("Wrong format of the map file!");
-        }
-        String pac = head[1].split("=")[1];
-
+        String pac = dictionary.get("PAC");
         String[] pacCoords = pac.split(";");
-        map.setStartingPacPosition(new Vector(Integer.parseInt(pacCoords[0]),Integer.parseInt(pacCoords[1])));
+        map.setStartingPacPosition(
+                new Vector(Integer.parseInt(pacCoords[0]),Integer.parseInt(pacCoords[1]))
+        );
     }
 
     public Tile ParseTile(String tileName) throws Exception {
@@ -116,6 +123,7 @@ public class LevelParser {
             case 'L' : tile = new LeftTeleportTile(); break;
             case 'X' : tile = new EmptyTile(); break;
             case 'A' : tile = new HomeTile(tileName.substring(1)); break;
+            case 'D' : tile = new DoorTile(); break;
             default: throw new Exception("Wrong tile format.");
         }
         return tile;
@@ -123,13 +131,12 @@ public class LevelParser {
 
     public void CheckHomeCoords(GameMap map) throws Exception {
         boolean check = true;
-        for (int i = 0; i < Home.SIZE_Y; i++){
-            for (int j = 0; j < Home.SIZE_X; j++){
-                int y = Home.instance.getFirstCoords().y + i;
-                int x = Home.instance.getFirstCoords().x + j;
-                if (!map.getTile(x, y).toString().equals(Home.SIGNATURE[i][j])){
-                    check = false;
-                }
+        Vector homeCoords = Home.instance.getCoordinates();
+        int y = homeCoords.y;
+        for (int i = 0; i < Home.SIZE_X; i++){
+            int x = homeCoords.x + i - 1;
+            if (!map.getTile(x, y).toString().equals(Home.SIGNATURE[i])){
+                check = false;
             }
         }
 

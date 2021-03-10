@@ -7,20 +7,18 @@ public class Home {
     public static Home instance;
 
     public static int SIZE_X = 3;
-    public static int SIZE_Y = 2;
+    public static int SIZE_Y = 1;
 
     // How does a home look like? This is signature in terms of making how does the tiles look like.
     // We can check them in parse
-    public static String[][] SIGNATURE = {{"S0","S0","S0"},{"A1","A2","A3"}};
+    public static String[] SIGNATURE = {"A1","A2","A3"};
 
-    private Vector _firstCoords;
-    Vector lastCoords() {return new Vector(_firstCoords.x + SIZE_X, _firstCoords.y + SIZE_Y);}
+    private Vector _coordinates;
 
-
-    public Vector getFirstCoords() { return _firstCoords;}
+    public Vector getCoordinates() { return _coordinates;}
 
     public Home(int x, int y) throws Exception {
-        _firstCoords = new Vector(x,y);
+        _coordinates = new Vector(x,y);
 
         if (instance == null) {
             instance = this;

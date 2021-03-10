@@ -9,6 +9,8 @@ import com.example.pacmanlike.main.AppConstants;
 public class GameMap {
     private Tile[][] _map;
     private Vector _startingPacPosition;
+    private Vector _leftTeleportPosition;
+    private Vector _rightTeleportPosition;
 
     private Bitmap _background;
 
@@ -32,4 +34,14 @@ public class GameMap {
     public void setBackground(Bitmap bitmap) {_background = bitmap; }
     public Bitmap getBackground() {return _background; }
 
+    public void setLeftTeleportPosition(Vector leftTeleportPosition) {
+        _leftTeleportPosition = leftTeleportPosition;
+    }
+    public void setRightTeleportPosition(Vector rightTeleportPosition){
+        _rightTeleportPosition = rightTeleportPosition;
+    }
+
+    public Vector getRightTeleportPosition(){ return _rightTeleportPosition;}
+
+    public Vector getLeftTeleportPosition(){ return _leftTeleportPosition;}
 }
