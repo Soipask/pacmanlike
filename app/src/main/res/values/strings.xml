@@ -8,4 +8,14 @@
     <string name="create_level_button">Create New Level...</string>
     <string name="basic_map_name">Basic map</string>
     <string name="select_level">Please, select which level you want to play</string>
+    <string name="none">None</string>
+    <string name="crossroad">X-Road</string>
+    <string name="halfcrossroad">T-Road</string>
+    <string name="straight">I-Road</string>
+    <string name="turn">L-Road</string>
+    <string name="import_button">Import map...</string>
+    <string name="discard_button">Discard</string>
+    <string name="export_button">Export map...</string>
+    <string name="save_button">Save</string>
+    <string name="validate_button">Validate</string>
 </resources>

@@ -25,7 +25,6 @@ import java.util.HashMap;
 
 public class SelectionScreen extends AppCompatActivity {
     public static final String SELECTED_LEVEL = "com.example.pacmanlike.SELECTED_LEVEL";
-    public static final String STORAGE_TYPE = "com.example.pacmanlike.SELECTED_LEVEL_STORAGE";
     public static final String ASSETS = "Assets";
     public static final String INTERNAL = "Internal";
     public static final String BASIC_MAP = "basicmap.csv";
