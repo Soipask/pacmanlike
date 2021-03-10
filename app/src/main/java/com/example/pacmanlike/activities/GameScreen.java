@@ -22,7 +22,6 @@ public class GameScreen extends AppCompatActivity {
 
         // Comment
         // New View
-        // setContentView(R.layout.activity_game_screen);
 
         Intent intent = getIntent();
         String levelPath = intent.getStringExtra(SelectionScreen.SELECTED_LEVEL);
