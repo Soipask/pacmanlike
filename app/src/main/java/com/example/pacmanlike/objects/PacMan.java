@@ -26,15 +26,6 @@ public class PacMan extends  DrawalbeObjects{
         load(context);
     }
 
-    /**
-     * Sets the location of the pacman on the screen
-     * @param position
-     */
-    public void setPosition(Vector position) {
-        _position = position;
-    }
-
-    public Vector getPosition() { return  _position; }
 
     @Override
     protected void load(Context context) {

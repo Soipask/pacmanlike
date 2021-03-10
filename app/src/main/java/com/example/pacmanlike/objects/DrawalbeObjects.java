@@ -21,6 +21,16 @@ public abstract class DrawalbeObjects {
 
     protected Vector _position;
 
+    protected abstract void load(Context context);
+
+    /**
+     * Sets the location of the pacman on the screen
+     * @param position
+     */
+    public void setPosition(Vector position) { _position = position; }
+
+    public Vector getPosition() { return  _position; }
+
     public void setDirection(Direction direction) {
         _prevDirection = _direction;
         _direction = direction;
@@ -44,8 +54,6 @@ public abstract class DrawalbeObjects {
 
         return tmpSprites;
     }
-
-    protected abstract void load(Context context);
 
     public void draw(Canvas canvas, Paint paint) {
 

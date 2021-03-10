@@ -2,14 +2,20 @@ package com.example.pacmanlike.gamelogic;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.main.AppConstants;
+import com.example.pacmanlike.objects.Food;
+import com.example.pacmanlike.objects.Ghost;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.objects.ArrowIndicator;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.PacMan;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 /*
 * Stores all object references that relevant for the game display
@@ -29,21 +35,53 @@ public class GameEngine {
     private static int _pacSpeed;
     private static int _pacStep;
 
+    private static int _SCORE;
+    private static int _PELLSCORE = 20;
+
+    static ArrayList<Ghost> _ghosts = new ArrayList<Ghost>();
+
 
 
     public GameEngine(Context context) {
 
         _paint = new Paint();
-
+        _piantPills = new Paint();
+        _piantPills.setStyle(Paint.Style.FILL);
+        _piantPills.setColor(Color.rgb(255,165,0));
         _pacman = new PacMan(context, AppConstants.getGameMap().getStartingPacPosition());
+
+        // TODO: Not working
+       // _ghosts.add( new Ghost(context, new Vector(200,200),0 ));
+
+        addPills(AppConstants.getGameMap());
         _arrowIdenticator = new ArrowIndicator(context);
 
         _pacSpeed = 10;
         _pacStep = 1;
 
+        _SCORE = 0;
+
     }
 
     Paint _paint;
+    Paint _piantPills;
+
+
+    public void addPills(GameMap map) {
+
+        for (int y = 0; y < AppConstants.MAP_SIZE_Y; y++) {
+            for (int x = 0; x < AppConstants.MAP_SIZE_X; x++)
+            {
+                Tile tile = map.getTile(x,y);
+
+                if(!tile.type.equals("Empty") && !tile.type.equals("Home") &&
+                        !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)) {
+                    tile.setFood(Food.Pellet);
+                }
+            }
+        }
+    }
+
 
     /**
      * Updates all relevant objects business logic
@@ -62,9 +100,10 @@ public class GameEngine {
         synchronized (_sync) {
 
             for (int step = 0; step < _pacSpeed; step++) {
-
                 updataPacmanDirection();
                 detectWallCollision();
+
+                updatePills();
                 movePacman(_pacStep);
             }
         }
@@ -113,6 +152,24 @@ public class GameEngine {
         }
     }
 
+
+    private void updatePills(){
+        GameMap gameMap = AppConstants.getGameMap();
+        Vector position = _pacman.getPosition();
+
+        if(testCenterTile(position)) {
+            Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
+
+            if(tile.getFood() == Food.Pellet) {
+
+                _SCORE += _PELLSCORE;
+                tile.setFood(Food.None);
+            } else if(tile.getFood() == Food.PowerPellet) {
+
+
+            }
+        }
+    }
     /**
      *
      * @param step
@@ -148,8 +205,34 @@ public class GameEngine {
     public void draw(Canvas canvas) {
 
         drawBackground(canvas);
+        drawPills(canvas);
+       // drawGhosts(canvas);
+
         _pacman.draw(canvas, _paint);
         _arrowIdenticator.draw(canvas, _paint);
+    }
+
+    public void drawPills(Canvas canvas) {
+
+        GameMap map = AppConstants.getGameMap();
+        int _blockSize = AppConstants.getBlockSize();
+
+        for (int y = 0; y < AppConstants.MAP_SIZE_Y; y++) {
+            for (int x = 0; x < AppConstants.MAP_SIZE_X; x++)
+            {
+                if(map.getTile(x,y).getFood() == Food.Pellet) {
+                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.1f, _piantPills);
+                } else if(map.getTile(x,y).getFood() == Food.PowerPellet) {
+                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.2f, _piantPills);
+                }
+            }
+        }
+    }
+
+    private void drawGhosts(Canvas canvas) {
+        for (Ghost g : _ghosts) {
+            g.draw(canvas, _paint);
+        }
     }
 
     /**
@@ -169,8 +252,6 @@ public class GameEngine {
      * 			y coordinate of the touch event
      * */
     public void setSwipeDirection(int touchX, int touchY) {
-
-
         float xDiff = (touchX - _lastTouchedX);
         float yDiff = (touchY - _lastTouchedY);
 
