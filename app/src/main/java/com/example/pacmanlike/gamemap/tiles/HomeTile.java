@@ -16,9 +16,9 @@ public class HomeTile extends Tile {
 
     private void fillMoves(){
         switch (number){
-            case 1: possibleMoves.add(Direction.RIGHT);
-            case 2: possibleMoves.add(Direction.UP);
-            case 3: possibleMoves.add(Direction.LEFT);
+            case 1: possibleMoves.add(Direction.RIGHT); break;
+            case 2: possibleMoves.add(Direction.UP); break;
+            case 3: possibleMoves.add(Direction.LEFT); break;
         }
     }
 
