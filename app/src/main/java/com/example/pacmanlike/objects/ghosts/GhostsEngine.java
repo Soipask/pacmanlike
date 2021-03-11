@@ -53,7 +53,9 @@ public class GhostsEngine {
                  if(moves.size() == 1)  {
                      g.setDirection(moves.get(0));
                  } else {
-                     moves.remove(Direction.getOppositeDirection(g.getDirection()));
+
+
+                     // moves.remove(Direction.getOppositeDirection(g.getDirection()));
                      Direction dir = moves.get(_rand.nextInt(moves.size()));
                      g.setDirection(dir);
                  }
