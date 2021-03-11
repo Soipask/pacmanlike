@@ -53,7 +53,7 @@ public class GameEngine {
 
         // Adds game objects
         _pacman = new PacMan(context, AppConstants.getGameMap().getStartingPacPosition());
-        _ghostsEngine = new GhostsEngine(context, Home.instance.getCoordinates());
+        _ghostsEngine = new GhostsEngine(context, Home.getInstance().getCoordinates());
         addPells(AppConstants.getGameMap());
         _arrowIdenticator = new ArrowIndicator(context);
 
