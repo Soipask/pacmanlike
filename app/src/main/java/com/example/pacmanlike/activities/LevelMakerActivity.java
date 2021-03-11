@@ -20,13 +20,16 @@ import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Vector;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class LevelMakerActivity extends AppCompatActivity {
     private int _tileSize;
     private int _selected;
-    private MapSquare[][] _map = new MapSquare[AppConstants.MAP_SIZE_X][AppConstants.MAP_SIZE_Y];
+    private MapSquare[][] _map = new MapSquare[AppConstants.MAP_SIZE_Y][AppConstants.MAP_SIZE_X];
     private HashMap<Integer, MapSquare> _buttonDictionary = new HashMap<>();
     private HashMap<Integer, Character> _viewChars = new HashMap<>();
+    private HashMap<Integer, Integer> _buttonBackgroundResource = new HashMap<>();
+    private HashSet<Integer> _oneTimeIds = new HashSet();
     private View _lastClicked;
 
     private HorizontalScrollView _oneTimeButtons, _repeatableButtons;
@@ -37,7 +40,6 @@ public class LevelMakerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_maker);
 
-        TableLayout tbl = (TableLayout) findViewById(R.id.newLevel);
         /*
         _tileSize = Math.min (
                 (AppConstants.SCREEN_HEIGHT - 300) / AppConstants.MAP_SIZE_Y,
@@ -46,8 +48,30 @@ public class LevelMakerActivity extends AppCompatActivity {
         */
         _tileSize = 125;
 
-        //tbl.getLayoutParams().height = LevelParser.MAP_SIZE_Y * _tileSize;
-        //tbl.getLayoutParams().width = LevelParser.MAP_SIZE_X * _tileSize;
+        prepareTiles();
+
+        _oneTimeButtons = (HorizontalScrollView) findViewById(R.id.oneTimeButtonsScrollView);
+        _repeatableButtons = (HorizontalScrollView) findViewById(R.id.repeatableButtonsScrollView);
+        _oneTimeButtons.setVisibility(View.VISIBLE);
+        _repeatableButtons.setVisibility(View.INVISIBLE);
+
+        // onclick listeners for oneTimeButtons
+        setOnClickToButtons();
+
+        // onChangeSelected listeners for repeatable ones
+        setOnChangeSelectedToRadio();
+
+        //_lastClicked = findViewById(R.id.emptyButton);
+        _selected = R.id.emptyButton;
+        fillViewChars();
+        fillBackgroundDictionary();
+        setOneTimeIds();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void prepareTiles(){
+        TableLayout tbl = (TableLayout) findViewById(R.id.newLevel);
 
         for (int i = 0; i < AppConstants.MAP_SIZE_Y; i++) {
             TableRow row = new TableRow(this);
@@ -70,47 +94,61 @@ public class LevelMakerActivity extends AppCompatActivity {
 
                 MapSquare square = new MapSquare();
                 square.position = new Vector(j, i);
+                _map[i][j] = square;
 
-                _buttonDictionary.put(id,square);
-                row.addView(button,p);
+                _buttonDictionary.put(id, square);
+                row.addView(button, p);
 
-                button.setBackgroundResource(R.drawable.empty);
+                button.setBackgroundResource(R.drawable.emptygrey);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        MapSquare square = _buttonDictionary.get(id);
-
-                        if (_selected != R.id.rotateButton){
-                        //button.setBackground(ResourcesCompat.getDrawable(getResources(), _selected, null));
-                            button.setBackground(_lastClicked.getBackground());
-
-                            square.rotation = v.getRotation();
-                            square.letter = _viewChars.get(_selected);
-                        } else{
-                            float newRotation = v.getRotation() + 90;
-                            v.setRotation(newRotation);
-                            square.rotation = newRotation;
-                        }
-                    }
+                    public void onClick(View v) { onClickMap(v, button);}
                 });
             }
         }
         tbl.requestLayout();
+    }
 
-        _oneTimeButtons = (HorizontalScrollView) findViewById(R.id.oneTimeButtonsScrollView);
-        _repeatableButtons = (HorizontalScrollView) findViewById(R.id.repeatableButtonsScrollView);
-        _oneTimeButtons.setVisibility(View.INVISIBLE);
+    private void onClickMap(View v, ImageButton button){
+        int id = v.getId();
+        MapSquare square = _buttonDictionary.get(id);
 
-        // onclick listeners for oneTimeButtons
-        setOnClickToButtons();
+        if (_selected != R.id.rotateButton && !square.immovable){
+            int backgroundId = _buttonBackgroundResource.get(_selected);
+            button.setBackground(ResourcesCompat.getDrawable(getResources(), backgroundId, null));
+            //button.setBackground(_lastClicked.getBackground());
 
-        // onChangeSelected listeners for repeatable ones
-        setOnChangeSelectedToRadio();
+            square.rotation = v.getRotation();
+            square.letter = _viewChars.get(_selected);
 
-        _lastClicked = findViewById(R.id.emptyButton);
-        _selected = R.id.emptyButton;
-        fillViewChars();
+            if (_oneTimeIds.contains(_selected)){
+                findViewById(_selected).setVisibility(View.INVISIBLE);
+
+                if (areChildrenInvisible(_oneTimeButtons)){
+                    _oneTimeButtons.setVisibility(View.INVISIBLE);
+                    _repeatableButtons.setVisibility(View.VISIBLE);
+                }
+
+                _selected = R.id.emptyButton;
+                square.immovable = true;
+            }
+        } else if (_selected == R.id.rotateButton){
+            float newRotation = v.getRotation() + 90;
+            v.setRotation(newRotation);
+            square.rotation = newRotation;
+        }
+    }
+
+    private boolean areChildrenInvisible(HorizontalScrollView scrollView){
+        LinearLayout layout = (LinearLayout) _oneTimeButtons.getChildAt(0);
+        for(int i = 0; i < layout.getChildCount(); i++){
+            View btn = layout.getChildAt(i);
+            if (btn.getVisibility() != View.INVISIBLE){
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void setOnClickToButtons(){
@@ -120,7 +158,7 @@ public class LevelMakerActivity extends AppCompatActivity {
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    _lastClicked = v;
+                    //_lastClicked = v;
                     _selected = v.getId();
                 }
             });
@@ -134,7 +172,7 @@ public class LevelMakerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 _selected = checkedId;
-                _lastClicked = findViewById(checkedId);
+                //_lastClicked = findViewById(checkedId);
             }
         });
     }
@@ -150,14 +188,34 @@ public class LevelMakerActivity extends AppCompatActivity {
         // one-time
         _viewChars.put(R.id.leftTeleportButton, 'L');
         _viewChars.put(R.id.rightTeleportButton, 'R');
-        // door ...
         // _viewChars.put(R.id.doorButton, 'D');
+    }
+
+    private void fillBackgroundDictionary(){
+        // repeatable
+        _buttonBackgroundResource.put(R.id.emptyButton, R.drawable.empty);
+        _buttonBackgroundResource.put(R.id.crossroadButton, R.drawable.crossroad);
+        _buttonBackgroundResource.put(R.id.halfCrossroadButton, R.drawable.halfcrossroad);
+        _buttonBackgroundResource.put(R.id.turnButton, R.drawable.turn);
+        _buttonBackgroundResource.put(R.id.straightButton, R.drawable.straight);
+
+        // one time
+        _buttonBackgroundResource.put(R.id.leftTeleportButton, R.drawable.leftteleport);
+        _buttonBackgroundResource.put(R.id.rightTeleportButton, R.drawable.rightteleport);
+        // _buttonBackgroundResource.put(R.id.doorButton, R.drawable.door);
+    }
+
+    private void setOneTimeIds(){
+        _oneTimeIds.add(R.id.leftTeleportButton);
+        _oneTimeIds.add(R.id.rightTeleportButton);
+        // _oneTimeIds.add(R.id.DoorButton);
     }
 
     public class MapSquare{
         public char letter = 'X';
         public float rotation = 0;
         Vector position;
+        public boolean immovable = false;
 
         @Override
         public String toString() {
