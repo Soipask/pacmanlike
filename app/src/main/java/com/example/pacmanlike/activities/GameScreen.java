@@ -28,12 +28,11 @@ public class GameScreen extends AppCompatActivity {
 
         try {
 
-            parser.Init(levelPath, this);
-            map = parser.Parse();
-
+            parser.init(levelPath, this);
+            map = parser.parse();
 
             // Initialization of the AppConstants class
-            AppConstants.Initialization(this.getApplicationContext(), map);
+            AppConstants.initialization(this.getApplicationContext(), map);
 
             SurfaceView view = new GameView(this, AppConstants.getEngine());
             setContentView(view);

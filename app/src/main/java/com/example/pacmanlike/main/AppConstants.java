@@ -22,12 +22,15 @@ public class AppConstants {
 
     private static int _blockSize;
 
+    public static String PAC_STARTING_KEYWORD = "PAC", POWER_STARTING_KEYWORD = "POWER";
+    public static String CSV_DELIMITER = ",", KEY_VALUE_DELIMITER = "=", COORDS_DELIMITER = ";", MORE_DATA_DELIMITER = "/";
+
     // public static Bitmap m;
 
     /**
      * Initiates the applciation constants
      * */
-    public static void Initialization(Context context, GameMap map) {
+    public static void initialization(Context context, GameMap map) {
         _gameMap = map;
         setScreenSize(context);
 
@@ -37,7 +40,7 @@ public class AppConstants {
 
         LevelView levelView = new LevelView(map);
 
-        map.setBackground(levelView.CreateLevelBitmap(context));
+        map.setBackground(levelView.createLevelBitmap(context));
     }
 
     /**

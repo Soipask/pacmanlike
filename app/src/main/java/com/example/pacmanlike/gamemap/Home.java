@@ -4,7 +4,7 @@ import com.example.pacmanlike.objects.Vector;
 
 public class Home {
     // Singleton
-    public static Home instance;
+    private static Home _instance;
 
     public static int SIZE_X = 3;
     public static int SIZE_Y = 1;
@@ -17,11 +17,13 @@ public class Home {
 
     public Vector getCoordinates() { return _coordinates;}
 
+    public static Home getInstance() { return _instance;}
+
     public Home(int x, int y) throws Exception {
         _coordinates = new Vector(x,y);
 
-        if (instance == null) {
-            instance = this;
+        if (_instance == null) {
+            _instance = this;
         }
     }
 }
