@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.example.pacmanlike.gamelogic.GameEngine;
 import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.view.LevelView;
 
 public class AppConstants {
@@ -91,7 +92,18 @@ public class AppConstants {
      * */
     public static GameEngine getEngine() { return _engine; }
 
+    public static boolean testCenterTile(Vector position) {
 
+
+        int centerX = position.x % _blockSize;
+        int centerY = position.y % _blockSize;
+
+        if(centerX == _blockSize/2 && centerY == _blockSize /2) {
+            return true;
+        }else {
+            return false;
+        }
+    }
     /**
      * Stops the given thread
      * @param thread

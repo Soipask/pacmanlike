@@ -18,6 +18,7 @@ public abstract class DrawalbeObjects {
     protected Direction _direction;
     protected Direction _prevDirection;
     protected Bitmap[][] _sprites;
+    protected int _frameCongruence;
 
     protected Vector _position;
 
@@ -27,9 +28,13 @@ public abstract class DrawalbeObjects {
      * Sets the location of the pacman on the screen
      * @param position
      */
-    public void setPosition(Vector position) { _position = position; }
+    public void setAbsolutePosition(Vector position) { _position = position; }
 
-    public Vector getPosition() { return  _position; }
+    public Vector getAbsolutePosition() { return  _position; }
+
+    public void setRelativePosition(Vector position) {
+        _position = new Vector(position.x*_blockSize + _blockSize/2, position.y*_blockSize + _blockSize/ 2);
+    }
 
     public void setDirection(Direction direction) {
         _prevDirection = _direction;
@@ -62,9 +67,9 @@ public abstract class DrawalbeObjects {
         }
 
         if(_direction == Direction.NONE) {
-            canvas.drawBitmap(_sprites[_prevDirection.getValue()][_frameIndex / 5], _position.x - _objectSize/2, _position.y - _objectSize / 2, paint);
+            canvas.drawBitmap(_sprites[_prevDirection.getValue()][_frameIndex / _frameCongruence], _position.x - _objectSize/2, _position.y - _objectSize / 2, paint);
         } else {
-            canvas.drawBitmap(_sprites[_direction.getValue()][_frameIndex / 5], _position.x - _objectSize / 2, _position.y - _objectSize / 2, paint);
+            canvas.drawBitmap(_sprites[_direction.getValue()][_frameIndex / _frameCongruence], _position.x - _objectSize / 2, _position.y - _objectSize / 2, paint);
         }
 
         _frameIndex++;
