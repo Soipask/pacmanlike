@@ -14,7 +14,7 @@ public class LeftTeleportTile extends Tile {
 
     private void fillMoves(){
         possibleMoves.add(Direction.RIGHT);
-        possibleMoves.add(Direction.LEFT);
+        // possibleMoves.add(Direction.LEFT);
     }
 
     @Override

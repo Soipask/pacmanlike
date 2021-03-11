@@ -130,9 +130,11 @@ public class GameEngine {
                 _ghostsEngine.moveGhosts(_pacStep);
 
                _ghostsEngine.updateTeleporation();
+
             }
         }
     }
+
 
 
 
@@ -176,6 +178,8 @@ public class GameEngine {
         if(AppConstants.testCenterTile(position)) {
 
             Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
+            int _blockSize = AppConstants.getBlockSize();
+
             if(tile.type.equals("LeftTeleport"))
             {
                 Vector right = gameMap.getRightTeleportPosition();

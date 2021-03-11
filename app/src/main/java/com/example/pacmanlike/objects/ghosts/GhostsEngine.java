@@ -46,6 +46,7 @@ public class GhostsEngine {
 
     }
 
+
     public void setVulnerable(boolean value) {
         for (Ghost g: _ghosts) {
             g.setVulnerable(value);
@@ -74,8 +75,6 @@ public class GhostsEngine {
                  if(moves.size() == 1)  {
                      g.setDirection(moves.get(0));
                  } else {
-
-
                      // moves.remove(Direction.getOppositeDirection(g.getDirection()));
                      Direction dir = moves.get(_rand.nextInt(moves.size()));
                      g.setDirection(dir);
