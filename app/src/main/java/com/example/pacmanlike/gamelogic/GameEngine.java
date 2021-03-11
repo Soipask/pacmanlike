@@ -37,7 +37,7 @@ public class GameEngine {
     private static int _pacStep;
 
     private static int _SCORE;
-    private static int _PELLSCORE = 20;
+    private static int _PELLSCORE = 20, _POWERPELLSCORE = 50;
 
     static ArrayList<Ghost> _ghosts = new ArrayList<Ghost>();
 
@@ -46,9 +46,13 @@ public class GameEngine {
     public GameEngine(Context context) {
 
         _paint = new Paint();
-        _piantPells = new Paint();
-        _piantPells.setStyle(Paint.Style.FILL);
-        _piantPells.setColor(Color.rgb(255,165,0));
+        _paintPells = new Paint();
+        _paintPells.setStyle(Paint.Style.FILL);
+        _paintPells.setColor(Color.rgb(255,165,0));
+
+        _paintPowerPells = new Paint();
+        _paintPowerPells.setStyle(Paint.Style.FILL);
+        _paintPowerPells.setColor(Color.YELLOW);
 
 
         // Adds game objects
@@ -60,20 +64,35 @@ public class GameEngine {
         _pacSpeed = 10;
         _pacStep = 1;
         _SCORE = 0;
+
     }
 
-    Paint _paint;
-    Paint _piantPells;
+    Paint _paint, _paintPells, _paintPowerPells;
 
 
     public void addPells(GameMap map) {
+
+        for (Vector powerPell :map.getPowerPelletsPosition()) {
+
+            int x = powerPell.x;
+            int y = powerPell.y;
+
+            Tile tile = map.getTile(x,y);
+
+            if(!tile.type.equals("Empty") && !tile.type.equals("Home") &&
+                    !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)){
+                    tile.setFood(Food.PowerPellet);
+            }
+        }
+
+
 
         for (int y = 0; y < AppConstants.MAP_SIZE_Y; y++) {
             for (int x = 0; x < AppConstants.MAP_SIZE_X; x++)
             {
                 Tile tile = map.getTile(x,y);
 
-                if(!tile.type.equals("Empty") && !tile.type.equals("Home") &&
+                if(!tile.type.equals("Empty") && !tile.type.equals("Home") && tile.getFood() != Food.PowerPellet &&
                         !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)) {
                     tile.setFood(Food.Pellet);
                 }
@@ -183,8 +202,9 @@ public class GameEngine {
                 _SCORE += _PELLSCORE;
                 tile.setFood(Food.None);
             } else if(tile.getFood() == Food.PowerPellet) {
-
-
+                _SCORE += _POWERPELLSCORE;
+                _ghostsEngine.startVulnereble();
+                tile.setFood(Food.None);
             }
         }
     }
@@ -238,9 +258,11 @@ public class GameEngine {
             for (int x = 0; x < AppConstants.MAP_SIZE_X; x++)
             {
                 if(map.getTile(x,y).getFood() == Food.Pellet) {
-                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.1f, _piantPells);
+                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.1f, _paintPells);
                 } else if(map.getTile(x,y).getFood() == Food.PowerPellet) {
-                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.2f, _piantPells);
+
+                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.2f, _paintPells);
+                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.1f, _paintPowerPells);
                 }
             }
         }

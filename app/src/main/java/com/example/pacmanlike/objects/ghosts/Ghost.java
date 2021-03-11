@@ -51,6 +51,8 @@ public class Ghost extends DrawalbeObjects {
     }
 
 
+    public void  setVulnerable(Boolean value) {_vulnerable = value; }
+
     @Override
     protected void load(Context context) {
 

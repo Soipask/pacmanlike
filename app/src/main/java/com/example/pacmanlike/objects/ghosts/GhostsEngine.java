@@ -19,10 +19,14 @@ public class GhostsEngine {
     private Random _rand;
     private static Vector _homePosition;
 
+    private static int VULNEREBLE;
+    private static int _vulnereble;
 
     private List<Ghost> _ghosts;
 
     public GhostsEngine(Context context, Vector homePosition) {
+
+        VULNEREBLE = 1500;
 
         _rand = new Random();
 
@@ -36,8 +40,25 @@ public class GhostsEngine {
 
     }
 
+    public void startVulnereble(){
+        _vulnereble = VULNEREBLE;
+        setVulnerable(true);
+
+    }
+
+    public void setVulnerable(boolean value) {
+        for (Ghost g: _ghosts) {
+            g.setVulnerable(value);
+        }
+    }
 
     public void update(){
+
+        if(_vulnereble == 0) {
+            setVulnerable(false);
+        }else {
+            _vulnereble--;
+        }
 
         GameMap gameMap = AppConstants.getGameMap();
         for (Ghost g: _ghosts) {
