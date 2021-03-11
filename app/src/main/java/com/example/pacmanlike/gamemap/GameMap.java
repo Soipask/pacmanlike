@@ -21,7 +21,6 @@ public class GameMap {
 
     public void setMap(Tile[][] map) {_map = map;}
 
-
     public Tile getTile(int x, int y) {return  _map[y][x]; }
 
     public Tile getAbsoluteTile(int x, int y) {

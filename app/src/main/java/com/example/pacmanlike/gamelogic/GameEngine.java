@@ -5,16 +5,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.gamemap.Home;
 import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.main.AppConstants;
+import com.example.pacmanlike.objects.DrawalbeObjects;
 import com.example.pacmanlike.objects.Food;
-import com.example.pacmanlike.objects.Ghost;
+import com.example.pacmanlike.objects.ghosts.Ghost;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.objects.ArrowIndicator;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.PacMan;
+import com.example.pacmanlike.objects.ghosts.GhostsEngine;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /*
@@ -28,7 +30,6 @@ public class GameEngine {
 
     static ArrowIndicator _arrowIdenticator;
 
-    // static List<> _bubles;
     static final Object _sync = new Object();
     static float _lastTouchedX, _lastTouchedY;
 
@@ -40,7 +41,7 @@ public class GameEngine {
 
     static ArrayList<Ghost> _ghosts = new ArrayList<Ghost>();
 
-
+    private static GhostsEngine _ghostsEngine;
 
     public GameEngine(Context context) {
 
@@ -48,19 +49,17 @@ public class GameEngine {
         _piantPells = new Paint();
         _piantPells.setStyle(Paint.Style.FILL);
         _piantPells.setColor(Color.rgb(255,165,0));
+
+
+        // Adds game objects
         _pacman = new PacMan(context, AppConstants.getGameMap().getStartingPacPosition());
-
-        // TODO: Not working
-       // _ghosts.add( new Ghost(context, new Vector(200,200),0 ));
-
+        _ghostsEngine = new GhostsEngine(context, Home.instance.getCoordinates());
         addPells(AppConstants.getGameMap());
         _arrowIdenticator = new ArrowIndicator(context);
 
         _pacSpeed = 10;
         _pacStep = 1;
-
         _SCORE = 0;
-
     }
 
     Paint _paint;
@@ -82,7 +81,6 @@ public class GameEngine {
         }
     }
 
-
     /**
      * Updates all relevant objects business logic
      * */
@@ -102,31 +100,29 @@ public class GameEngine {
             for (int step = 0; step < _pacSpeed; step++) {
                 updataPacmanDirection();
                 detectWallCollision();
+                _ghostsEngine.update();
 
                 updatePells();
                 movePacman(_pacStep);
+                updatePells();
+
+                upadateTeleporation(_pacman);
+
+                _ghostsEngine.moveGhosts(_pacStep);
+
+               _ghostsEngine.updateTeleporation();
             }
         }
     }
 
-    private boolean testCenterTile(Vector position) {
 
-        int blockSize = AppConstants.getBlockSize();
-        int centerX = position.x % blockSize;
-        int centerY = position.y % blockSize;
 
-        if(centerX == blockSize/2 && centerY == blockSize /2) {
-            return true;
-        }else {
-            return false;
-        }
-    }
 
     private void detectWallCollision() {
         GameMap gameMap = AppConstants.getGameMap();
-        Vector position = _pacman.getPosition();
+        Vector position = _pacman.getAbsolutePosition();
 
-        if(testCenterTile(position)) {
+        if(AppConstants.testCenterTile(position)) {
 
             Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
 
@@ -140,9 +136,9 @@ public class GameEngine {
 
     private void updataPacmanDirection() {
         GameMap gameMap = AppConstants.getGameMap();
-        Vector position = _pacman.getPosition();
+        Vector position = _pacman.getAbsolutePosition();
 
-        if(testCenterTile(position)) {
+        if(AppConstants.testCenterTile(position)) {
 
             Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
 
@@ -153,11 +149,33 @@ public class GameEngine {
     }
 
 
+
+    private void upadateTeleporation(DrawalbeObjects entity){
+        GameMap gameMap = AppConstants.getGameMap();
+        Vector position = entity.getAbsolutePosition();
+
+        if(AppConstants.testCenterTile(position)) {
+
+            Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
+            if(tile.type.equals("LeftTeleport"))
+            {
+                Vector right = gameMap.getRightTeleportPosition();
+                entity.setRelativePosition(right);
+            }
+
+            if(tile.type.equals("RightTeleport")){
+                Vector left = gameMap.getLeftTeleportPosition();
+
+                entity.setRelativePosition(left);
+            }
+        }
+    }
+
     private void updatePells(){
         GameMap gameMap = AppConstants.getGameMap();
-        Vector position = _pacman.getPosition();
+        Vector position = _pacman.getAbsolutePosition();
 
-        if(testCenterTile(position)) {
+        if(AppConstants.testCenterTile(position)) {
             Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
 
             if(tile.getFood() == Food.Pellet) {
@@ -175,27 +193,26 @@ public class GameEngine {
      * @param step
      */
     private void movePacman(int step) {
-
-        Vector position = _pacman.getPosition();
-
+        Vector position = _pacman.getAbsolutePosition();
         switch (_pacman.getDirection())
         {
             case UP:
-                _pacman.setPosition(new Vector(position.x, position.y - step));
+                _pacman.setAbsolutePosition(new Vector(position.x, position.y - step));
                 break;
             case DOWN:
-                _pacman.setPosition(new Vector(position.x, position.y + step));
+                _pacman.setAbsolutePosition(new Vector(position.x, position.y + step));
                 break;
             case LEFT:
-                _pacman.setPosition(new Vector(position.x - step, position.y));
+                _pacman.setAbsolutePosition(new Vector(position.x - step, position.y));
                 break;
             case RIGHT:;
-                _pacman.setPosition(new Vector(position.x + step, position.y));
+                _pacman.setAbsolutePosition(new Vector(position.x + step, position.y));
                 break;
             default:
                 break;
         }
     }
+
 
     /**
      * Draws all objects according to their parameters
@@ -206,8 +223,8 @@ public class GameEngine {
 
         drawBackground(canvas);
         drawPells(canvas);
-       // drawGhosts(canvas);
 
+        drawGhosts(canvas, _paint);
         _pacman.draw(canvas, _paint);
         _arrowIdenticator.draw(canvas, _paint);
     }
@@ -229,10 +246,8 @@ public class GameEngine {
         }
     }
 
-    private void drawGhosts(Canvas canvas) {
-        for (Ghost g : _ghosts) {
-            g.draw(canvas, _paint);
-        }
+    private void drawGhosts(Canvas canvas, Paint paint) {
+        _ghostsEngine.draw(canvas, paint);
     }
 
     /**

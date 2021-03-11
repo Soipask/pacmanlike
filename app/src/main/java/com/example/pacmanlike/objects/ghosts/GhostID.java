@@ -1,15 +1,9 @@
-package com.example.pacmanlike.objects;
-
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
+package com.example.pacmanlike.objects.ghosts;
 
 import com.example.pacmanlike.R;
-import com.example.pacmanlike.main.AppConstants;
 
+public class GhostID {
 
-class GhostSpritesID{
     public static int[][] getSpriteID(int id){
         int[][] tmp = new int[2][7];
 
@@ -80,58 +74,4 @@ class GhostSpritesID{
         tmp[0] = ghost;
         return  tmp;
     }
-}
-
-
-
-public class Ghost extends  DrawalbeObjects {
-
-    private int[][] _spriteId;
-
-    private int _id;
-
-    public  Ghost(Context context, Vector startingPosition, int ghostID) {
-
-
-        _id = ghostID;
-
-        _frameIndex = 0;
-        _totalframe = 20;
-        _blockSize = AppConstants.getBlockSize();
-
-        _direction = Direction.NONE;
-        _prevDirection = Direction.UP;
-
-        _position = new Vector(startingPosition.x*_blockSize + _blockSize/2, startingPosition.y*_blockSize + _blockSize/2);
-
-        double tmp =  0.6 * AppConstants.getBlockSize();
-        _objectSize = (int) tmp;
-
-        _spriteId = GhostSpritesID.getSpriteID(ghostID);
-
-        load(context);
-    }
-
-
-    @Override
-    protected void load(Context context) {
-
-        _sprites = new Bitmap[2][7];
-        _sprites[0] = loadSprites(_spriteId[0], _objectSize, context);
-        _sprites[1] = loadSprites(_spriteId[1], _objectSize, context);
-    }
-
-    @Override
-    public void draw(Canvas canvas, Paint paint) {
-        int div = 8;
-
-        if(_frameIndex == _totalframe)
-            _frameIndex =0;
-
-
-        canvas.drawBitmap(_sprites[0][_frameIndex / 5], _position.x - _objectSize/2, _position.y - _objectSize / 2, paint);
-
-        _frameIndex++;
-    }
-
 }
