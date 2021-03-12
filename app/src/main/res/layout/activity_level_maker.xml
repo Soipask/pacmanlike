@@ -47,6 +47,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/rightteleport" />
+
+            <ImageButton
+                android:id="@+id/doorButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/door" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -58,7 +65,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/oneTimeButtonsScrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible">
+        tools:visibility="invisible">
 
         <RadioGroup
             android:layout_width="wrap_content"
@@ -203,6 +210,7 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/levelMakerButtonScrollView"
         app:layout_constraintEnd_toEndOf="@+id/levelMakerButtonScrollView"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="invisible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
