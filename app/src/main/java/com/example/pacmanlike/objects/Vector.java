@@ -10,5 +10,9 @@ public class Vector{
     }
 
     public Vector(){}
-    
+
+    @Override
+    public String toString() {
+        return x + ";" + y;
+    }
 }

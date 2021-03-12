@@ -50,4 +50,22 @@ public class GameMap {
     public void setPowerPelletsPosition(ArrayList<Vector> powerPellets){
         _powerPelletsPosition = powerPellets;
     }
+
+    @Override
+    public String toString(){
+        String pac = "PAC=" + _startingPacPosition.toString();
+        // String pellets ...
+        StringBuilder map = new StringBuilder();
+        for (Tile[] row : _map){
+            for (Tile tile : row){
+                map.append(tile.toString());
+                map.append(",");
+            }
+            map.append("\n");
+        }
+        String mapString = map.toString();
+
+        return pac + "\n" + mapString;
+
+    }
 }
