@@ -49,8 +49,9 @@ public class GameMap {
     public ArrayList<Vector> getPowerPelletsPosition() { return _powerPelletsPosition;}
     public void setPowerPelletsPosition(ArrayList<Vector> powerPellets){
         _powerPelletsPosition = powerPellets;
-      
-      @Override
+    }
+
+    @Override
     public String toString(){
         String pac = "PAC=" + _startingPacPosition.toString();
         // String pellets ...
