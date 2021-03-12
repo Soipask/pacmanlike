@@ -26,4 +26,8 @@
     <string name="instructions_return">Map is invalid, please return to the map tiling stage</string>
     <string name="instructions_saved">Level has been successfully saved.</string>
     <string name="instructions_validated">Level has been validated, you can save it now</string>
+    <string name="game_over_text">GAME OVER</string>
+    <string name="highscore_text">NEW HIGHSCORE!</string>
+    <string name="score_text">Your score:</string>
+    <string name="retry_button">Retry</string>
 </resources>

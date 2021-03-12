@@ -1,6 +1,7 @@
 package com.example.pacmanlike.gamemap;
 
 import com.example.pacmanlike.gamemap.tiles.CrossroadTile;
+import com.example.pacmanlike.gamemap.tiles.DoorTile;
 import com.example.pacmanlike.gamemap.tiles.EmptyTile;
 import com.example.pacmanlike.gamemap.tiles.HalfcrossroadTile;
 import com.example.pacmanlike.gamemap.tiles.HomeTile;
@@ -24,6 +25,7 @@ public class TileFactory {
             case 'L' : tile = new LeftTeleportTile(); break;
             case 'X' : tile = new EmptyTile(); break;
             case 'A' : tile = new HomeTile(argument); break;
+            case 'D' : tile = new DoorTile(); break;
             default: throw new Exception("Wrong tile format.");
         }
         return tile;

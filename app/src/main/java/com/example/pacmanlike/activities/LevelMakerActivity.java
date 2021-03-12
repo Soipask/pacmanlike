@@ -199,7 +199,7 @@ public class LevelMakerActivity extends AppCompatActivity {
                 square.immovable = true;
             }
         } else if (_selected == R.id.rotateButton){
-            float newRotation = v.getRotation() + 90;
+            float newRotation = (v.getRotation() + 90) % 360;
             v.setRotation(newRotation);
             square.rotation = newRotation;
         }
@@ -367,7 +367,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         // Tile is valid when from all the tiles you can go from here, you can get back
         Tile tile = map[y][x];
         boolean valid = true;
-        if (tile.type == "LeftTeleport" || tile.type == "RightTeleport"){
+        if (tile.type.equals("LeftTeleport") || tile.type.equals("RightTeleport")){
             return true;
         }
 
