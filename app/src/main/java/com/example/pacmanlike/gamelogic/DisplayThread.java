@@ -55,6 +55,7 @@ public class DisplayThread extends Thread {
                 _surfaceHolder.unlockCanvasAndPost(canvas);
             }
 
+
             //delay time
             try {
                 Thread.sleep(DELAY);

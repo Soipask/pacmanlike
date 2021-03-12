@@ -1,4 +1,4 @@
-package com.example.pacmanlike.objects.ghosts;
+package com.example.pacmanlike.objects.ghosts.engine;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,6 +9,7 @@ import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.Vector;
+import com.example.pacmanlike.objects.ghosts.Ghost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,13 @@ import java.util.Random;
 
 public class GhostsEngine {
 
-    private Random _rand;
-    private static Vector _homePosition;
+    protected Random _rand;
+    protected static Vector _homePosition;
 
-    private static int VULNEREBLE;
-    private static int _vulnereble;
+    protected static int VULNEREBLE;
+    protected static int _vulnereble;
 
-    private List<Ghost> _ghosts;
+    protected List<Ghost> _ghosts;
 
     public GhostsEngine(Context context, Vector homePosition) {
 
@@ -56,33 +57,37 @@ public class GhostsEngine {
         }
     }
 
+    protected void updateOne(GameMap gameMap, Ghost g){
+        Vector position = g.getAbsolutePosition();
+
+        if(AppConstants.testCenterTile(position)){
+
+            Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
+
+            List<Direction> moves = tile.getPossibleMoves();
+
+            if(moves.size() == 1)  {
+                g.setDirection(moves.get(0));
+            } else {
+
+                Direction dir = moves.get(_rand.nextInt(moves.size()));
+                g.setDirection(dir);
+            }
+        }
+    }
+
     public void update(){
+        GameMap gameMap = AppConstants.getGameMap();
 
         if(_vulnereble == 0) {
             setVulnerable(false);
-        }else {
+        } else {
             _vulnereble--;
         }
 
-        GameMap gameMap = AppConstants.getGameMap();
+
         for (Ghost g: _ghosts) {
-
-            Vector position = g.getAbsolutePosition();
-
-            if(AppConstants.testCenterTile(position)){
-
-                Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
-
-                 List<Direction> moves = tile.getPossibleMoves();
-
-                 if(moves.size() == 1)  {
-                     g.setDirection(moves.get(0));
-                 } else {
-                     // moves.remove(Direction.getOppositeDirection(g.getDirection()));
-                     Direction dir = moves.get(_rand.nextInt(moves.size()));
-                     g.setDirection(dir);
-                 }
-            }
+            updateOne(gameMap, g);
         }
     }
 

@@ -15,7 +15,8 @@ import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.objects.ArrowIndicator;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.PacMan;
-import com.example.pacmanlike.objects.ghosts.GhostsEngine;
+import com.example.pacmanlike.objects.ghosts.engine.GhostsEngine;
+import com.example.pacmanlike.objects.ghosts.engine.GhostsEngineAdvanced;
 
 import java.util.ArrayList;
 
@@ -61,13 +62,15 @@ public class GameEngine {
 
         // Adds game objects
         _pacman = new PacMan(context, AppConstants.getGameMap().getStartingPacPosition());
-        _ghostsEngine = new GhostsEngine(context, Home.getInstance().getCoordinates());
+
         addPells(AppConstants.getGameMap());
         _arrowIdenticator = new ArrowIndicator(context);
 
         _pacSpeed = 10;
         _pacStep = 1;
         _SCORE = 0;
+
+        _ghostsEngine = new GhostsEngineAdvanced(context, Home.getInstance().getCoordinates());
 
     }
 
@@ -131,13 +134,13 @@ public class GameEngine {
 
                 upadateTeleporation(_pacman);
 
-                _ghostsEngine.moveGhosts(_pacStep);
+                if(step % 2 == 0){
+                    _ghostsEngine.moveGhosts(_pacStep);
+                }
 
                _ghostsEngine.updateTeleporation();
 
                interactionPacGhosts();
-
-
             }
         }
     }
