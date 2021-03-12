@@ -71,6 +71,7 @@ public class GameEngine {
         _SCORE = 0;
 
         _ghostsEngine = new GhostsEngineAdvanced(context, Home.getInstance().getCoordinates());
+
     }
 
     Paint _paint, _paintPells, _paintPowerPells;
@@ -133,12 +134,13 @@ public class GameEngine {
 
                 upadateTeleporation(_pacman);
 
-                _ghostsEngine.moveGhosts(_pacStep);
+                if(step % 2 == 0){
+                    _ghostsEngine.moveGhosts(_pacStep);
+                }
 
                _ghostsEngine.updateTeleporation();
 
                interactionPacGhosts();
-
             }
         }
     }

@@ -57,11 +57,6 @@ public class GhostsEngineAdvanced extends GhostsEngine {
         PacMan p = AppConstants.getEngine().getPacman();
         Vector relativeTarget = p.getRelativePosition();
 
-        if (g.isVulnerable()) {
-            relativeTarget = new Vector(AppConstants.MAP_SIZE_X - relativeTarget.x, AppConstants.MAP_SIZE_Y - relativeTarget.y);
-        }
-
-
         Vector relativeGhost = g.getRelativePosition();
         List<Direction> directions = _bfs.findPath(relativeGhost, relativeTarget);
 
@@ -93,7 +88,12 @@ public class GhostsEngineAdvanced extends GhostsEngine {
             Vector position = g.getAbsolutePosition();
 
             if(AppConstants.testCenterTile(position)) {
+                if(g.isVulnerable())
+                {
+                    super.updateOne(gameMap, _ghosts.get(i));
+                } else {
                     updateBfS(g);
+                }
             }
         }
     }
