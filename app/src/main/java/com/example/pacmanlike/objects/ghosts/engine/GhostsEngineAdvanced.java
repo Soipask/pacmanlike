@@ -88,8 +88,7 @@ public class GhostsEngineAdvanced extends GhostsEngine {
             Vector position = g.getAbsolutePosition();
 
             if(AppConstants.testCenterTile(position)) {
-                if(g.isVulnerable())
-                {
+                if(g.isVulnerable()) {
                     super.updateOne(gameMap, _ghosts.get(i));
                 } else {
                     updateBfS(g);
