@@ -7,6 +7,7 @@ import android.view.WindowManager;
 
 import com.example.pacmanlike.gamelogic.GameEngine;
 import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.view.LevelView;
 
 public class AppConstants {
@@ -22,12 +23,15 @@ public class AppConstants {
 
     private static int _blockSize;
 
+    public static String PAC_STARTING_KEYWORD = "PAC", POWER_STARTING_KEYWORD = "POWER";
+    public static String CSV_DELIMITER = ",", KEY_VALUE_DELIMITER = "=", COORDS_DELIMITER = ";", MORE_DATA_DELIMITER = "/";
+
     // public static Bitmap m;
 
     /**
      * Initiates the applciation constants
      * */
-    public static void Initialization(Context context, GameMap map) {
+    public static void initialization(Context context, GameMap map) {
         _gameMap = map;
         setScreenSize(context);
 
@@ -37,7 +41,7 @@ public class AppConstants {
 
         LevelView levelView = new LevelView(map);
 
-        map.setBackground(levelView.CreateLevelBitmap(context));
+        map.setBackground(levelView.createLevelBitmap(context));
     }
 
     /**
@@ -88,7 +92,18 @@ public class AppConstants {
      * */
     public static GameEngine getEngine() { return _engine; }
 
+    public static boolean testCenterTile(Vector position) {
 
+
+        int centerX = position.x % _blockSize;
+        int centerY = position.y % _blockSize;
+
+        if(centerX == _blockSize/2 && centerY == _blockSize /2) {
+            return true;
+        }else {
+            return false;
+        }
+    }
     /**
      * Stops the given thread
      * @param thread

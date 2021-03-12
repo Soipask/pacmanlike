@@ -27,4 +27,20 @@ public enum Direction {
                 return new Vector(0, 0);
         }
     }
+
+    public static Direction getOppositeDirection(Direction direction){
+        switch (direction) {
+            case UP:
+                return Direction.DOWN;
+            case DOWN:
+                return Direction.UP;
+            case RIGHT:
+                return Direction.LEFT;
+            case LEFT:
+                return Direction.RIGHT;
+            default:
+                return Direction.NONE;
+        }
+
+    }
 }

@@ -31,7 +31,7 @@ public class LevelView {
         this.map = map;
     }
 
-    public void CreateLevel() {
+    public void createLevel() {
 
         // Get table
         // RadioGroup rgp = (RadioGroup) findViewById(R.id.radioGroup);
@@ -58,7 +58,7 @@ public class LevelView {
         // Look if there really are LevelParser.MAP_SIZE_Y rows
     }
 
-    public Bitmap CreateLevelBitmap(Context context) {
+    public Bitmap createLevelBitmap(Context context) {
 
 
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types

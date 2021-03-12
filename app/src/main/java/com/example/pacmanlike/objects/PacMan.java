@@ -8,33 +8,25 @@ import com.example.pacmanlike.main.AppConstants;
 
 public class PacMan extends  DrawalbeObjects{
 
-
     public  PacMan(Context context, Vector startingPosition) {
 
         _frameIndex = 0;
         _totalframe = 20;
+        _frameCongruence = 5;
+
         _blockSize = AppConstants.getBlockSize();
 
         _direction = Direction.NONE;
         _prevDirection = Direction.UP;
 
-        _position = new Vector(startingPosition.x*_blockSize + _blockSize/2, startingPosition.y*_blockSize + _blockSize/2);
+        setRelativePosition(startingPosition);
+       // _position = new Vector(startingPosition.x*_blockSize + _blockSize/2, startingPosition.y*_blockSize + _blockSize/2);
 
         double tmp =  0.6 * AppConstants.getBlockSize();
         _objectSize = (int) tmp;
 
         load(context);
     }
-
-    /**
-     * Sets the location of the pacman on the screen
-     * @param position
-     */
-    public void setPosition(Vector position) {
-        _position = position;
-    }
-
-    public Vector getPosition() { return  _position; }
 
     @Override
     protected void load(Context context) {

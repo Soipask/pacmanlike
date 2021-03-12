@@ -6,9 +6,15 @@ import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.main.AppConstants;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class GameMap {
     private Tile[][] _map;
     private Vector _startingPacPosition;
+    private Vector _leftTeleportPosition;
+    private Vector _rightTeleportPosition;
+    private ArrayList<Vector> _powerPelletsPosition;
 
     private Bitmap _background;
 
@@ -16,7 +22,6 @@ public class GameMap {
     public Vector getStartingPacPosition() { return _startingPacPosition; }
 
     public Tile[][] getMap() { return _map; }
-
     public void setMap(Tile[][] map) {_map = map;}
 
     public Tile getTile(int x, int y) {return  _map[y][x]; }
@@ -28,10 +33,24 @@ public class GameMap {
         return getTile(tileX, tileY);
     }
 
-    public void setBackground(Bitmap bitmap) {_background = bitmap; }
     public Bitmap getBackground() {return _background; }
+    public void setBackground(Bitmap bitmap) {_background = bitmap; }
 
-    @Override
+    public Vector getRightTeleportPosition(){ return _rightTeleportPosition;}
+    public void setLeftTeleportPosition(Vector leftTeleportPosition) {
+        _leftTeleportPosition = leftTeleportPosition;
+    }
+
+    public Vector getLeftTeleportPosition(){ return _leftTeleportPosition;}
+    public void setRightTeleportPosition(Vector rightTeleportPosition){
+        _rightTeleportPosition = rightTeleportPosition;
+    }
+
+    public ArrayList<Vector> getPowerPelletsPosition() { return _powerPelletsPosition;}
+    public void setPowerPelletsPosition(ArrayList<Vector> powerPellets){
+        _powerPelletsPosition = powerPellets;
+      
+      @Override
     public String toString(){
         String pac = "PAC=" + _startingPacPosition.toString();
         // String pellets ...
@@ -46,5 +65,6 @@ public class GameMap {
         String mapString = map.toString();
 
         return pac + "\n" + mapString;
+
     }
 }

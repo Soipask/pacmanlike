@@ -13,8 +13,6 @@ import android.widget.RadioGroup;
 import android.widget.TableLayout;
 
 import com.example.pacmanlike.R;
-import com.example.pacmanlike.activities.GameScreen;
-import com.example.pacmanlike.activities.LevelMakerActivity;
 import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.view.LevelParser;
 import com.example.pacmanlike.view.LevelView;
@@ -75,11 +73,11 @@ public class SelectionScreen extends AppCompatActivity {
 
     public void showMapPreview(int checkedId, LevelParser parser){
         try {
-            parser.Init(mapDictionary.get(checkedId), this);
-            GameMap map = parser.Parse();
+            parser.init(mapDictionary.get(checkedId), this);
+            GameMap map = parser.parse();
             LevelView levelView = new LevelView(this, map);
             levelView.setTileSize(70);
-            levelView.CreateLevel();
+            levelView.createLevel();
         } catch (Exception e) {
             e.printStackTrace();
         }

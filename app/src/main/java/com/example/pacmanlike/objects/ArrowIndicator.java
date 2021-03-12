@@ -14,6 +14,9 @@ public class ArrowIndicator  extends DrawalbeObjects {
     public ArrowIndicator(Context context) {
         _frameIndex = 0;
         _totalframe = 14;
+        _frameCongruence = 2;
+
+
         _blockSize = AppConstants.getBlockSize();
         _direction = Direction.NONE;
 
@@ -81,7 +84,7 @@ public class ArrowIndicator  extends DrawalbeObjects {
         if(_frameIndex == _totalframe) { _frameIndex = 0;}
 
         if(_sprites != null && _direction != Direction.NONE) {
-            canvas.drawBitmap(_sprites[_direction.getValue()][_frameIndex / 2], AppConstants.SCREEN_WIDTH / 2 - _arrowSize / 2, AppConstants.SCREEN_HEIGHT - _arrowSize, paint);
+            canvas.drawBitmap(_sprites[_direction.getValue()][_frameIndex / _frameCongruence], AppConstants.SCREEN_WIDTH / 2 - _arrowSize / 2, AppConstants.SCREEN_HEIGHT - _arrowSize, paint);
         }
 
         _frameIndex++;

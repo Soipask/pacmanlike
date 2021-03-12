@@ -22,19 +22,17 @@ public class GameScreen extends AppCompatActivity {
 
         // Comment
         // New View
-        // setContentView(R.layout.activity_game_screen);
 
         Intent intent = getIntent();
         String levelPath = intent.getStringExtra(SelectionScreen.SELECTED_LEVEL);
 
         try {
 
-            parser.Init(levelPath, this);
-            map = parser.Parse();
-
+            parser.init(levelPath, this);
+            map = parser.parse();
 
             // Initialization of the AppConstants class
-            AppConstants.Initialization(this.getApplicationContext(), map);
+            AppConstants.initialization(this.getApplicationContext(), map);
 
             SurfaceView view = new GameView(this, AppConstants.getEngine());
             setContentView(view);

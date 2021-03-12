@@ -9,8 +9,13 @@ import java.util.List;
 public abstract class Tile {
     public String type;
     public int rotation;
-    public Food content;
+    private Food _content;
     public int drawableId;
+
+
+    public void setFood(Food content) { _content = content; }
+
+    public Food getFood() { return _content; }
 
     protected List<Direction> possibleMoves = new ArrayList<Direction>();
     public List<Direction> getPossibleMoves(){
