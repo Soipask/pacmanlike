@@ -25,7 +25,11 @@ import java.util.ArrayList;
 * */
 public class GameEngine {
     /*MEMBERS*/
-    static final int BUBBLE_BOUNCE = 1;
+
+
+
+   static Boolean _ENDGAME = false;
+
     static PacMan _pacman;
 
     static ArrowIndicator _arrowIdenticator;
@@ -37,7 +41,7 @@ public class GameEngine {
     private static int _pacStep;
 
     private static int _SCORE;
-    private static int _PELLSCORE = 20, _POWERPELLSCORE = 50;
+    private static int _PELLSCORE = 20, _POWERPELLSCORE = 50, _GHOSTSCORE = 200;
 
     static ArrayList<Ghost> _ghosts = new ArrayList<Ghost>();
 
@@ -131,13 +135,42 @@ public class GameEngine {
 
                _ghostsEngine.updateTeleporation();
 
+               interactionPacGhosts();
+
+
             }
         }
     }
 
 
 
+    public void interactionPacGhosts(){
 
+        Vector _pacmanPosition = _pacman.getAbsolutePosition();
+        int _blockSize = AppConstants.getBlockSize();
+
+        for (Ghost g: _ghostsEngine.getGhosts()) {
+
+            Vector gPosition = g.getAbsolutePosition();
+            int distanceX  = _pacmanPosition.x - gPosition.x;
+            int distanceY = _pacmanPosition.y - gPosition.y;
+
+            int distance = (distanceX*distanceX) + (distanceY*distanceY);
+            int radius = (_blockSize /4)*(_blockSize/4);
+
+            if( distance < radius){
+
+                if(g.isVulnerable()){
+                    _SCORE += _GHOSTSCORE;
+                    g.setVulnerable(false);
+                    g.setRelativePosition(_ghostsEngine.getHome());
+
+                }else {
+                    _ENDGAME = true;
+                }
+            }
+        }
+    }
 
     private void detectWallCollision() {
         GameMap gameMap = AppConstants.getGameMap();

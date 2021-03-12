@@ -40,12 +40,15 @@ public class GhostsEngine {
 
     }
 
+    public List<Ghost> getGhosts(){return _ghosts; }
+
     public void startVulnereble(){
         _vulnereble = VULNEREBLE;
         setVulnerable(true);
 
     }
 
+    public Vector getHome() {return _homePosition; }
 
     public void setVulnerable(boolean value) {
         for (Ghost g: _ghosts) {
