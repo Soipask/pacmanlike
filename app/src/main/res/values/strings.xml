@@ -19,4 +19,11 @@
     <string name="save_button">Save</string>
     <string name="validate_button">Validate</string>
     <string name="rotate_button">Rotate</string>
+    <string name="select_pac_pos">Select pacman starting position</string>
+    <string name="select_power_pos">Select locations for power pellets</string>
+    <string name="continue_button">Continue</string>
+    <string name="return_button">Return</string>
+    <string name="instructions_return">Map is invalid, please return to the map tiling stage</string>
+    <string name="instructions_saved">Level has been successfully saved.</string>
+    <string name="instructions_validated">Level has been validated, you can save it now</string>
 </resources>

@@ -19,7 +19,6 @@ public class GameMap {
 
     public void setMap(Tile[][] map) {_map = map;}
 
-
     public Tile getTile(int x, int y) {return  _map[y][x]; }
 
     public Tile getAbsoluteTile(int x, int y) {
@@ -32,4 +31,20 @@ public class GameMap {
     public void setBackground(Bitmap bitmap) {_background = bitmap; }
     public Bitmap getBackground() {return _background; }
 
+    @Override
+    public String toString(){
+        String pac = "PAC=" + _startingPacPosition.toString();
+        // String pellets ...
+        StringBuilder map = new StringBuilder();
+        for (Tile[] row : _map){
+            for (Tile tile : row){
+                map.append(tile.toString());
+                map.append(",");
+            }
+            map.append("\n");
+        }
+        String mapString = map.toString();
+
+        return pac + "\n" + mapString;
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.pacmanlike.gamemap.Home;
 import com.example.pacmanlike.activities.SelectionScreen;
+import com.example.pacmanlike.gamemap.TileFactory;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.gamemap.tiles.CrossroadTile;
@@ -63,7 +64,7 @@ public class LevelParser {
             // Loop parse lines
             String[] line = data.split(",");
             for(int i = 0; i < line.length; i++){
-                map.getMap()[y][i] = ParseTile(line[i]);
+                map.getMap()[y][i] = TileFactory.createTile(line[i]);
             }
 
             y++;
