@@ -34,13 +34,8 @@ public class AppConstants {
     public static void initialization(Context context, GameMap map) {
         _gameMap = map;
         setScreenSize(context);
-
         _engine = new GameEngine(context);
-        // int a = R.drawable.basicmap;
-       // m = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), a), MAP_SIZE_X*_blockSize, MAP_SIZE_Y * _blockSize, false);
-
         LevelView levelView = new LevelView(map);
-
         map.setBackground(levelView.createLevelBitmap(context));
     }
 

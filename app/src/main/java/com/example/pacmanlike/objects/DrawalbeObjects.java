@@ -36,6 +36,10 @@ public abstract class DrawalbeObjects {
         _position = new Vector(position.x*_blockSize + _blockSize/2, position.y*_blockSize + _blockSize/ 2);
     }
 
+    public Vector getRelativePosition(){
+        return  new Vector(_position.x / _blockSize, _position.y / _blockSize);
+    }
+
     public void setDirection(Direction direction) {
         _prevDirection = _direction;
         _direction = direction;
