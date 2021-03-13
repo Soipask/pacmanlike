@@ -63,6 +63,7 @@ public abstract class DrawableObjects {
      * @param position Relative pisition in game map.
      */
     public void setRelativePosition(Vector position) {
+        // map tile position to center absolute position in tile on screen
         _position = new Vector(position.x*_blockSize + _blockSize/2, position.y*_blockSize + _blockSize/ 2);
     }
 
@@ -71,6 +72,7 @@ public abstract class DrawableObjects {
      * @return Relative position.
      */
     public Vector getRelativePosition(){
+        // map tile position
         return  new Vector(_position.x / _blockSize, _position.y / _blockSize);
     }
 

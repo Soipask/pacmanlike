@@ -7,28 +7,43 @@ import android.graphics.Paint;
 import com.example.pacmanlike.R;
 import com.example.pacmanlike.main.AppConstants;
 
+/**
+ * Class used to manipulate the indicators of the selected direction by the user.
+ */
 public class ArrowIndicator  extends DrawableObjects {
 
-    private int _arrowSize;
-
+    /**
+     *  Constructor for the ArrowIndicator.
+     *  Sets propertiest at initial value.
+     * @param context Given context.
+     */
     public ArrowIndicator(Context context) {
+
+        // frame
         _frameIndex = 0;
         _totalframe = 14;
         _frameCongruence = 2;
 
-
         _blockSize = AppConstants.getBlockSize();
+
+        // initial direction
+        // NONE direction dont display
         _direction = Direction.NONE;
 
-        _arrowSize = _blockSize * 2;
+        // arrow size
+        _objectSize = _blockSize * 2;
 
-
+        // load arrow sprites
         load(context);
     }
-
+    /**
+     * Loads arrow sprites from resources.
+     * @param context Given context.
+     */
     @Override
     protected void load(Context context) {
 
+        // left sprites path
         int[] left = {
                 R.drawable.left_arrow_frame1,
                 R.drawable.left_arrow_frame2,
@@ -40,6 +55,7 @@ public class ArrowIndicator  extends DrawableObjects {
 
         };
 
+        // right sprites path
         int[] right = {
                 R.drawable.right_arrow_frame1,
                 R.drawable.right_arrow_frame2,
@@ -50,6 +66,7 @@ public class ArrowIndicator  extends DrawableObjects {
                 R.drawable.right_arrow_frame7,
         };
 
+        // up sprites path
         int[] up = {
                 R.drawable.up_arrow_frame1,
                 R.drawable.up_arrow_frame2,
@@ -60,6 +77,7 @@ public class ArrowIndicator  extends DrawableObjects {
                 R.drawable.up_arrow_frame7,
         };
 
+        // down sprites path
         int[] down = {
                 R.drawable.down_arrow_frame1,
                 R.drawable.down_arrow_frame2,
@@ -70,21 +88,37 @@ public class ArrowIndicator  extends DrawableObjects {
                 R.drawable.down_arrow_frame7,
         };
 
+        // load sprites from resources
         _sprites = new Bitmap[4][7];
-        _sprites[0] = loadSprites(up, _arrowSize, context);
-        _sprites[1] = loadSprites(down, _arrowSize, context);
-        _sprites[2] = loadSprites(left, _arrowSize, context);
-        _sprites[3] = loadSprites(right, _arrowSize, context);
+
+        // UP
+        _sprites[0] = loadSprites(up, _objectSize, context);
+
+        // DOWN
+        _sprites[1] = loadSprites(down, _objectSize, context);
+
+        // LEFT
+        _sprites[2] = loadSprites(left, _objectSize, context);
+
+        // RIGHT
+        _sprites[3] = loadSprites(right, _objectSize, context);
     }
 
-
+    /**
+     * Draws the arrow object on canvas.
+     * @param canvas Given canvas.
+     * @param paint Paint.
+     */
     @Override
     public void draw(Canvas canvas, Paint paint) {
-        // ak je idex rovny tak zacinamu znovu 0. indexom
+
+        // frame cycle
         if(_frameIndex == _totalframe) { _frameIndex = 0;}
 
         if(_sprites != null && _direction != Direction.NONE) {
-            canvas.drawBitmap(_sprites[_direction.getValue()][_frameIndex / _frameCongruence], AppConstants.SCREEN_WIDTH / 2 - _arrowSize / 2, AppConstants.SCREEN_HEIGHT - _arrowSize, paint);
+
+            // center bottom
+            canvas.drawBitmap(_sprites[_direction.getValue()][_frameIndex / _frameCongruence], AppConstants.SCREEN_WIDTH / 2 - _objectSize / 2, AppConstants.SCREEN_HEIGHT - _objectSize, paint);
         }
 
         _frameIndex++;

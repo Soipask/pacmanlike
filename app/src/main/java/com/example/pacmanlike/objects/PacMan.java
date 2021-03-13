@@ -57,7 +57,7 @@ public class PacMan extends DrawableObjects {
     @Override
     protected void load(Context context) {
 
-        // right sprites
+        // right sprites path
         int[] right = {
                 R.drawable.pacman_right1,
                 R.drawable.pacman_right2,
@@ -65,7 +65,7 @@ public class PacMan extends DrawableObjects {
                 R.drawable.pacman_right,
         };
 
-        // left sprites
+        // left sprites path
         int[] left = {
                 R.drawable.pacman_left1,
                 R.drawable.pacman_left2,
@@ -73,7 +73,7 @@ public class PacMan extends DrawableObjects {
                 R.drawable.pacman_left,
         };
 
-        // up sprites
+        // up sprites path
         int[] up = {
                 R.drawable.pacman_up1,
                 R.drawable.pacman_up2,
@@ -81,7 +81,7 @@ public class PacMan extends DrawableObjects {
                 R.drawable.pacman_up,
         };
 
-        // down sprites
+        // down sprites path
         int[] down = {
                 R.drawable.pacman_down1,
                 R.drawable.pacman_down2,
