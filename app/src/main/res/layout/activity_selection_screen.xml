@@ -53,13 +53,21 @@
             android:layout_height="@dimen/selection_scroll_height"
             android:background="@android:color/darker_gray">
 
+
             <RadioButton
-                android:id="@+id/radioButton"
+                android:id="@+id/basicMapRadio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/tertiary_text_light"
                 android:checked="true"
                 android:text="@string/basic_map_name" />
+
+            <RadioButton
+                android:id="@+id/narrowMapRadio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/tertiary_text_light"
+                android:text="@string/narrow_map" />
         </RadioGroup>
     </ScrollView>
 

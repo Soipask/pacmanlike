@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.pacmanlike.R;
+import com.example.pacmanlike.main.AppConstants;
+
+import org.w3c.dom.Text;
 
 public class GameOverActivity extends AppCompatActivity {
     @Override
@@ -16,28 +19,26 @@ public class GameOverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game_over);
 
         Intent intent = getIntent();
-        /*
-        // Insert this into GameScreen at the beginning:
-        public static final String SCORE = "com.example.pacmanlike.SCORE";
 
-        // And when opening this activity:
-        // intent takes context, it should be GameScreen activity -> pass it to somewhere you're calling this from
-        // and replace GameScreen.this with it
-        Intent intent = new Intent(GameScreen.this, GameOverActivity.class);
-        intent.putExtra(SCORE, stringExtra);
+        Integer score = AppConstants.getEngine().getScore();
 
-        startActivity(intent);
-         */
 
-        //   Then uncomment this:
-        // String stringScore = intent.getStringExtra(GameScreen.SCORE);
-        // int score = Integer.parseInt(stringScore);
+        if(!AppConstants.getEngine().isGameOver()) {
+            // Victory
 
-        // TextView scoreView = (TextView) findViewById(R.id.score_box);
-        // scoreView.setText(R.string.score_text + score);
+            TextView victory = (TextView) findViewById(R.id.game_over_box);
+            victory.setText(R.string.victory_text);
+        }
+
+        TextView scoreView = (TextView) findViewById(R.id.score_box);
+
+        scoreView.setText(getResources().getString(R.string.score_text) + ' ' + String.valueOf(score));
     }
 
     public void onRetryClick(View view){
-        super.finish();
+
+        Intent intent = new Intent(this, SelectionScreen.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

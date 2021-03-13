@@ -17,6 +17,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DisplayThread _displayThread;
 
+
     public GameView(Context context, GameEngine gEngine) {
         super(context);
 
@@ -31,7 +32,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         SurfaceHolder holder = getHolder();
         holder.addCallback( this);
 
-        _displayThread = new DisplayThread(holder, _context);
+        _displayThread = new DisplayThread(holder, _context, this);
         setFocusable(true);
     }
 
@@ -52,7 +53,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder arg0) {
         //Starts the display thread
         if(!_displayThread.isRunning()) {
-            _displayThread = new DisplayThread(getHolder(), _context);
+            _displayThread = new DisplayThread(getHolder(), _context, this);
             _displayThread.start();
         }
         else {

@@ -12,7 +12,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,6 +24,10 @@ import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.Vector;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,11 +43,17 @@ public class LevelMakerActivity extends AppCompatActivity {
     private View _lastClicked;
 
     private HorizontalScrollView _oneTimeButtons, _repeatableButtons;
-    private TextView _instructions;
+    private TextView _instructions, _mapName;
 
     private Stage stage = Stage.ONE_TIMES;
 
     private GameMap _gameMap = new GameMap();
+
+    private ImageButton _pacPosition;
+    private ImageButton[] _powerPellets = new ImageButton[AppConstants.MAX_POWER_PELLETS];
+    private ArrayList<Vector> _powerPelletVectors = new ArrayList<>();
+
+    private String _levelString, _levelName;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -68,6 +77,8 @@ public class LevelMakerActivity extends AppCompatActivity {
         _repeatableButtons.setVisibility(View.INVISIBLE);
         _instructions = (TextView) findViewById(R.id.instructionView);
         _instructions.setVisibility(View.INVISIBLE);
+        _mapName = (TextView) findViewById(R.id.map_name);
+        _mapName.setVisibility(View.INVISIBLE);
 
         Button btn = (Button) findViewById(R.id.continueButton);
         btn.setVisibility(View.INVISIBLE);
@@ -78,13 +89,16 @@ public class LevelMakerActivity extends AppCompatActivity {
         // onChangeSelected listeners for repeatable ones
         setOnChangeSelectedToRadio();
 
-        //_lastClicked = findViewById(R.id.emptyButton);
         _selected = R.id.emptyButton;
         fillViewChars();
         fillBackgroundDictionary();
         setOneTimeIds();
-    }
 
+        // We would like to have this list operating more as an array for simplicity
+        for (int i = 0; i < 4; i++){
+            _powerPelletVectors.add(null);
+        }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void prepareTiles(){
@@ -112,19 +126,17 @@ public class LevelMakerActivity extends AppCompatActivity {
                 MapSquare square = new MapSquare();
                 square.position = new Vector(j, i);
                 _map[i][j] = square;
+                square.button = button;
 
                 _buttonDictionary.put(id, square);
                 row.addView(button, p);
 
                 button.setBackgroundResource(R.drawable.emptygrey);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        try {
-                            onClickMap(v, button);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                button.setOnClickListener(v -> {
+                    try {
+                        onClickMap(v, button);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 });
             }
@@ -136,14 +148,19 @@ public class LevelMakerActivity extends AppCompatActivity {
         int id = v.getId();
         MapSquare square = _buttonDictionary.get(id);
 
-        if(stage == Stage.ONE_TIMES){
-            oneTimesOnClickMap(v, square, button);
-        }
-        else if (stage == Stage.REPEATABLE){
-            repeatableOnClickMap(v, square, button);
-        }
-        else if(stage == Stage.PAC || stage == Stage.POWERS){
-            laterStagesOnClickMap(square, button);
+        switch (stage){
+            case ONE_TIMES:
+                oneTimesOnClickMap(v, square, button);
+                break;
+            case REPEATABLE:
+                repeatableOnClickMap(v, square, button);
+                break;
+            case PAC:
+                pacOnClickMap(square, button);
+                break;
+            case POWERS:
+                powersOnClickMap(square, button);
+                break;
         }
     }
 
@@ -151,21 +168,37 @@ public class LevelMakerActivity extends AppCompatActivity {
         if (!square.immovable){
             switch (_selected){
                 case R.id.leftTeleportButton:
-                    if (square.position.x == AppConstants.MAP_SIZE_X - 1)
-                        return;
+                    if (square.position.x == AppConstants.MAP_SIZE_X - 1) return;
                     break;
                 case R.id.rightTeleportButton:
                     if (square.position.x == 0) return;
                     break;
-                // case R.id.doorButton:
-                // if (square.position.y >= AppConstants.MAP_SIZE_Y - 2) return;
-                // break;
+                case R.id.doorButton:
+                    if (square.position.y >= AppConstants.MAP_SIZE_Y - 2 ||
+                            square.position.x == 0 ||
+                            square.position.x == AppConstants.MAP_SIZE_X - 1 ||
+                            !canPlaceHomeHere(square)
+                    )
+                        return;
+
+                    // create 3 immutable home tiles under door tile
+                    int y = square.position.y + 1;
+                    for (int x = square.position.x - 1; x <= square.position.x + 1; x++ ){
+                        _map[y][x].letter = 'A';
+                        _map[y][x].argument = x - (square.position.x - 2);
+                        _map[y][x].immovable = true;
+
+                        _map[y][x].button.setBackgroundResource(R.drawable.empty);
+                        _map[y][x].button.setImageResource(R.drawable.ghost_2_0);
+                    }
+
+                    break;
             }
 
             int backgroundId = _buttonBackgroundResource.get(_selected);
-            button.setBackground(ResourcesCompat.getDrawable(getResources(), backgroundId, null));
+            button.setBackgroundResource(backgroundId);
 
-            square.rotation = v.getRotation();
+            square.argument = v.getRotation();
             square.letter = _viewChars.get(_selected);
 
             findViewById(_selected).setVisibility(View.INVISIBLE);
@@ -179,13 +212,21 @@ public class LevelMakerActivity extends AppCompatActivity {
         }
     }
 
+    private boolean canPlaceHomeHere(MapSquare square){
+        int y = square.position.y + 1;
+        for (int x = square.position.x - 1; x <= square.position.x + 1; x++ ){
+            if (_map[y][x].immovable) return false;
+        }
+
+        return true;
+    }
+
     private void repeatableOnClickMap(View v, MapSquare square, ImageButton button) throws Exception {
         if (_selected != R.id.rotateButton && !square.immovable){
             int backgroundId = _buttonBackgroundResource.get(_selected);
             button.setBackground(ResourcesCompat.getDrawable(getResources(), backgroundId, null));
-            //button.setBackground(_lastClicked.getBackground());
 
-            square.rotation = v.getRotation();
+            square.argument = v.getRotation();
             square.letter = _viewChars.get(_selected);
 
             if (_oneTimeIds.contains(_selected)){
@@ -201,17 +242,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         } else if (_selected == R.id.rotateButton){
             float newRotation = (v.getRotation() + 90) % 360;
             v.setRotation(newRotation);
-            square.rotation = newRotation;
-        }
-    }
-
-    private void laterStagesOnClickMap(MapSquare square, ImageButton button){
-        switch (stage){
-            case PAC:
-                _gameMap.setStartingPacPosition(square.position);
-                break;
-            case POWERS:
-                break;
+            square.argument = newRotation;
         }
     }
 
@@ -227,6 +258,47 @@ public class LevelMakerActivity extends AppCompatActivity {
         return true;
     }
 
+    private void pacOnClickMap(MapSquare square, ImageButton button){
+        if (square.letter == 'X' || square.letter == 'A') return;
+
+        _gameMap.setStartingPacPosition(square.position);
+        Button btn = (Button) findViewById(R.id.continueButton);
+        btn.setVisibility(View.VISIBLE);
+        button.setImageResource(R.drawable.pacman_right2);
+
+        if (_pacPosition != null){
+            _pacPosition.setImageResource(0);
+        }
+
+        _pacPosition = button;
+    }
+
+    private void powersOnClickMap(MapSquare square, ImageButton button){
+        // if not position not in array, shift the whole array and keep the odd one
+        if(_powerPelletVectors.contains(square.position) ||
+            square.letter == 'X' || square.letter == 'A'
+        )
+            return;
+
+        ImageButton theOddOne = _powerPellets[0];
+
+        for (int i = 0; i < AppConstants.MAX_POWER_PELLETS - 1; i++){
+            _powerPelletVectors.set(i, _powerPelletVectors.get(i + 1));
+            _powerPellets[i] = _powerPellets[i+1];
+        }
+
+        _powerPelletVectors.set(AppConstants.MAX_POWER_PELLETS - 1, square.position);
+        _powerPellets[AppConstants.MAX_POWER_PELLETS - 1] = button;
+
+        // set image resource
+        button.setImageResource(R.drawable.pacman_right);
+
+        // delete image resource from the odd one if not null
+        if (theOddOne != null){
+            theOddOne.setImageResource(0);
+        }
+    }
+
     private void setOnClickToButtons(){
         LinearLayout layout = (LinearLayout) _oneTimeButtons.getChildAt(0);
         for(int i = 0; i < layout.getChildCount(); i++){
@@ -234,7 +306,6 @@ public class LevelMakerActivity extends AppCompatActivity {
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //_lastClicked = v;
                     _selected = v.getId();
                 }
             });
@@ -248,7 +319,6 @@ public class LevelMakerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 _selected = checkedId;
-                //_lastClicked = findViewById(checkedId);
             }
         });
     }
@@ -264,7 +334,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         // one-time
         _viewChars.put(R.id.leftTeleportButton, 'L');
         _viewChars.put(R.id.rightTeleportButton, 'R');
-        // _viewChars.put(R.id.doorButton, 'D');
+        _viewChars.put(R.id.doorButton, 'D');
     }
 
     private void fillBackgroundDictionary(){
@@ -278,13 +348,13 @@ public class LevelMakerActivity extends AppCompatActivity {
         // one time
         _buttonBackgroundResource.put(R.id.leftTeleportButton, R.drawable.leftteleport);
         _buttonBackgroundResource.put(R.id.rightTeleportButton, R.drawable.rightteleport);
-        // _buttonBackgroundResource.put(R.id.doorButton, R.drawable.door);
+        _buttonBackgroundResource.put(R.id.doorButton, R.drawable.door);
     }
 
     private void setOneTimeIds(){
         _oneTimeIds.add(R.id.leftTeleportButton);
         _oneTimeIds.add(R.id.rightTeleportButton);
-        // _oneTimeIds.add(R.id.doorButton);
+        _oneTimeIds.add(R.id.doorButton);
     }
 
     private void goToNextStage() throws Exception {
@@ -300,6 +370,7 @@ public class LevelMakerActivity extends AppCompatActivity {
                 stage = Stage.PAC;
                 _repeatableButtons.setVisibility(View.INVISIBLE);
                 _instructions.setVisibility(View.VISIBLE);
+                btn.setVisibility(View.INVISIBLE);
                 break;
             case PAC:
                 stage = Stage.POWERS;
@@ -307,13 +378,26 @@ public class LevelMakerActivity extends AppCompatActivity {
                 btn.setText(R.string.validate_button);
                 break;
             case POWERS:
+                ArrayList<Vector> positions = new ArrayList<>();
+                for (int i = 0; i < AppConstants.MAX_POWER_PELLETS; i++){
+                    if (_powerPelletVectors.get(i) != null) positions.add(_powerPelletVectors.get(i));
+                }
+                _gameMap.setPowerPelletsPosition(_powerPelletVectors);
                 validation(btn);
                 break;
             case PRE_SAVE:
+                stage = Stage.CHOOSE_NAME;
+                _instructions.setText(R.string.instructions_mapname);
+                btn.setText(R.string.save_button);
+                _levelString = _gameMap.toString();
+                _mapName.setVisibility(View.VISIBLE);
+                break;
+            case CHOOSE_NAME:
                 stage = Stage.END;
                 _instructions.setText(R.string.instructions_saved);
                 btn.setText(R.string.return_button);
-                String levelString = _gameMap.toString();
+                _levelName = _mapName.getText().toString();
+                saveMap();
                 break;
             case RETURN:
                 stage = Stage.REPEATABLE;
@@ -343,7 +427,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         }
 
         stage = Stage.PRE_SAVE;
-        btn.setText(R.string.save_button);
+        btn.setText(R.string.continue_button);
         _instructions.setText(R.string.instructions_validated);
     }
 
@@ -367,7 +451,9 @@ public class LevelMakerActivity extends AppCompatActivity {
         // Tile is valid when from all the tiles you can go from here, you can get back
         Tile tile = map[y][x];
         boolean valid = true;
-        if (tile.type.equals("LeftTeleport") || tile.type.equals("RightTeleport")){
+        if (tile.type.equals(AppConstants.LEFT_TELEPORT) ||
+                tile.type.equals(AppConstants.RIGHT_TELEPORT) ||
+                tile.type.equals(AppConstants.HOME_TILE)){
             return true;
         }
 
@@ -414,15 +500,24 @@ public class LevelMakerActivity extends AppCompatActivity {
         goToNextStage();
     }
 
+    private void saveMap() throws IOException {
+        File file = new File(getApplicationContext().getFilesDir(), _levelName + ".csv");
+        FileWriter writer = new FileWriter(file);
+        writer.write(_levelString);
+        writer.flush();
+        writer.close();
+    }
+
     public class MapSquare{
         public char letter = 'X';
-        public float rotation = 0;
+        public float argument = 0;
         Vector position;
         public boolean immovable = false;
+        ImageButton button;
 
         @Override
         public String toString() {
-            return letter + String.valueOf((int)rotation);
+            return letter + String.valueOf((int) argument);
         }
     }
 
@@ -431,6 +526,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         REPEATABLE,
         PAC,
         POWERS,
+        CHOOSE_NAME,
         PRE_SAVE,
         RETURN,
         END

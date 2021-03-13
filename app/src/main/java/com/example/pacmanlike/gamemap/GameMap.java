@@ -8,6 +8,7 @@ import com.example.pacmanlike.main.AppConstants;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class GameMap {
     private Tile[][] _map;
@@ -15,6 +16,7 @@ public class GameMap {
     private Vector _leftTeleportPosition;
     private Vector _rightTeleportPosition;
     private ArrayList<Vector> _powerPelletsPosition;
+    private Home _home;
 
     private Bitmap _background;
 
@@ -51,21 +53,40 @@ public class GameMap {
         _powerPelletsPosition = powerPellets;
     }
 
+    public Home getHome(){ return _home;}
+    public void setHome(Home home){
+        _home = home;
+    }
+
     @Override
     public String toString(){
-        String pac = "PAC=" + _startingPacPosition.toString();
-        // String pellets ...
+        // pacman
+        String pac = AppConstants.PAC_STARTING_KEYWORD + AppConstants.KEY_VALUE_DELIMITER +
+                _startingPacPosition.toString();
+
+        // pellets
+        StringBuilder positionStrings = new StringBuilder();
+        positionStrings.append(_powerPelletsPosition.get(0));
+        for (int i = 1; i < _powerPelletsPosition.size(); i++){
+            positionStrings.append(AppConstants.MORE_DATA_DELIMITER);
+            positionStrings.append(_powerPelletsPosition.get(i).toString());
+        }
+
+        String pellets = AppConstants.POWER_STARTING_KEYWORD + AppConstants.KEY_VALUE_DELIMITER +
+                positionStrings.toString();
+
+        // map
         StringBuilder map = new StringBuilder();
         for (Tile[] row : _map){
-            for (Tile tile : row){
-                map.append(tile.toString());
-                map.append(",");
+            map.append(row[0]);
+            for (int i = 1; i < row.length; i++){
+                map.append(AppConstants.CSV_DELIMITER);
+                map.append(row[i].toString());
             }
             map.append("\n");
         }
         String mapString = map.toString();
 
-        return pac + "\n" + mapString;
-
+        return pac + AppConstants.CSV_DELIMITER + pellets + "\n" + mapString;
     }
 }
