@@ -10,26 +10,32 @@ import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.view.LevelView;
 
+/**
+ * Class containing the constants and functions needed to run the game.
+ */
 public class AppConstants {
 
-
-    static GameMap _gameMap;
+    // game
     static GameEngine _engine;
+    static GameMap _gameMap;
 
+    // map size
+    public static int MAP_SIZE_X = 7, MAP_SIZE_Y = 9;
+
+    // tile size
+    private static int _blockSize;
+
+    // screen dimensions
     public static int SCREEN_WIDTH,
             SCREEN_HEIGHT;
 
-    public static int MAP_SIZE_X = 7, MAP_SIZE_Y = 9;
-
-    private static int _blockSize;
-
+    // Game constants
     public static String PAC_STARTING_KEYWORD = "PAC", POWER_STARTING_KEYWORD = "POWER";
     public static String CSV_DELIMITER = ",", KEY_VALUE_DELIMITER = "=", COORDS_DELIMITER = ";", MORE_DATA_DELIMITER = "/";
     public static String LEFT_TELEPORT = "LeftTeleport", RIGHT_TELEPORT = "RightTeleport", HOME_TILE = "Home";
 
     public static int MAX_POWER_PELLETS = 4;
 
-    // public static Bitmap m;
 
     /**
      * Initiates the applciation constants
