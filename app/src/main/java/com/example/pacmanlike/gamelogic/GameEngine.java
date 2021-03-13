@@ -27,7 +27,6 @@ public class GameEngine {
     /*MEMBERS*/
 
 
-
    static Boolean _endGame = false, _gameOver = false;
 
     static PacMan _pacman;
