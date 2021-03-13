@@ -7,4 +7,6 @@
     <dimen name="sidebar_height">200dp</dimen>
     <dimen name="arrow_height">100dp</dimen>
     <dimen name="level_tile_layout_size">50</dimen>
+    <dimen name="selection_scroll_height">500dp</dimen>
+    <dimen name="selection_scroll_width">150dp</dimen>
 </resources>
