@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.example.pacmanlike.R;
 import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.view.ImportExportMap;
 import com.example.pacmanlike.view.LevelParser;
 import com.example.pacmanlike.view.LevelView;
 
@@ -29,6 +32,10 @@ public class SelectionScreen extends AppCompatActivity {
 
     private final HashMap<Integer, String> _mapDictionary = new HashMap<Integer, String>();
     public static final ArrayList<String> _internalMaps = new ArrayList<String>();
+
+    private Button _exportBtn;
+    private TextView _textView;
+    private int _currentCheckedId;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -69,8 +76,16 @@ public class SelectionScreen extends AppCompatActivity {
                 TableLayout table = (TableLayout) findViewById(R.id.table);
                 table.removeAllViews();
                 showMapPreview(checkedId, parser);
+                showExportButton(checkedId);
+                _currentCheckedId = checkedId;
             }
         });
+
+        _exportBtn = (Button) findViewById(R.id.exportButton);
+        _exportBtn.setVisibility(View.INVISIBLE);
+
+        _textView = (TextView) findViewById(R.id.selectionTextView);
+        _textView.setVisibility(View.INVISIBLE);
     }
 
     public void showMapPreview(int checkedId, LevelParser parser){
@@ -83,6 +98,13 @@ public class SelectionScreen extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showExportButton(int checkedId){
+        // Export button is only shown when custom made map is selected
+        if (_internalMaps.contains(_mapDictionary.get(checkedId))){
+            _exportBtn.setVisibility(View.INVISIBLE);
+        } else _exportBtn.setVisibility(View.VISIBLE);
     }
 
     public void createLevel(View view){
@@ -104,6 +126,18 @@ public class SelectionScreen extends AppCompatActivity {
         intent.putExtra(SELECTED_LEVEL, levelPath);
 
         startActivity(intent);
+    }
+
+    public void exportMap(View view) throws Exception {
+        LevelParser parser = new LevelParser();
+        parser.init(_mapDictionary.get(_currentCheckedId), this);
+        GameMap map = parser.parse();
+
+        String levelString = map.toString();
+        String exportString = ImportExportMap.exportMap(levelString);
+        ImportExportMap.copyToClipboard(this, exportString);
+
+        _textView.setVisibility(View.VISIBLE);
     }
 
     private ArrayList<String> filterMaps (String[] files){

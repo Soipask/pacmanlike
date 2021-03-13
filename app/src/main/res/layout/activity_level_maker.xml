@@ -134,7 +134,7 @@
 
     <HorizontalScrollView
         android:id="@+id/levelMakerButtonScrollView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -143,18 +143,20 @@
 
         <LinearLayout
             android:id="@+id/linearLayout"
+            style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            style="?android:attr/buttonBarStyle">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/continueButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginRight="100dp"
                 android:layout_weight="1"
                 android:onClick="onContinueClick"
                 android:text="@string/continue_button"
@@ -162,37 +164,14 @@
                 app:backgroundTint="@android:color/holo_blue_dark" />
 
             <Button
-                android:id="@+id/deleteButton"
+                android:id="@+id/importExportButton"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:text="@string/discard_button"
-                android:textColor="@color/white"
-                app:backgroundTint="@android:color/holo_blue_dark" />
-
-            <Button
-                android:id="@+id/exportButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:text="@string/export_button"
-                android:textColor="@color/white"
-                app:backgroundTint="@android:color/holo_blue_dark" />
-
-            <Button
-                android:id="@+id/importButton"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1"
+                android:onClick="onImportExportClick"
                 android:text="@string/import_button"
                 android:textColor="@color/white"
                 app:backgroundTint="@android:color/holo_blue_dark" />
@@ -227,5 +206,20 @@
         app:layout_constraintBottom_toTopOf="@+id/levelMakerButtonScrollView"
         app:layout_constraintEnd_toEndOf="@+id/levelMakerButtonScrollView"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextTextMultiLine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/teal_200"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:textColor="@color/black"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/oneTimeButtonsScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

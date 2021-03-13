@@ -15,7 +15,7 @@ public class GameMap {
     private Vector _startingPacPosition;
     private Vector _leftTeleportPosition;
     private Vector _rightTeleportPosition;
-    private ArrayList<Vector> _powerPelletsPosition;
+    private ArrayList<Vector> _powerPelletsPosition = new ArrayList<>();
     private Home _home;
 
     private Bitmap _background;
@@ -72,8 +72,11 @@ public class GameMap {
             positionStrings.append(_powerPelletsPosition.get(i).toString());
         }
 
-        String pellets = AppConstants.POWER_STARTING_KEYWORD + AppConstants.KEY_VALUE_DELIMITER +
-                positionStrings.toString();
+        String pellets = (_powerPelletsPosition.size() > 0)?
+                AppConstants.POWER_STARTING_KEYWORD +
+                        AppConstants.KEY_VALUE_DELIMITER +
+                        positionStrings.toString():
+                "";
 
         // map
         StringBuilder map = new StringBuilder();
