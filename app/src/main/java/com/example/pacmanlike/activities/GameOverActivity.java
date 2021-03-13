@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.pacmanlike.R;
 import com.example.pacmanlike.main.AppConstants;
 
+import org.w3c.dom.Text;
+
 public class GameOverActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +23,11 @@ public class GameOverActivity extends AppCompatActivity {
         Integer score = AppConstants.getEngine().getScore();
 
 
-        if(AppConstants.getEngine().isGameOver()){
-            // GameOver
-
-        } else {
+        if(!AppConstants.getEngine().isGameOver()) {
             // Victory
+
+            TextView victory = (TextView) findViewById(R.id.game_over_box);
+            victory.setText(R.string.victory_text);
         }
 
         TextView scoreView = (TextView) findViewById(R.id.score_box);
