@@ -9,15 +9,15 @@ import com.example.pacmanlike.main.AppConstants;
 /**
  * This class represents the character of the pacman.
  * It stores basic information about the location and
- * characteristics of this character
+ * characteristics of this character.
  */
 public class PacMan extends DrawableObjects {
 
     /**
      * Creates a pecman at the specified position
-     * with initial properties in the specified context
-     * @param context GameView context
-     * @param startingPosition Initial position
+     * with initial properties in the specified context.
+     * @param context GameView context.
+     * @param startingPosition Initial position.
      */
     public  PacMan(Context context, Vector startingPosition) {
 
@@ -51,8 +51,8 @@ public class PacMan extends DrawableObjects {
     }
 
     /**
-     * Loads pacman sprites from resources
-     * @param context
+     * Loads pacman sprites from resources.
+     * @param context Given context.
      */
     @Override
     protected void load(Context context) {
