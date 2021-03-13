@@ -28,8 +28,8 @@ public abstract class DrawableObjects {
     // size of object (current)
     protected int _objectSize;
 
-    // object drawable sprites
-    protected Bitmap[][] _sprites;
+    // object drawable frames
+    protected Bitmap[][] _frames;
 
     // current frame
     protected int _frameIndex;
@@ -41,7 +41,7 @@ public abstract class DrawableObjects {
     protected int _frameCongruence;
 
     /**
-     * Loads current game objects sprites from resources.
+     * Loads current game objects frames from resources.
      * @param context Given context
      */
     protected abstract void load(Context context);
@@ -92,30 +92,30 @@ public abstract class DrawableObjects {
     public Direction getDirection() { return _direction; }
 
     /**
-     * Loads one sprite from resources and returns the bitmap of sprites.
-     * @param path Sprite path.
-     * @param size Size of sprite.
+     * Loads one frame from resources and returns the bitmap of frame.
+     * @param path Frame path.
+     * @param size Size of frame.
      * @param context Given Context.
-     * @return Sprite bitmap.
+     * @return Frame bitmap.
      */
-    protected Bitmap loadSprite(int path, int size, Context context){
+    protected Bitmap loadFrame(int path, int size, Context context){
         return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), path), size, size, false);
     }
 
     /**
-     * Loads the package sprites from resources and returns them in the list.
-     * @param paths Sprites path.
-     * @param size Size of sprite.
+     * Loads the package frames from resources and returns them in the list.
+     * @param paths Frames paths.
+     * @param size Size of frame.
      * @param context Given Context.
-     * @return List of bitmap sprites.
+     * @return List of bitmap frames.
      */
-    protected Bitmap[] loadSprites(int[] paths, int size, Context context) {
+    protected Bitmap[] loadFrames(int[] paths, int size, Context context) {
 
         Bitmap[] tmpSprites = new Bitmap[paths.length];
 
         int i = 0;
         for (int path : paths) {
-            tmpSprites[i] = loadSprite(path, size, context);
+            tmpSprites[i] = loadFrame(path, size, context);
             i++;
         }
 
@@ -136,9 +136,9 @@ public abstract class DrawableObjects {
 
         // if the direction of the object is none, then draw it in the previous direction
         if(_direction == Direction.NONE) {
-            canvas.drawBitmap(_sprites[_prevDirection.getValue()][_frameIndex / _frameCongruence], _position.x - _objectSize/2, _position.y - _objectSize / 2, paint);
+            canvas.drawBitmap(_frames[_prevDirection.getValue()][_frameIndex / _frameCongruence], _position.x - _objectSize/2, _position.y - _objectSize / 2, paint);
         } else {
-            canvas.drawBitmap(_sprites[_direction.getValue()][_frameIndex / _frameCongruence], _position.x - _objectSize / 2, _position.y - _objectSize / 2, paint);
+            canvas.drawBitmap(_frames[_direction.getValue()][_frameIndex / _frameCongruence], _position.x - _objectSize / 2, _position.y - _objectSize / 2, paint);
         }
 
         // next frame

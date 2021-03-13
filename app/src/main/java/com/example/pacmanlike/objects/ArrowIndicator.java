@@ -89,19 +89,19 @@ public class ArrowIndicator  extends DrawableObjects {
         };
 
         // load sprites from resources
-        _sprites = new Bitmap[4][7];
+        _frames = new Bitmap[4][7];
 
         // UP
-        _sprites[0] = loadSprites(up, _objectSize, context);
+        _frames[0] = loadFrames(up, _objectSize, context);
 
         // DOWN
-        _sprites[1] = loadSprites(down, _objectSize, context);
+        _frames[1] = loadFrames(down, _objectSize, context);
 
         // LEFT
-        _sprites[2] = loadSprites(left, _objectSize, context);
+        _frames[2] = loadFrames(left, _objectSize, context);
 
         // RIGHT
-        _sprites[3] = loadSprites(right, _objectSize, context);
+        _frames[3] = loadFrames(right, _objectSize, context);
     }
 
     /**
@@ -115,10 +115,10 @@ public class ArrowIndicator  extends DrawableObjects {
         // frame cycle
         if(_frameIndex == _totalframe) { _frameIndex = 0;}
 
-        if(_sprites != null && _direction != Direction.NONE) {
+        if(_frames != null && _direction != Direction.NONE) {
 
             // center bottom
-            canvas.drawBitmap(_sprites[_direction.getValue()][_frameIndex / _frameCongruence], AppConstants.SCREEN_WIDTH / 2 - _objectSize / 2, AppConstants.SCREEN_HEIGHT - _objectSize, paint);
+            canvas.drawBitmap(_frames[_direction.getValue()][_frameIndex / _frameCongruence], AppConstants.SCREEN_WIDTH / 2 - _objectSize / 2, AppConstants.SCREEN_HEIGHT - _objectSize, paint);
         }
 
         _frameIndex++;
