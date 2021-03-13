@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ *
+ */
 public class GhostsEngine {
 
     protected Random _rand;
@@ -25,6 +28,11 @@ public class GhostsEngine {
 
     protected List<Ghost> _ghosts;
 
+    /**
+     *
+     * @param context
+     * @param homePosition
+     */
     public GhostsEngine(Context context, Vector homePosition) {
 
         VULNEREBLE = 1500;
@@ -41,22 +49,42 @@ public class GhostsEngine {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Ghost> getGhosts(){return _ghosts; }
 
+    /**
+     *
+     */
     public void startVulnereble(){
         _vulnereble = VULNEREBLE;
         setVulnerable(true);
 
     }
 
+    /**
+     *
+     * @return
+     */
     public Vector getHome() {return _homePosition; }
 
+    /**
+     *
+     * @param value
+     */
     public void setVulnerable(boolean value) {
         for (Ghost g: _ghosts) {
             g.setVulnerable(value);
         }
     }
 
+    /**
+     *
+     * @param gameMap
+     * @param g
+     */
     protected void updateOne(GameMap gameMap, Ghost g){
         Vector position = g.getAbsolutePosition();
 
@@ -76,6 +104,9 @@ public class GhostsEngine {
         }
     }
 
+    /**
+     *
+     */
     public void update(){
         GameMap gameMap = AppConstants.getGameMap();
 
@@ -91,6 +122,9 @@ public class GhostsEngine {
         }
     }
 
+    /**
+     *
+     */
     public void updateTeleporation(){
         GameMap gameMap = AppConstants.getGameMap();
 
@@ -114,6 +148,11 @@ public class GhostsEngine {
             }
         }
     }
+
+    /**
+     *
+     * @param step
+     */
     public void moveGhosts(int step){
         for (Ghost g: _ghosts) {
             Vector position = g.getAbsolutePosition();
@@ -137,6 +176,11 @@ public class GhostsEngine {
         }
     }
 
+    /**
+     *
+     * @param canvas
+     * @param paint
+     */
     public void draw(Canvas canvas, Paint paint){
 
         for (Ghost g : _ghosts) {
