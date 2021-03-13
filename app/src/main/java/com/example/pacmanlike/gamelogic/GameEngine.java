@@ -52,6 +52,7 @@ public class GameEngine {
     private static GhostsEngine _ghostsEngine;
 
     public GameEngine(Context context) {
+        _numberOfPells = 0;
 
         _paint = new Paint();
         _paintPells = new Paint();
@@ -69,7 +70,7 @@ public class GameEngine {
         addPells(AppConstants.getGameMap());
         _arrowIdenticator = new ArrowIndicator(context);
 
-        _numberOfPells = 0;
+
         _pacSpeed = 10;
         _pacStep = 1;
         _SCORE = 0;
