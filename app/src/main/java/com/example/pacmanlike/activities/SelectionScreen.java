@@ -18,7 +18,6 @@ import com.example.pacmanlike.view.LevelParser;
 import com.example.pacmanlike.view.LevelView;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 public class SelectionScreen extends AppCompatActivity {
@@ -26,9 +25,10 @@ public class SelectionScreen extends AppCompatActivity {
     public static final String ASSETS = "Assets";
     public static final String INTERNAL = "Internal";
     public static final String BASIC_MAP = "basicmap.csv";
+    public static final String NARROW_MAP = "narrowmap.csv";
 
-    private final HashMap<Integer, String> mapDictionary = new HashMap<Integer, String>();
-    public static final ArrayList<String> internalMaps = new ArrayList<String>();
+    private final HashMap<Integer, String> _mapDictionary = new HashMap<Integer, String>();
+    public static final ArrayList<String> _internalMaps = new ArrayList<String>();
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -36,10 +36,12 @@ public class SelectionScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection_screen);
 
-        // Find radio group and populate it with basic map
+        // Find radio group and populate it with basic maps
         RadioGroup rgp = (RadioGroup) findViewById(R.id.radioGroup);
-        mapDictionary.put(R.id.radioButton, BASIC_MAP);
-        internalMaps.add(BASIC_MAP);
+        _mapDictionary.put(R.id.basicMapRadio, BASIC_MAP);
+        _internalMaps.add(BASIC_MAP);
+        _mapDictionary.put(R.id.narrowMapRadio, NARROW_MAP);
+        _internalMaps.add(NARROW_MAP);
 
         Context context = getApplicationContext();
         String[] files = context.fileList();
@@ -50,14 +52,14 @@ public class SelectionScreen extends AppCompatActivity {
             RadioButton rbn = new RadioButton(this);
             int id = View.generateViewId();
             String mapName = mapNames.get(i);
-            mapDictionary.put(id, mapName);
+            _mapDictionary.put(id, mapName);
             rbn.setId(id);
             rbn.setText(mapName);
             rgp.addView(rbn);
         }
 
         LevelParser parser = new LevelParser();
-        showMapPreview(R.id.radioButton, parser);
+        showMapPreview(R.id.basicMapRadio, parser);
 
         rgp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
@@ -73,7 +75,7 @@ public class SelectionScreen extends AppCompatActivity {
 
     public void showMapPreview(int checkedId, LevelParser parser){
         try {
-            parser.init(mapDictionary.get(checkedId), this);
+            parser.init(_mapDictionary.get(checkedId), this);
             GameMap map = parser.parse();
             LevelView levelView = new LevelView(this, map);
             levelView.setTileSize(70);
@@ -95,7 +97,7 @@ public class SelectionScreen extends AppCompatActivity {
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         int level = radioGroup.getCheckedRadioButtonId();
 
-        String levelPath = mapDictionary.get(level);
+        String levelPath = _mapDictionary.get(level);
 
         // Select which storage type should be used as the basic map is stored in Assets
         // Custom maps are stored in internal storage
@@ -107,7 +109,9 @@ public class SelectionScreen extends AppCompatActivity {
     private ArrayList<String> filterMaps (String[] files){
         ArrayList<String> maps = new ArrayList<String>();
 
-        Collections.addAll(maps, files);
+        for(int i = 0; i < files.length; i++){
+            if (files[i].endsWith(".csv")) maps.add(files[i]);
+        }
 
         return maps;
     }

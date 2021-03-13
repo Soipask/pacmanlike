@@ -30,4 +30,7 @@
     <string name="highscore_text">NEW HIGHSCORE!</string>
     <string name="score_text">Your score:</string>
     <string name="retry_button">Retry</string>
+    <string name="instructions_mapname">Choose a map name</string>
+    <string name="default_map_name">newmap</string>
+    <string name="narrow_map">Narrow map</string>
 </resources>

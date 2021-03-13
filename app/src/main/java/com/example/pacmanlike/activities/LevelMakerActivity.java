@@ -24,6 +24,10 @@ import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.Vector;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,11 +43,17 @@ public class LevelMakerActivity extends AppCompatActivity {
     private View _lastClicked;
 
     private HorizontalScrollView _oneTimeButtons, _repeatableButtons;
-    private TextView _instructions;
+    private TextView _instructions, _mapName;
 
     private Stage stage = Stage.ONE_TIMES;
 
     private GameMap _gameMap = new GameMap();
+
+    private ImageButton _pacPosition;
+    private ImageButton[] _powerPellets = new ImageButton[AppConstants.MAX_POWER_PELLETS];
+    private ArrayList<Vector> _powerPelletVectors = new ArrayList<>();
+
+    private String _levelString, _levelName;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -67,6 +77,8 @@ public class LevelMakerActivity extends AppCompatActivity {
         _repeatableButtons.setVisibility(View.INVISIBLE);
         _instructions = (TextView) findViewById(R.id.instructionView);
         _instructions.setVisibility(View.INVISIBLE);
+        _mapName = (TextView) findViewById(R.id.map_name);
+        _mapName.setVisibility(View.INVISIBLE);
 
         Button btn = (Button) findViewById(R.id.continueButton);
         btn.setVisibility(View.INVISIBLE);
@@ -81,8 +93,12 @@ public class LevelMakerActivity extends AppCompatActivity {
         fillViewChars();
         fillBackgroundDictionary();
         setOneTimeIds();
-    }
 
+        // We would like to have this list operating more as an array for simplicity
+        for (int i = 0; i < 4; i++){
+            _powerPelletVectors.add(null);
+        }
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void prepareTiles(){
@@ -132,14 +148,19 @@ public class LevelMakerActivity extends AppCompatActivity {
         int id = v.getId();
         MapSquare square = _buttonDictionary.get(id);
 
-        if(stage == Stage.ONE_TIMES){
-            oneTimesOnClickMap(v, square, button);
-        }
-        else if (stage == Stage.REPEATABLE){
-            repeatableOnClickMap(v, square, button);
-        }
-        else if(stage == Stage.PAC || stage == Stage.POWERS){
-            laterStagesOnClickMap(square, button);
+        switch (stage){
+            case ONE_TIMES:
+                oneTimesOnClickMap(v, square, button);
+                break;
+            case REPEATABLE:
+                repeatableOnClickMap(v, square, button);
+                break;
+            case PAC:
+                pacOnClickMap(square, button);
+                break;
+            case POWERS:
+                powersOnClickMap(square, button);
+                break;
         }
     }
 
@@ -167,20 +188,15 @@ public class LevelMakerActivity extends AppCompatActivity {
                         _map[y][x].argument = x - (square.position.x - 2);
                         _map[y][x].immovable = true;
 
-                        _map[y][x].button.setBackground(
-                                ResourcesCompat.getDrawable(
-                                        getResources(),
-                                        R.drawable.empty,
-                                        null
-                                )
-                        );
+                        _map[y][x].button.setBackgroundResource(R.drawable.empty);
+                        _map[y][x].button.setImageResource(R.drawable.ghost_2_0);
                     }
 
                     break;
             }
 
             int backgroundId = _buttonBackgroundResource.get(_selected);
-            button.setBackground(ResourcesCompat.getDrawable(getResources(), backgroundId, null));
+            button.setBackgroundResource(backgroundId);
 
             square.argument = v.getRotation();
             square.letter = _viewChars.get(_selected);
@@ -230,18 +246,6 @@ public class LevelMakerActivity extends AppCompatActivity {
         }
     }
 
-    private void laterStagesOnClickMap(MapSquare square, ImageButton button){
-        switch (stage){
-            case PAC:
-                _gameMap.setStartingPacPosition(square.position);
-                Button btn = (Button) findViewById(R.id.continueButton);
-                btn.setVisibility(View.VISIBLE);
-                break;
-            case POWERS:
-                break;
-        }
-    }
-
     private boolean areChildrenInvisible(HorizontalScrollView scrollView){
         LinearLayout layout = (LinearLayout) _oneTimeButtons.getChildAt(0);
         for(int i = 0; i < layout.getChildCount(); i++){
@@ -252,6 +256,47 @@ public class LevelMakerActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    private void pacOnClickMap(MapSquare square, ImageButton button){
+        if (square.letter == 'X' || square.letter == 'A') return;
+
+        _gameMap.setStartingPacPosition(square.position);
+        Button btn = (Button) findViewById(R.id.continueButton);
+        btn.setVisibility(View.VISIBLE);
+        button.setImageResource(R.drawable.pacman_right2);
+
+        if (_pacPosition != null){
+            _pacPosition.setImageResource(0);
+        }
+
+        _pacPosition = button;
+    }
+
+    private void powersOnClickMap(MapSquare square, ImageButton button){
+        // if not position not in array, shift the whole array and keep the odd one
+        if(_powerPelletVectors.contains(square.position) ||
+            square.letter == 'X' || square.letter == 'A'
+        )
+            return;
+
+        ImageButton theOddOne = _powerPellets[0];
+
+        for (int i = 0; i < AppConstants.MAX_POWER_PELLETS - 1; i++){
+            _powerPelletVectors.set(i, _powerPelletVectors.get(i + 1));
+            _powerPellets[i] = _powerPellets[i+1];
+        }
+
+        _powerPelletVectors.set(AppConstants.MAX_POWER_PELLETS - 1, square.position);
+        _powerPellets[AppConstants.MAX_POWER_PELLETS - 1] = button;
+
+        // set image resource
+        button.setImageResource(R.drawable.pacman_right);
+
+        // delete image resource from the odd one if not null
+        if (theOddOne != null){
+            theOddOne.setImageResource(0);
+        }
     }
 
     private void setOnClickToButtons(){
@@ -333,13 +378,26 @@ public class LevelMakerActivity extends AppCompatActivity {
                 btn.setText(R.string.validate_button);
                 break;
             case POWERS:
+                ArrayList<Vector> positions = new ArrayList<>();
+                for (int i = 0; i < AppConstants.MAX_POWER_PELLETS; i++){
+                    if (_powerPelletVectors.get(i) != null) positions.add(_powerPelletVectors.get(i));
+                }
+                _gameMap.setPowerPelletsPosition(_powerPelletVectors);
                 validation(btn);
                 break;
             case PRE_SAVE:
+                stage = Stage.CHOOSE_NAME;
+                _instructions.setText(R.string.instructions_mapname);
+                btn.setText(R.string.save_button);
+                _levelString = _gameMap.toString();
+                _mapName.setVisibility(View.VISIBLE);
+                break;
+            case CHOOSE_NAME:
                 stage = Stage.END;
                 _instructions.setText(R.string.instructions_saved);
                 btn.setText(R.string.return_button);
-                String levelString = _gameMap.toString();
+                _levelName = _mapName.getText().toString();
+                saveMap();
                 break;
             case RETURN:
                 stage = Stage.REPEATABLE;
@@ -369,7 +427,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         }
 
         stage = Stage.PRE_SAVE;
-        btn.setText(R.string.save_button);
+        btn.setText(R.string.continue_button);
         _instructions.setText(R.string.instructions_validated);
     }
 
@@ -442,12 +500,20 @@ public class LevelMakerActivity extends AppCompatActivity {
         goToNextStage();
     }
 
+    private void saveMap() throws IOException {
+        File file = new File(getApplicationContext().getFilesDir(), _levelName + ".csv");
+        FileWriter writer = new FileWriter(file);
+        writer.write(_levelString);
+        writer.flush();
+        writer.close();
+    }
+
     public class MapSquare{
         public char letter = 'X';
         public float argument = 0;
         Vector position;
         public boolean immovable = false;
-        View button;
+        ImageButton button;
 
         @Override
         public String toString() {
@@ -460,6 +526,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         REPEATABLE,
         PAC,
         POWERS,
+        CHOOSE_NAME,
         PRE_SAVE,
         RETURN,
         END

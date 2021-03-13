@@ -6,20 +6,11 @@ import com.example.pacmanlike.gamemap.Home;
 import com.example.pacmanlike.activities.SelectionScreen;
 
 import com.example.pacmanlike.gamemap.TileFactory;
-import com.example.pacmanlike.gamemap.tiles.DoorTile;
 import com.example.pacmanlike.main.AppConstants;
 
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.gamemap.GameMap;
-import com.example.pacmanlike.gamemap.tiles.CrossroadTile;
-import com.example.pacmanlike.gamemap.tiles.EmptyTile;
-import com.example.pacmanlike.gamemap.tiles.HalfcrossroadTile;
-import com.example.pacmanlike.gamemap.tiles.HomeTile;
-import com.example.pacmanlike.gamemap.tiles.LeftTeleportTile;
-import com.example.pacmanlike.gamemap.tiles.RightTeleportTile;
-import com.example.pacmanlike.gamemap.tiles.StraightTile;
 import com.example.pacmanlike.gamemap.tiles.Tile;
-import com.example.pacmanlike.gamemap.tiles.TurnTile;
 
 import java.io.File;
 import java.io.InputStream;
@@ -35,7 +26,7 @@ public class LevelParser {
 
     public void init(String fileName, Context context) throws Exception {
         String storageType = SelectionScreen.INTERNAL;
-        if (SelectionScreen.internalMaps.contains(fileName)) {
+        if (SelectionScreen._internalMaps.contains(fileName)) {
             storageType = SelectionScreen.ASSETS;
         }
 
@@ -76,7 +67,7 @@ public class LevelParser {
                 // Some final things...
                 switch (line[x]){
                     case "A2":
-                        new Home(x,y);
+                        map.setHome(new Home(x,y));
                         break;
                     case "L" :
                         map.setLeftTeleportPosition(new Vector(x,y));
@@ -139,25 +130,6 @@ public class LevelParser {
         }
 
         map.setPowerPelletsPosition(powerPelletPositions);
-    }
-
-    public Tile parseTile(String tileName) throws Exception {
-        // Tile name is always a letter, there can be a rotation number after (like "S90" or "C")
-        Tile tile;
-
-        switch (tileName.charAt(0)){
-            case 'S' : tile = new StraightTile(tileName.substring(1)); break;
-            case 'T' : tile = new TurnTile(tileName.substring(1)); break;
-            case 'H' : tile = new HalfcrossroadTile(tileName.substring(1)); break;
-            case 'C' : tile = new CrossroadTile(); break;
-            case 'R' : tile = new RightTeleportTile(); break;
-            case 'L' : tile = new LeftTeleportTile(); break;
-            case 'X' : tile = new EmptyTile(); break;
-            case 'A' : tile = new HomeTile(tileName.substring(1)); break;
-            case 'D' : tile = new DoorTile(); break;
-            default: throw new Exception("Wrong tile format.");
-        }
-        return tile;
     }
 
     public void checkHomeCoords(GameMap map) throws Exception {

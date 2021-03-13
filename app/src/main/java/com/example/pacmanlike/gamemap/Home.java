@@ -3,7 +3,7 @@ package com.example.pacmanlike.gamemap;
 import com.example.pacmanlike.objects.Vector;
 
 public class Home {
-    // Singleton
+    // Delete
     private static Home _instance;
 
     public static int SIZE_X = 3;
@@ -17,13 +17,13 @@ public class Home {
 
     public Vector getCoordinates() { return _coordinates;}
 
+    // Delete
     public static Home getInstance() { return _instance;}
 
-    public Home(int x, int y) throws Exception {
+    public Home(int x, int y) {
         _coordinates = new Vector(x,y);
 
-        if (_instance == null) {
-            _instance = this;
-        }
+        _instance = this;
+
     }
 }
