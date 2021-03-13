@@ -30,4 +30,5 @@
     <string name="highscore_text">NEW HIGHSCORE!</string>
     <string name="score_text">Your score:</string>
     <string name="retry_button">Retry</string>
+    <string name="victory_text">VICTORY</string>
 </resources>
