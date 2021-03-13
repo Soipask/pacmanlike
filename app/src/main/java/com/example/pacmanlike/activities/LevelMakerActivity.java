@@ -401,11 +401,16 @@ public class LevelMakerActivity extends AppCompatActivity {
                 break;
             case CHOOSE_NAME:
                 _levelName = _mapName.getText().toString();
+                if (!_levelName.matches("[A-Za-z0-9]+")){
+                    _instructions.setText(R.string.instructions_invalid_map_name);
+                    break;
+                }
                 saveMap();
                 stage = Stage.END;
                 _instructions.setText(R.string.instructions_saved);
                 btn.setText(R.string.return_button);
                 _mapName.setVisibility(View.INVISIBLE);
+                exportButton.setVisibility(View.INVISIBLE);
                 break;
             case RETURN:
                 stage = Stage.REPEATABLE;
