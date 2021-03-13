@@ -2,12 +2,20 @@ package com.example.pacmanlike.objects.ghosts;
 
 import com.example.pacmanlike.R;
 
+/**
+ * Class for serving frames for ghosts.
+ */
 public class GhostID {
 
+    /**
+     * Returns the addresses of the frames in the resources for the selected ghost.
+     * @param id Ghost ID
+     * @return Frames paths
+     */
     public static int[][] getSpriteID(int id){
         int[][] tmp = new int[2][7];
 
-        // vulnerable sprites
+        // vulnerable ghost frames praths
         tmp[1] = new int[]{
                 R.drawable.ghost_vulnerable_0,
                 R.drawable.ghost_vulnerable_1,
@@ -23,6 +31,8 @@ public class GhostID {
 
         switch (id){
             case 0:
+                // ID 0
+                // Red ghost frames paths
                 ghost = new int[]{
                         R.drawable.ghost_0_0,
                         R.drawable.ghost_0_1,
@@ -35,6 +45,8 @@ public class GhostID {
                 };
                 break;
             case 1:
+                // ID 1
+                // Purple ghost frames paths
                 ghost = new int[]{
                         R.drawable.ghost_1_0,
                         R.drawable.ghost_1_1,
@@ -47,6 +59,8 @@ public class GhostID {
                 };
                 break;
             case 2:
+                // ID 2
+                // Blue ghost frames paths
                 ghost = new int[]{
                         R.drawable.ghost_2_0,
                         R.drawable.ghost_2_1,
@@ -59,6 +73,8 @@ public class GhostID {
                 };
                 break;
             default:
+                // ID 3
+                // Orange ghost frames paths
                 ghost = new int[]{
                         R.drawable.ghost_3_0,
                         R.drawable.ghost_3_1,
@@ -71,6 +87,8 @@ public class GhostID {
                 };
                 break;
         }
+
+        // choosen ghost frames
         tmp[0] = ghost;
         return  tmp;
     }
