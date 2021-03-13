@@ -1,6 +1,7 @@
 package com.example.pacmanlike.gamemap.tiles;
 
 import com.example.pacmanlike.R;
+import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 
 public class HomeTile extends Tile {
@@ -8,7 +9,7 @@ public class HomeTile extends Tile {
 
     public HomeTile(String number) {
         super(0);
-        type = "Home";
+        type = AppConstants.HOME_TILE;
         this.number = Integer.parseInt(number);
         drawableId = R.drawable.empty;
         fillMoves();

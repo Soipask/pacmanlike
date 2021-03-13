@@ -13,7 +13,7 @@ public class StraightTile extends Tile {
     }
 
     private void fillMoves(){
-        switch (rotation){
+        switch (rotation % 180){
             case 0:
                 possibleMoves.add(Direction.LEFT);
                 possibleMoves.add(Direction.RIGHT);
