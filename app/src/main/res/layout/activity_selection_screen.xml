@@ -36,7 +36,7 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="@dimen/selection_scroll_width"
-        android:layout_height="@dimen/selection_scroll_height"
+        android:layout_height="@dimen/choose_level_height"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="32dp"
