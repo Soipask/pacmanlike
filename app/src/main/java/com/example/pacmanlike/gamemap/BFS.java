@@ -14,12 +14,26 @@ import java.util.List;
 
 public class BFS {
 
+    /**
+     * Represents the vertex for the BFS search algorithm
+     */
     private class Node{
 
+        // Vertex position
         Vector position;
+
+        // Parent's node
         Node parent;
+
+        // Direction from parent to node
         Direction direction;
 
+        /**
+         * Constructor for BFS node
+         * @param position Node position in map
+         * @param parent Node parent
+         * @param direction Direction from parent to node
+         */
         public Node(Vector position, Node parent, Direction direction){
             this.position = position;
             this.parent = parent;

@@ -38,6 +38,9 @@ public class GameEngine {
     static final Object _sync = new Object();
     static float _lastTouchedX, _lastTouchedY;
 
+
+    private int _numberOfPells = 0;
+
     private static int _pacSpeed;
     private static int _pacStep;
 
@@ -66,6 +69,7 @@ public class GameEngine {
         addPells(AppConstants.getGameMap());
         _arrowIdenticator = new ArrowIndicator(context);
 
+        _numberOfPells = 0;
         _pacSpeed = 10;
         _pacStep = 1;
         _SCORE = 0;
@@ -98,6 +102,7 @@ public class GameEngine {
             if(!tile.type.equals("Empty") && !tile.type.equals("Home") &&
                     !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)){
                     tile.setFood(Food.PowerPellet);
+                    _numberOfPells++;
             }
         }
 
@@ -111,6 +116,7 @@ public class GameEngine {
                 if(!tile.type.equals("Empty") && !tile.type.equals("Home") && tile.getFood() != Food.PowerPellet &&
                         !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)) {
                     tile.setFood(Food.Pellet);
+                    _numberOfPells++;
                 }
             }
         }
@@ -150,6 +156,8 @@ public class GameEngine {
                _ghostsEngine.updateTeleporation();
 
                interactionPacGhosts();
+
+               isVictory();
             }
         }
     }
@@ -215,7 +223,11 @@ public class GameEngine {
         }
     }
 
-
+    public void isVictory() {
+            if(_numberOfPells == 0){
+                _endGame = true;
+            }
+    }
 
     private void upadateTeleporation(DrawalbeObjects entity){
         GameMap gameMap = AppConstants.getGameMap();
@@ -251,10 +263,16 @@ public class GameEngine {
 
                 _SCORE += _PELLSCORE;
                 tile.setFood(Food.None);
+                _numberOfPells--;
+
+
+
             } else if(tile.getFood() == Food.PowerPellet) {
                 _SCORE += _POWERPELLSCORE;
                 _ghostsEngine.startVulnereble();
                 tile.setFood(Food.None);
+                _numberOfPells--;
+
             }
         }
     }
