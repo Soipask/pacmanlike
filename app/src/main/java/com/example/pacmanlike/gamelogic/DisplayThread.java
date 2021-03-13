@@ -32,6 +32,12 @@ public class DisplayThread extends Thread {
 
     GameView view;
 
+    /**
+     * reates Display thread of games.
+     * @param surfaceHolder Surface
+     * @param context GameScreen
+     * @param view GameView
+     */
     public DisplayThread(SurfaceHolder surfaceHolder, Context context, GameView view) {
         _surfaceHolder = surfaceHolder;
 
@@ -83,6 +89,8 @@ public class DisplayThread extends Thread {
             }
         }
 
+        // end game
+        // new activity
         if(AppConstants.getEngine().isEndGame()){
             Intent intent = new Intent(context, GameOverActivity.class);
             context.startActivity(intent);
