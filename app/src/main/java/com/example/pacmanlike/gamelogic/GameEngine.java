@@ -5,10 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import com.example.pacmanlike.gamemap.GameMap;
-import com.example.pacmanlike.gamemap.Home;
 import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.main.AppConstants;
-import com.example.pacmanlike.objects.DrawalbeObjects;
+import com.example.pacmanlike.objects.DrawableObjects;
 import com.example.pacmanlike.objects.Food;
 import com.example.pacmanlike.objects.ghosts.Ghost;
 import com.example.pacmanlike.objects.Vector;
@@ -230,7 +229,7 @@ public class GameEngine {
             }
     }
 
-    private void upadateTeleporation(DrawalbeObjects entity){
+    private void upadateTeleporation(DrawableObjects entity){
         GameMap gameMap = AppConstants.getGameMap();
         Vector position = entity.getAbsolutePosition();
 

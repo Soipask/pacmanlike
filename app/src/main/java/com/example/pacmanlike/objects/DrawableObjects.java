@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-public abstract class DrawalbeObjects {
+public abstract class DrawableObjects {
 
     protected int _frameIndex;
     protected int _totalframe;

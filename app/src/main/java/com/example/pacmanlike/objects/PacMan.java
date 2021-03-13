@@ -11,7 +11,7 @@ import com.example.pacmanlike.main.AppConstants;
  * It stores basic information about the location and
  * characteristics of this character
  */
-public class PacMan extends  DrawalbeObjects{
+public class PacMan extends DrawableObjects {
 
     /**
      * Creates a pecman at the specified position

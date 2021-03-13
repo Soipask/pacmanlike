@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import com.example.pacmanlike.R;
 import com.example.pacmanlike.main.AppConstants;
 
-public class ArrowIndicator  extends DrawalbeObjects {
+public class ArrowIndicator  extends DrawableObjects {
 
     private int _arrowSize;
 

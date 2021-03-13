@@ -5,13 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.example.pacmanlike.R;
 import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
-import com.example.pacmanlike.objects.DrawalbeObjects;
+import com.example.pacmanlike.objects.DrawableObjects;
 import com.example.pacmanlike.objects.Vector;
 
-public class Ghost extends DrawalbeObjects {
+public class Ghost extends DrawableObjects {
 
     private int[][] _spriteId;
 
