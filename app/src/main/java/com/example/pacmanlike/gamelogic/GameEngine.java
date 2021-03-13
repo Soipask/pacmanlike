@@ -77,7 +77,7 @@ public class GameEngine {
 
         _endGame = false;
         _gameOver = false;
-        _ghostsEngine = new GhostsEngineAdvanced(context, Home.getInstance().getCoordinates());
+        _ghostsEngine = new GhostsEngineAdvanced(context, AppConstants.getGameMap().getHome().getCoordinates());
 
     }
 
