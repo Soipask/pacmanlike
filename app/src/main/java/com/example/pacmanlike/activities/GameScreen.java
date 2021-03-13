@@ -15,6 +15,7 @@ import com.example.pacmanlike.view.LevelParser;
 public class GameScreen extends AppCompatActivity {
     GameMap map;
     LevelParser parser = new LevelParser();
+    GameView gameView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -34,8 +35,11 @@ public class GameScreen extends AppCompatActivity {
             // Initialization of the AppConstants class
             AppConstants.initialization(this.getApplicationContext(), map);
 
-            SurfaceView view = new GameView(this, AppConstants.getEngine());
+            gameView = new GameView(this, AppConstants.getEngine());
+
+            SurfaceView view = gameView;
             setContentView(view);
+
 
         } catch (Exception e) {
             e.printStackTrace();

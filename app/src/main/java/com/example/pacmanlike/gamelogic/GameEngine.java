@@ -29,7 +29,7 @@ public class GameEngine {
 
 
 
-   static Boolean _ENDGAME = false;
+   static Boolean _endGame = false, _gameOver = false;
 
     static PacMan _pacman;
 
@@ -70,11 +70,20 @@ public class GameEngine {
         _pacStep = 1;
         _SCORE = 0;
 
+        _endGame = false;
+        _gameOver = false;
         _ghostsEngine = new GhostsEngineAdvanced(context, Home.getInstance().getCoordinates());
 
     }
 
     Paint _paint, _paintPells, _paintPowerPells;
+
+
+    public boolean isEndGame(){return _endGame; }
+
+    public boolean isGameOver() {return _gameOver;}
+
+    public Integer getScore() {return _SCORE; }
 
 
     public void addPells(GameMap map) {
@@ -169,7 +178,8 @@ public class GameEngine {
                     g.setRelativePosition(_ghostsEngine.getHome());
 
                 }else {
-                    _ENDGAME = true;
+                    _endGame = true;
+                    _gameOver = true;
                 }
             }
         }
