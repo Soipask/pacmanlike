@@ -1,11 +1,19 @@
 package com.example.pacmanlike.gamelogic;
 
+import android.accessibilityservice.AccessibilityService;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
+import com.example.pacmanlike.activities.GameOverActivity;
+import com.example.pacmanlike.activities.GameScreen;
+import com.example.pacmanlike.activities.SelectionScreen;
 import com.example.pacmanlike.main.AppConstants;
+import com.example.pacmanlike.main.MainActivity;
+import com.example.pacmanlike.view.GameView;
 
 /**
  * Responsible for screen painting.
@@ -18,16 +26,23 @@ public class DisplayThread extends Thread {
 
     //Delay amount between screen refreshes
     final long  DELAY = 4;
-
     boolean  _isOnRun;
 
-    public DisplayThread(SurfaceHolder surfaceHolder, Context context) {
+    Context context;
+
+    GameView view;
+
+    public DisplayThread(SurfaceHolder surfaceHolder, Context context, GameView view) {
         _surfaceHolder = surfaceHolder;
 
         //black painter below to clear the screen before the game is rendered
         _backgroundPaint = new Paint();
         _backgroundPaint.setARGB(255, 0, 0, 0);
         _isOnRun = true;
+
+        this.context = context;
+
+        this.view = view;
     }
 
     /**
@@ -56,13 +71,21 @@ public class DisplayThread extends Thread {
             }
 
 
+            if (AppConstants.getEngine().isEndGame()) {
+                _isOnRun = false;
+            }
+
             //delay time
             try {
                 Thread.sleep(DELAY);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            catch (InterruptedException ex) {
-                //TODO: Log
-            }
+        }
+
+        if(AppConstants.getEngine().isEndGame()){
+            Intent intent = new Intent(context, GameOverActivity.class);
+            context.startActivity(intent);
         }
     }
 
