@@ -32,7 +32,7 @@ public class GhostsEngineAdvanced extends GhostsEngine {
     private int _numberOfRandomGhosts;
 
     /**
-     * constructor for ghost control class.
+     * Constructor for ghost control class.
      * Control based on bfs.
      * Initial properties in the specified context.
      * @param context GameView.
@@ -115,10 +115,10 @@ public class GhostsEngineAdvanced extends GhostsEngine {
         GameMap gameMap = AppConstants.getGameMap();
 
         // Sets vulnerability
-        if(_vulnereble == 0) {
+        if(_vulnerebleTicks == 0) {
             setVulnerable(false);
         } else {
-            _vulnereble--;
+            _vulnerebleTicks--;
         }
 
         // Random ghost
