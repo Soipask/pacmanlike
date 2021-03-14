@@ -125,14 +125,16 @@ public class LevelParser {
         // POWER=x1;y1.x2;y2.x3;y3.x4;y4
         // (where (xi,yi) are coordinates of power pellets in the level)
         String value = _dictionary.get(AppConstants.POWER_STARTING_KEYWORD);
-        String[] allPellets = value.split(AppConstants.MORE_DATA_DELIMITER);
         ArrayList<Vector> powerPelletPositions = new ArrayList<>();
 
-        for (String pellet : allPellets){
-            String[] coords = pellet.split(AppConstants.COORDS_DELIMITER);
-            powerPelletPositions.add( new Vector(Integer.parseInt(coords[0]), Integer.parseInt(coords[1])) );
-        }
+        if(value != null) {
+            String[] allPellets = value.split(AppConstants.MORE_DATA_DELIMITER);
 
+            for (String pellet : allPellets) {
+                String[] coords = pellet.split(AppConstants.COORDS_DELIMITER);
+                powerPelletPositions.add(new Vector(Integer.parseInt(coords[0]), Integer.parseInt(coords[1])));
+            }
+        }
         map.setPowerPelletsPosition(powerPelletPositions);
     }
 

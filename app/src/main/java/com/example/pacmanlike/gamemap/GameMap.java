@@ -25,7 +25,6 @@ public class GameMap {
     private Vector _rightTeleportPosition;
 
     // power pells positions on game map
-    private ArrayList<Vector> _powerPelletsPosition;
     private ArrayList<Vector> _powerPelletsPosition = new ArrayList<>();
 
     // ghost homew position on game map

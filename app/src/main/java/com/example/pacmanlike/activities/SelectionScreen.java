@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SelectionScreen extends AppCompatActivity {
-    public static final String BASIC_MAP = "basicmap.csv";
-    public static final String NARROW_MAP = "narrowmap.csv";
+    public static final String BASIC_MAP = "_basicmap.csv";
+    public static final String NARROW_MAP = "_narrowmap.csv";
 
     private final HashMap<Integer, String> _mapDictionary = new HashMap<Integer, String>();
     public static final ArrayList<String> _internalMaps = new ArrayList<String>();

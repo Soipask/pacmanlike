@@ -41,7 +41,7 @@ public class GameOverActivity extends AppCompatActivity {
 
         // Setting and writing highscore text
         String levelName = intent.getStringExtra(AppConstants.LEVEL_NAME);
-        File file = new File(getApplicationContext().getFilesDir(), levelName + ".hsc");
+        File file = new File(getApplicationContext().getFilesDir(), levelName + AppConstants.HIGHSCORE_EXTENSION);
         boolean isHighscore = false;
         try {
             Scanner reader = new Scanner(file);
