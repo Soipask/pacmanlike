@@ -25,6 +25,7 @@ public class GameMap {
     private Vector _rightTeleportPosition;
 
     // power pells positions on game map
+    private ArrayList<Vector> _powerPelletsPosition;
     private ArrayList<Vector> _powerPelletsPosition = new ArrayList<>();
 
     // ghost homew position on game map
@@ -159,17 +160,18 @@ public class GameMap {
 
         // pellets
         StringBuilder positionStrings = new StringBuilder();
-        positionStrings.append(_powerPelletsPosition.get(0));
-        for (int i = 1; i < _powerPelletsPosition.size(); i++){
-            positionStrings.append(AppConstants.MORE_DATA_DELIMITER);
-            positionStrings.append(_powerPelletsPosition.get(i).toString());
-        }
+        String pellets = "";
+        if (_powerPelletsPosition.size() > 0) {
+            positionStrings.append(_powerPelletsPosition.get(0));
+            for (int i = 1; i < _powerPelletsPosition.size(); i++) {
+                positionStrings.append(AppConstants.MORE_DATA_DELIMITER);
+                positionStrings.append(_powerPelletsPosition.get(i).toString());
+            }
 
-        String pellets = (_powerPelletsPosition.size() > 0)?
-                AppConstants.POWER_STARTING_KEYWORD +
-                        AppConstants.KEY_VALUE_DELIMITER +
-                        positionStrings.toString():
-                "";
+            pellets = AppConstants.POWER_STARTING_KEYWORD +
+                            AppConstants.KEY_VALUE_DELIMITER +
+                            positionStrings.toString();
+        }
 
         // map
         StringBuilder map = new StringBuilder();

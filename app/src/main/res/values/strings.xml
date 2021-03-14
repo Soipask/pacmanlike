@@ -37,4 +37,5 @@
     <string name="clipboard_copied">Copied to clipboard</string>
     <string name="instructions_import">Please, copy the map code into textbox.</string>
     <string name="instructions_failed_import">Failed to parse, please try again</string>
+    <string name="instructions_invalid_map_name">Invalid map name, use only alphanumeric characters</string>
 </resources>
