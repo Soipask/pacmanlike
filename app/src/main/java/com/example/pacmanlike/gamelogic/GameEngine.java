@@ -9,6 +9,7 @@ import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.DrawableObjects;
 import com.example.pacmanlike.objects.Food;
+import com.example.pacmanlike.objects.Pells;
 import com.example.pacmanlike.objects.ghosts.Ghost;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.objects.ArrowIndicator;
@@ -17,40 +18,27 @@ import com.example.pacmanlike.objects.PacMan;
 import com.example.pacmanlike.objects.ghosts.engine.GhostsEngine;
 import com.example.pacmanlike.objects.ghosts.engine.GhostsEngineAdvanced;
 
-import java.util.ArrayList;
-
 /*
 * Stores all object references that relevant for the game display
 * Calls objects business logic methods, and draw them to the given Canvas from DisplayThread
 * */
 public class GameEngine {
     /*MEMBERS*/
-
-
-   static Boolean _endGame = false, _gameOver = false;
-
+    static Boolean _endGame = false, _gameOver = false;
     static PacMan _pacman;
-
     static ArrowIndicator _arrowIdenticator;
-
     static final Object _sync = new Object();
     static float _lastTouchedX, _lastTouchedY;
-
-
-    private int _numberOfPells = 0;
-
-    private static int _pacSpeed;
-    private static int _pacStep;
-
+    private static int _pacSpeed , _ghostsSpeed, _pacStep;
     private static int _SCORE;
-    private static int _PELLSCORE = 20, _POWERPELLSCORE = 50, _GHOSTSCORE = 200;
-
-    static ArrayList<Ghost> _ghosts = new ArrayList<Ghost>();
-
+    private static int _GHOSTSCORE = 200;
     private static GhostsEngine _ghostsEngine;
+    private static Pells _pells;
+
+    Paint _paint, _paintPells, _paintPowerPells;
 
     public GameEngine(Context context) {
-        _numberOfPells = 0;
+
 
         _paint = new Paint();
         _paintPells = new Paint();
@@ -61,25 +49,24 @@ public class GameEngine {
         _paintPowerPells.setStyle(Paint.Style.FILL);
         _paintPowerPells.setColor(Color.YELLOW);
 
-
         // Adds game objects
         _pacman = new PacMan(context, AppConstants.getGameMap().getStartingPacPosition());
 
-        addPells(AppConstants.getGameMap());
+        _pells = new Pells( AppConstants.getGameMap());
+
         _arrowIdenticator = new ArrowIndicator(context);
 
-
         _pacSpeed = 10;
+        _ghostsSpeed = 8;
         _pacStep = 1;
         _SCORE = 0;
 
         _endGame = false;
         _gameOver = false;
+
         _ghostsEngine = new GhostsEngineAdvanced(context, AppConstants.getGameMap().getHome().getCoordinates());
 
     }
-
-    Paint _paint, _paintPells, _paintPowerPells;
 
 
     public boolean isEndGame(){return _endGame; }
@@ -88,38 +75,7 @@ public class GameEngine {
 
     public Integer getScore() {return _SCORE; }
 
-
-    public void addPells(GameMap map) {
-
-        for (Vector powerPell :map.getPowerPelletsPosition()) {
-
-            int x = powerPell.x;
-            int y = powerPell.y;
-
-            Tile tile = map.getTile(x,y);
-
-            if(!tile.type.equals("Empty") && !tile.type.equals("Home") &&
-                    !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)){
-                    tile.setFood(Food.PowerPellet);
-                    _numberOfPells++;
-            }
-        }
-
-
-
-        for (int y = 0; y < AppConstants.MAP_SIZE_Y; y++) {
-            for (int x = 0; x < AppConstants.MAP_SIZE_X; x++)
-            {
-                Tile tile = map.getTile(x,y);
-
-                if(!tile.type.equals("Empty") && !tile.type.equals("Home") && tile.getFood() != Food.PowerPellet &&
-                        !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)) {
-                    tile.setFood(Food.Pellet);
-                    _numberOfPells++;
-                }
-            }
-        }
-    }
+    public GhostsEngine getGhostsEngine(){return _ghostsEngine; }
 
     /**
      * Updates all relevant objects business logic
@@ -142,13 +98,13 @@ public class GameEngine {
                 detectWallCollision();
                 _ghostsEngine.update();
 
-                updatePells();
+                _SCORE += _pells.update();
                 movePacman(_pacStep);
-                updatePells();
+                _SCORE += _pells.update();
 
                 upadateTeleporation(_pacman);
 
-                if(step % 2 == 0){
+                if(step < _ghostsSpeed){
                     _ghostsEngine.moveGhosts(_pacStep);
                 }
 
@@ -160,8 +116,6 @@ public class GameEngine {
             }
         }
     }
-
-
 
     public void interactionPacGhosts(){
 
@@ -223,7 +177,7 @@ public class GameEngine {
     }
 
     public void isVictory() {
-        if(_numberOfPells == 0){
+        if(_pells.getNumberOfPells() == 0){
             _endGame = true;
         }
     }
@@ -235,7 +189,7 @@ public class GameEngine {
         if(AppConstants.testCenterTile(position)) {
 
             Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
-            int _blockSize = AppConstants.getBlockSize();
+            // int _blockSize = AppConstants.getBlockSize();
 
             if(tile.type.equals("LeftTeleport"))
             {
@@ -251,30 +205,6 @@ public class GameEngine {
         }
     }
 
-    private void updatePells(){
-        GameMap gameMap = AppConstants.getGameMap();
-        Vector position = _pacman.getAbsolutePosition();
-
-        if(AppConstants.testCenterTile(position)) {
-            Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
-
-            if(tile.getFood() == Food.Pellet) {
-
-                _SCORE += _PELLSCORE;
-                tile.setFood(Food.None);
-                _numberOfPells--;
-
-
-
-            } else if(tile.getFood() == Food.PowerPellet) {
-                _SCORE += _POWERPELLSCORE;
-                _ghostsEngine.startVulnereble();
-                tile.setFood(Food.None);
-                _numberOfPells--;
-
-            }
-        }
-    }
     /**
      *
      * @param step
@@ -300,7 +230,6 @@ public class GameEngine {
         }
     }
 
-
     /**
      * Draws all objects according to their parameters
      * @param canvas
@@ -308,44 +237,11 @@ public class GameEngine {
      * */
     public void draw(Canvas canvas) {
 
-        drawBackground(canvas);
-        drawPells(canvas);
-
-        drawGhosts(canvas, _paint);
+        AppConstants.getGameMap().draw(canvas, _paint);
+        _pells.draw(canvas, _paintPells, _paintPowerPells);
+        _ghostsEngine.draw(canvas, _paint);
         _pacman.draw(canvas, _paint);
         _arrowIdenticator.draw(canvas, _paint);
-    }
-
-    public void drawPells(Canvas canvas) {
-
-        GameMap map = AppConstants.getGameMap();
-        int _blockSize = AppConstants.getBlockSize();
-
-        for (int y = 0; y < AppConstants.MAP_SIZE_Y; y++) {
-            for (int x = 0; x < AppConstants.MAP_SIZE_X; x++)
-            {
-                if(map.getTile(x,y).getFood() == Food.Pellet) {
-                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.1f, _paintPells);
-                } else if(map.getTile(x,y).getFood() == Food.PowerPellet) {
-
-                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.2f, _paintPells);
-                    canvas.drawCircle(x * _blockSize + _blockSize / 2, y * _blockSize + _blockSize / 2, AppConstants.getBlockSize() * 0.1f, _paintPowerPells);
-                }
-            }
-        }
-    }
-
-    private void drawGhosts(Canvas canvas, Paint paint) {
-        _ghostsEngine.draw(canvas, paint);
-    }
-
-    /**
-     * Draws background bitmap
-     * @param canvas
-     * 			canvas on which will be drawn the bitmap
-     **/
-    private void drawBackground(Canvas canvas) {
-        canvas.drawBitmap(AppConstants.getGameMap().getBackground(), 0,0, _paint);
     }
 
     /**
