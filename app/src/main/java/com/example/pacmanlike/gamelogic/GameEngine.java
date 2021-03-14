@@ -81,23 +81,28 @@ public abstract class GameEngine {
     public Integer getScore() {return _SCORE; }
 
     /**
-     *
-     * @param touchX
-     * @param touchY
+     * Select the direction of movement according to the user's swipe on the display
+     * @param touchX X's touch coordinate
+     * @param touchY Y's touch coordinate
      */
     public void setSwipeDirection(int touchX, int touchY) {
 
-        //
+        // calculates the offset from the previous and current touch
         float xDiff = (touchX - _lastTouchedX);
         float yDiff = (touchY - _lastTouchedY);
 
+        // Selects x or y based on where the larger offset was
         if (Math.abs(yDiff) > Math.abs(xDiff)) {
+
+            // according to the sign, choose the direction
             if (yDiff < 0) {
                 _arrowIdenticator.setDirection(Direction.UP);
             } else if (yDiff > 0) {
                 _arrowIdenticator.setDirection(Direction.DOWN);
             }
         } else {
+
+            // according to the sign, choose the direction
             if (xDiff < 0) {
                 _arrowIdenticator.setDirection(Direction.LEFT);
             } else if (xDiff > 0) {
