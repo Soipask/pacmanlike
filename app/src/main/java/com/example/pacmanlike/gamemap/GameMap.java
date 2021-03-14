@@ -1,6 +1,8 @@
 package com.example.pacmanlike.gamemap;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.objects.Vector;
@@ -185,5 +187,14 @@ public class GameMap {
         String mapString = map.toString();
 
         return pac + AppConstants.CSV_DELIMITER + pellets + "\n" + mapString;
+    }
+
+    /**
+     * Draws background bitmap
+     * @param canvas
+     * 			canvas on which will be drawn the bitmap
+     **/
+    public void draw(Canvas canvas, Paint paint) {
+        canvas.drawBitmap(_background, 0,0, paint);
     }
 }

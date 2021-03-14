@@ -1,6 +1,6 @@
 package com.example.pacmanlike.gamemap.tiles;
 
-import com.example.pacmanlike.objects.Food;
+import com.example.pacmanlike.objects.food.Food;
 import com.example.pacmanlike.objects.Direction;
 
 import java.util.ArrayList;
