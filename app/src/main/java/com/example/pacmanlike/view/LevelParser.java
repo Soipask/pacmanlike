@@ -42,6 +42,10 @@ public class LevelParser {
         }
     }
 
+    public void initImportControl(String level){
+        _reader = new Scanner(level);
+    }
+
     public GameMap parse() throws Exception {
         GameMap map = new GameMap();
 

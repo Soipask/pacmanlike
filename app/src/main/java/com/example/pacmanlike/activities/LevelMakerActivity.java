@@ -23,6 +23,8 @@ import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.Vector;
+import com.example.pacmanlike.view.ImportExportMap;
+import com.example.pacmanlike.view.LevelParser;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -40,7 +42,6 @@ public class LevelMakerActivity extends AppCompatActivity {
     private HashMap<Integer, Character> _viewChars = new HashMap<>();
     private HashMap<Integer, Integer> _buttonBackgroundResource = new HashMap<>();
     private HashSet<Integer> _oneTimeIds = new HashSet();
-    private View _lastClicked;
 
     private HorizontalScrollView _oneTimeButtons, _repeatableButtons;
     private TextView _instructions, _mapName;
@@ -61,33 +62,35 @@ public class LevelMakerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_maker);
 
-        /*
-        _tileSize = Math.min (
-                (AppConstants.SCREEN_HEIGHT - 300) / AppConstants.MAP_SIZE_Y,
-                (AppConstants.SCREEN_WIDTH - 64) / AppConstants.MAP_SIZE_X
-        );
-        */
         _tileSize = 125;
 
-        prepareTiles();
-
         _oneTimeButtons = (HorizontalScrollView) findViewById(R.id.oneTimeButtonsScrollView);
-        _oneTimeButtons.setVisibility(View.VISIBLE);
         _repeatableButtons = (HorizontalScrollView) findViewById(R.id.repeatableButtonsScrollView);
-        _repeatableButtons.setVisibility(View.INVISIBLE);
         _instructions = (TextView) findViewById(R.id.instructionView);
-        _instructions.setVisibility(View.INVISIBLE);
         _mapName = (TextView) findViewById(R.id.map_name);
-        _mapName.setVisibility(View.INVISIBLE);
-
-        Button btn = (Button) findViewById(R.id.continueButton);
-        btn.setVisibility(View.INVISIBLE);
 
         // onclick listeners for oneTimeButtons
         setOnClickToButtons();
 
         // onChangeSelected listeners for repeatable ones
         setOnChangeSelectedToRadio();
+
+        init();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    private void init(){
+        prepareTiles();
+
+        _oneTimeButtons.setVisibility(View.VISIBLE);
+        _repeatableButtons.setVisibility(View.INVISIBLE);
+        _instructions.setVisibility(View.INVISIBLE);
+        _mapName.setVisibility(View.INVISIBLE);
+
+        Button btn = (Button) findViewById(R.id.continueButton);
+        TextView textView = (TextView) findViewById(R.id.editTextTextMultiLine);
+        btn.setVisibility(View.INVISIBLE);
+        textView.setVisibility(View.INVISIBLE);
 
         _selected = R.id.emptyButton;
         fillViewChars();
@@ -174,7 +177,7 @@ public class LevelMakerActivity extends AppCompatActivity {
                     if (square.position.x == 0) return;
                     break;
                 case R.id.doorButton:
-                    if (square.position.y >= AppConstants.MAP_SIZE_Y - 2 ||
+                    if (square.position.y >= AppConstants.MAP_SIZE_Y - 1 ||
                             square.position.x == 0 ||
                             square.position.x == AppConstants.MAP_SIZE_X - 1 ||
                             !canPlaceHomeHere(square)
@@ -359,12 +362,14 @@ public class LevelMakerActivity extends AppCompatActivity {
 
     private void goToNextStage() throws Exception {
         Button btn = (Button) findViewById(R.id.continueButton);
+        Button exportButton = (Button) findViewById(R.id.importExportButton);
         switch (stage){
             case ONE_TIMES:
                 stage = Stage.REPEATABLE;
                 _oneTimeButtons.setVisibility(View.INVISIBLE);
                 _repeatableButtons.setVisibility(View.VISIBLE);
                 btn.setVisibility(View.VISIBLE);
+                exportButton.setVisibility(View.INVISIBLE);
                 break;
             case REPEATABLE:
                 stage = Stage.PAC;
@@ -382,7 +387,7 @@ public class LevelMakerActivity extends AppCompatActivity {
                 for (int i = 0; i < AppConstants.MAX_POWER_PELLETS; i++){
                     if (_powerPelletVectors.get(i) != null) positions.add(_powerPelletVectors.get(i));
                 }
-                _gameMap.setPowerPelletsPosition(_powerPelletVectors);
+                _gameMap.setPowerPelletsPosition(positions);
                 validation(btn);
                 break;
             case PRE_SAVE:
@@ -391,13 +396,16 @@ public class LevelMakerActivity extends AppCompatActivity {
                 btn.setText(R.string.save_button);
                 _levelString = _gameMap.toString();
                 _mapName.setVisibility(View.VISIBLE);
+                exportButton.setVisibility(View.VISIBLE);
+                exportButton.setText(R.string.export_button);
                 break;
             case CHOOSE_NAME:
+                _levelName = _mapName.getText().toString();
+                saveMap();
                 stage = Stage.END;
                 _instructions.setText(R.string.instructions_saved);
                 btn.setText(R.string.return_button);
-                _levelName = _mapName.getText().toString();
-                saveMap();
+                _mapName.setVisibility(View.INVISIBLE);
                 break;
             case RETURN:
                 stage = Stage.REPEATABLE;
@@ -500,8 +508,65 @@ public class LevelMakerActivity extends AppCompatActivity {
         goToNextStage();
     }
 
+    public void onImportExportClick(View view){
+        Button btn = (Button) findViewById(R.id.continueButton);
+        Button exportButton = (Button) findViewById(R.id.importExportButton);
+        TextView textView = (TextView) findViewById(R.id.editTextTextMultiLine);
+
+        switch (stage){
+            case ONE_TIMES:
+                // show multiline text to write
+                textView.setVisibility(View.VISIBLE);
+
+                // set continue to invisible
+                btn.setVisibility(View.INVISIBLE);
+                // set importexport to validate
+                exportButton.setText(R.string.validate_button);
+                _instructions.setText(R.string.instructions_import);
+                // set stage to import
+                stage = Stage.IMPORT;
+                break;
+            case IMPORT:
+                String mapCode = textView.getText().toString();
+                _levelString = ImportExportMap.importMap(mapCode);
+
+                // try parse to see if it works
+                try{
+                    LevelParser parser = new LevelParser();
+                    parser.initImportControl(_levelString);
+                    GameMap map = parser.parse();
+                } catch (Exception e){
+                    // if parse failed, give user a second chance
+                    _instructions.setText(R.string.instructions_failed_import);
+                    break;
+                }
+
+                stage = Stage.CHOOSE_NAME;
+                _instructions.setText(R.string.instructions_mapname);
+                _instructions.setVisibility(View.VISIBLE);
+                btn.setText(R.string.save_button);
+                _mapName.setVisibility(View.VISIBLE);
+                btn.setVisibility(View.VISIBLE);
+                exportButton.setVisibility(View.INVISIBLE);
+                _oneTimeButtons.setVisibility(View.INVISIBLE);
+                break;
+            case CHOOSE_NAME:
+                String exportString = ImportExportMap.exportMap(_levelString);
+                ImportExportMap.copyToClipboard(this, exportString);
+                _instructions.setText(R.string.clipboard_copied);
+
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(exportString);
+                exportButton.setVisibility(View.INVISIBLE);
+
+                break;
+        }
+    }
+
     private void saveMap() throws IOException {
-        File file = new File(getApplicationContext().getFilesDir(), _levelName + ".csv");
+        File parent = getApplicationContext().getFilesDir();
+
+        File file = new File(parent, _levelName + AppConstants.CSV_EXTENSION);
         FileWriter writer = new FileWriter(file);
         writer.write(_levelString);
         writer.flush();
@@ -529,6 +594,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         CHOOSE_NAME,
         PRE_SAVE,
         RETURN,
+        IMPORT,
         END
     }
 }
