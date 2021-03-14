@@ -36,11 +36,15 @@ public class AppConstants {
     // Game constants
     public static String PAC_STARTING_KEYWORD = "PAC", POWER_STARTING_KEYWORD = "POWER";
     public static String CSV_DELIMITER = ",", KEY_VALUE_DELIMITER = "=", COORDS_DELIMITER = ";", MORE_DATA_DELIMITER = "/";
+    public static char CHAR_CSV_DELIMITER = ',', CHAR_KEY_VALUE = '=', CHAR_COORDS = ';', CHAR_MORE_DATA = '/';
+    public static char CHAR_CSV_NEWLINE = '\n';
     public static String LEFT_TELEPORT = "LeftTeleport", RIGHT_TELEPORT = "RightTeleport", HOME_TILE = "Home";
-    public static char EXPORT_MAPNAME = ';', EXPORT_CSV_DELIMITER = 'x', EXPORT_NEW_LINE = 'n';
-    public static char CHAR_CSV_DELIMITER = ',', CHAR_CSV_NEWLINE = '\n';
     public static String CSV_EXTENSION = ".csv", HIGHSCORE_EXTENSION = ".hsc";
     public static String CLIPBOARD_LABEL = "Export a map";
+
+    // Export and import
+    public static char EXPORT_CSV_DELIMITER = 'x', EXPORT_KEY_VALUE ='k', EXPORT_COORDS = 'c', EXPORT_MORE_DATA = 'm';
+    public static char EXPORT_NEW_LINE = 'n';
 
     public static int MAX_POWER_PELLETS = 4;
 
