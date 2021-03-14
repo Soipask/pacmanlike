@@ -41,6 +41,7 @@ public class AppConstants {
     public static String LEFT_TELEPORT = "LeftTeleport", RIGHT_TELEPORT = "RightTeleport", HOME_TILE = "Home";
     public static String CSV_EXTENSION = ".csv", HIGHSCORE_EXTENSION = ".hsc";
     public static String CLIPBOARD_LABEL = "Export a map";
+    public static char CHAR_EMPTY_TILE = 'X', CHAR_HOME_TILE = 'A';
 
     // Export and import
     public static char EXPORT_CSV_DELIMITER = 'x', EXPORT_KEY_VALUE ='k', EXPORT_COORDS = 'c', EXPORT_MORE_DATA = 'm';
