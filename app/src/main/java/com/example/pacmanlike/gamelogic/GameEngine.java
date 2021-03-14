@@ -223,9 +223,9 @@ public class GameEngine {
     }
 
     public void isVictory() {
-            if(_numberOfPells == 0){
-                _endGame = true;
-            }
+        if(_numberOfPells == 0){
+            _endGame = true;
+        }
     }
 
     private void upadateTeleporation(DrawableObjects entity){

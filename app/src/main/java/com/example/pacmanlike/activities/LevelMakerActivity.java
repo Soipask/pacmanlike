@@ -576,13 +576,6 @@ public class LevelMakerActivity extends AppCompatActivity {
         writer.write(_levelString);
         writer.flush();
         writer.close();
-
-        // Save highscore file for easier work
-        File highscoreFile = new File(parent, _levelName + AppConstants.HIGHSCORE_EXTENSION);
-        FileWriter hscwriter = new FileWriter(highscoreFile);
-        hscwriter.write("0");
-        hscwriter.flush();
-        hscwriter.close();
     }
 
     public class MapSquare{
