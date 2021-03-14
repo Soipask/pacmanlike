@@ -5,7 +5,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.example.pacmanlike.gamelogic.GameEngine;
+import com.example.pacmanlike.gamelogic.GameEnginePacman;
 import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.view.LevelView;
@@ -16,7 +16,7 @@ import com.example.pacmanlike.view.LevelView;
 public class AppConstants {
 
     // game
-    static GameEngine _engine;
+    static GameEnginePacman _engine;
     static GameMap _gameMap;
 
     // map size
@@ -51,7 +51,7 @@ public class AppConstants {
     public static void initialization(Context context, GameMap map) {
         _gameMap = map;
         setScreenSize(context);
-        _engine = new GameEngine(context);
+        _engine = new GameEnginePacman(context);
         LevelView levelView = new LevelView(map);
         map.setBackground(levelView.createLevelBitmap(context));
     }
@@ -102,7 +102,7 @@ public class AppConstants {
     /**
      * @return GameEngine instance
      * */
-    public static GameEngine getEngine() { return _engine; }
+    public static GameEnginePacman getEngine() { return _engine; }
 
     public static boolean testCenterTile(Vector position) {
 
