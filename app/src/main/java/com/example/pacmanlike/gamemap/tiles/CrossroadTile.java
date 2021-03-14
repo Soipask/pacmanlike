@@ -1,22 +1,21 @@
 package com.example.pacmanlike.gamemap.tiles;
 
 import com.example.pacmanlike.R;
-import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.objects.Direction;
 
 public class CrossroadTile extends Tile {
     public CrossroadTile() {
         super(0);
-        type = "Crossroad";
-        drawableId = R.drawable.crossroad;
+        _type = "Crossroad";
+        _drawableId = R.drawable.crossroad;
         fillMoves();
     }
 
     private void fillMoves(){
-        possibleMoves.add(Direction.RIGHT);
-        possibleMoves.add(Direction.UP);
-        possibleMoves.add(Direction.LEFT);
-        possibleMoves.add(Direction.DOWN);
+        _possibleMoves.add(Direction.RIGHT);
+        _possibleMoves.add(Direction.UP);
+        _possibleMoves.add(Direction.LEFT);
+        _possibleMoves.add(Direction.DOWN);
     }
 
     @Override

@@ -74,7 +74,7 @@ public class SelectionScreen extends AppCompatActivity {
                 TableLayout table = (TableLayout) findViewById(R.id.table);
                 table.removeAllViews();
                 showMapPreview(checkedId, parser);
-                showExportButton(checkedId);
+                showHideExportButton(checkedId);
                 _currentCheckedId = checkedId;
             }
         });
@@ -86,6 +86,11 @@ public class SelectionScreen extends AppCompatActivity {
         _textView.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Shows preview of the selected map in the table to the right of radio button selection
+     * @param checkedId
+     * @param parser
+     */
     public void showMapPreview(int checkedId, LevelParser parser){
         try {
             parser.init(_mapDictionary.get(checkedId), this);
@@ -98,18 +103,29 @@ public class SelectionScreen extends AppCompatActivity {
         }
     }
 
-    private void showExportButton(int checkedId){
-        // Export button is only shown when custom made map is selected
+    /**
+     * Shows/hides Export map button based on if custom map is selected or not.
+     * @param checkedId
+     */
+    private void showHideExportButton(int checkedId){
         if (_internalMaps.contains(_mapDictionary.get(checkedId))){
             _exportBtn.setVisibility(View.INVISIBLE);
         } else _exportBtn.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Handles the Create new level button
+     * Starts new activity - LevelMakerActivity
+     */
     public void createLevel(View view){
         Intent intent = new Intent(this, LevelMakerActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Handles click on Start button
+     * Starts the selected map and the game on this map.
+     */
     public void startGame(View view){
         Intent intent = new Intent(this, GameScreen.class);
 
@@ -126,6 +142,11 @@ public class SelectionScreen extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Handles Export map Button,
+     * Copies the selected map to clipboard.
+     * @throws Exception Map parse exception
+     */
     public void exportMap(View view) throws Exception {
         LevelParser parser = new LevelParser();
         parser.init(_mapDictionary.get(_currentCheckedId), this);
@@ -138,6 +159,11 @@ public class SelectionScreen extends AppCompatActivity {
         _textView.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Filters just the files serving as map layouts from all the files
+     * @param files All the files in the internal storage
+     * @return Just the files belonging to map layouts
+     */
     private ArrayList<String> filterMaps (String[] files){
         ArrayList<String> maps = new ArrayList<String>();
 

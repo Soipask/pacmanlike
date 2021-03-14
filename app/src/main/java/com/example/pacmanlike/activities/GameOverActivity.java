@@ -20,6 +20,10 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class GameOverActivity extends AppCompatActivity {
+
+    /**
+     * Sets all textviews on needed values.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

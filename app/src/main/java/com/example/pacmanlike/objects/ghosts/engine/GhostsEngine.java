@@ -155,14 +155,14 @@ public class GhostsEngine {
                 Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
 
 
-                if(tile.type.equals("LeftTeleport"))
+                if(tile._type.equals("LeftTeleport"))
                 {
                     // moves to right teleport
                     Vector right = gameMap.getRightTeleportPosition();
                     g.setRelativePosition(right);
                 }
 
-                if(tile.type.equals("RightTeleport")){
+                if(tile._type.equals("RightTeleport")){
 
                     // moves to left teleport
                     Vector left = gameMap.getLeftTeleportPosition();

@@ -41,7 +41,7 @@ public class GameFoods {
 
             // the powerPell is not placed off the map and in the position of the home
             // These are the places where the pacman will not get and it would not be possible to end the game
-            if(!tile.type.equals("Empty") && !tile.type.equals("Home") &&
+            if(!tile._type.equals("Empty") && !tile._type.equals("Home") &&
                     !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)){
                 tile.setFood(Food.PowerPellet);
                 _numberOfFoods++;
@@ -58,7 +58,7 @@ public class GameFoods {
 
                 // the pell is not placed off the map, in the position of the home and powerPell posotion
                 // These are the places where the pacman will not get and it would not be possible to end the game
-                if(!tile.type.equals("Empty") && !tile.type.equals("Home") && tile.getFood() != Food.PowerPellet &&
+                if(!tile._type.equals("Empty") && !tile._type.equals("Home") && tile.getFood() != Food.PowerPellet &&
                         !(x == map.getStartingPacPosition().x && y == map.getStartingPacPosition().y)) {
                     tile.setFood(Food.Pellet);
                     _numberOfFoods++;

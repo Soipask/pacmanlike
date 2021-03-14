@@ -24,6 +24,11 @@ public class LevelParser {
     private Scanner _reader;
     private HashMap<String, String> _dictionary = new HashMap<>();
 
+    /**
+     * Initialize parser with name of the file to be parsed and its context
+     * @param fileName File to be parsed
+     * @param context Current context
+     */
     public void init(String fileName, Context context) throws Exception {
         String storageType = AppConstants.STORAGE_INTERNAL;
         if (SelectionScreen._internalMaps.contains(fileName)) {
@@ -42,10 +47,20 @@ public class LevelParser {
         }
     }
 
+    /**
+     * Initializes parser for parsing right from String variable.
+     * Used when initializing parser for import validation.
+     * @param level
+     */
     public void initImportControl(String level){
         _reader = new Scanner(level);
     }
 
+    /**
+     * Parses the file using the initialized Scanner
+     * @return Finished GameMap
+     * @throws Exception
+     */
     public GameMap parse() throws Exception {
         GameMap map = new GameMap();
 
@@ -99,6 +114,12 @@ public class LevelParser {
         return map;
     }
 
+    /**
+     * Parses head of the file.
+     * @param map Instance of a GameMap
+     * @param line Whole first line of the file
+     * @throws Exception
+     */
     public void parseHead(GameMap map, String line) throws Exception {
         String[] head = line.split(AppConstants.CSV_DELIMITER);
 
@@ -112,6 +133,10 @@ public class LevelParser {
         parsePowerPelletPositions(map);
     }
 
+    /**
+     * Parses initial position of the pacman.
+     * @param map Instance of GameMap the parser's using
+     */
     private void parsePacPosition(GameMap map){
         // PAC=x;y (where (x,y) are the starting coordinates of pacman)
         String pac = _dictionary.get(AppConstants.PAC_STARTING_KEYWORD);
@@ -121,6 +146,10 @@ public class LevelParser {
         );
     }
 
+    /**
+     * Parses positions of the power pellets
+     * @param map Instance of GameMap the parser's using
+     */
     private void parsePowerPelletPositions(GameMap map){
         // POWER=x1;y1.x2;y2.x3;y3.x4;y4
         // (where (xi,yi) are coordinates of power pellets in the level)
@@ -138,9 +167,15 @@ public class LevelParser {
         map.setPowerPelletsPosition(powerPelletPositions);
     }
 
+    /**
+     * Checks if home's signature is the same as parsed home.
+     * This ensures that this map is correct.
+     * @param map Instance of GameMap the parser's using
+     * @throws Exception When the home is in an incorrect format.
+     */
     public void checkHomeCoords(GameMap map) throws Exception {
         boolean check = true;
-        Vector homeCoords = Home.getInstance().getCoordinates();
+        Vector homeCoords = map.getHome().getCoordinates();
         int y = homeCoords.y;
         for (int i = 0; i < Home.SIZE_X; i++){
             int x = homeCoords.x + i - 1;

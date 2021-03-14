@@ -56,6 +56,8 @@ public class LevelMakerActivity extends AppCompatActivity {
 
     public String levelString, levelName;
 
+    // last stage doesn't need its own place as it doesn't have implementation of StageInterface
+    // after clicking it just returns
     private StageInterface[] _stages = new StageInterface[StageEnum.count - 1];
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -267,7 +269,7 @@ public class LevelMakerActivity extends AppCompatActivity {
         IMPORT_EXPORT(7),
         END(8);
 
-        // iteration value
+        // Iteration value
         private int value;
 
         // Index

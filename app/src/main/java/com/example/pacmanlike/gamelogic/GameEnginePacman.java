@@ -252,14 +252,14 @@ public class GameEnginePacman extends GameEngine {
 
             Tile tile = gameMap.getAbsoluteTile(position.x, position.y);
 
-            if(tile.type.equals("LeftTeleport"))
+            if(tile._type.equals("LeftTeleport"))
             {
                 // opposite teleport position
                 Vector right = gameMap.getRightTeleportPosition();
                 entity.setRelativePosition(right);
             }
 
-            if(tile.type.equals("RightTeleport")){
+            if(tile._type.equals("RightTeleport")){
 
                 // opposite teleport position
                 Vector left = gameMap.getLeftTeleportPosition();

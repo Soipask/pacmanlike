@@ -17,12 +17,13 @@ public class GameScreen extends AppCompatActivity {
     LevelParser parser = new LevelParser();
     GameView gameView;
 
+    /**
+     * Reads and parser a level got through Intent.
+     * Then opens SurfaceView, which starts the game.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-        // Comment
-        // New View
 
         Intent intent = getIntent();
         String levelPath = intent.getStringExtra(AppConstants.SELECTED_LEVEL);

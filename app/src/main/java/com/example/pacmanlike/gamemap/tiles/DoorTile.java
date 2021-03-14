@@ -6,26 +6,26 @@ import com.example.pacmanlike.objects.Direction;
 public class DoorTile extends Tile {
     public DoorTile(){
         super(0);
-        type = "Door";
-        drawableId = R.drawable.door;
+        _type = "Door";
+        _drawableId = R.drawable.door;
         fillMoves();
     }
 
     private void fillMoves(){
-        switch (rotation){
+        switch (_rotation){
             case 0:
-                possibleMoves.add(Direction.LEFT);
-                possibleMoves.add(Direction.RIGHT);
+                _possibleMoves.add(Direction.LEFT);
+                _possibleMoves.add(Direction.RIGHT);
                 break;
             case 90:
-                possibleMoves.add(Direction.UP);
-                possibleMoves.add(Direction.DOWN);
+                _possibleMoves.add(Direction.UP);
+                _possibleMoves.add(Direction.DOWN);
                 break;
         }
     }
 
     @Override
     public String toString() {
-        return "D" + rotation;
+        return "D" + _rotation;
     }
 }

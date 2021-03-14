@@ -49,8 +49,8 @@ public class LevelView {
                 row.addView(image, new TableRow.LayoutParams(0,
                         TableRow.LayoutParams.WRAP_CONTENT, 1f));
 
-                image.setBackgroundResource(map.getMap()[i][j].drawableId);
-                image.setRotation(map.getMap()[i][j].rotation);
+                image.setBackgroundResource(map.getMap()[i][j]._drawableId);
+                image.setRotation(map.getMap()[i][j]._rotation);
                 image.getLayoutParams().height = _tileSize;
             }
         }
@@ -69,10 +69,10 @@ public class LevelView {
 
             for (int j = 0; j < LevelParser.MAP_SIZE_X; j++) {
 
-                Bitmap tmp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), map.getMap()[i][j].drawableId), AppConstants.getBlockSize(), AppConstants.getBlockSize(), false);
+                Bitmap tmp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), map.getMap()[i][j]._drawableId), AppConstants.getBlockSize(), AppConstants.getBlockSize(), false);
 
                 Matrix matrix = new Matrix();
-                matrix.postRotate(map.getMap()[i][j].rotation);
+                matrix.postRotate(map.getMap()[i][j]._rotation);
 
                 Bitmap rotatedBitmap = Bitmap.createBitmap(tmp, 0, 0, tmp.getWidth(), tmp.getHeight(), matrix, true);
 

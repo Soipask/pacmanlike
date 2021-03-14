@@ -13,6 +13,13 @@ import com.example.pacmanlike.gamemap.tiles.TurnTile;
 
 public class TileFactory {
 
+    /**
+     * Creates a tile based on the letter and argument.
+     * @param tileName Name of the tile in parser
+     * @param argument Argument of the tile in parser (usually rotation)
+     * @return The right constructed Tile
+     * @throws Exception When unused char is in tileName
+     */
     public static Tile createTile(char tileName, String argument) throws Exception {
         Tile tile;
 

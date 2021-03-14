@@ -145,9 +145,9 @@ public class PowersStage implements StageInterface {
         // Tile is valid when from all the tiles you can go from here, you can get back
         Tile tile = map[y][x];
         boolean valid = true;
-        if (tile.type.equals(AppConstants.LEFT_TELEPORT) ||
-                tile.type.equals(AppConstants.RIGHT_TELEPORT) ||
-                tile.type.equals(AppConstants.HOME_TILE)){
+        if (tile._type.equals(AppConstants.LEFT_TELEPORT) ||
+                tile._type.equals(AppConstants.RIGHT_TELEPORT) ||
+                tile._type.equals(AppConstants.HOME_TILE)){
             return true;
         }
 
@@ -164,12 +164,12 @@ public class PowersStage implements StageInterface {
                         return false;
                     break;
                 case LEFT:
-                    if (!map[y][x - 1].type.equals("LeftTeleport") &&
+                    if (!map[y][x - 1]._type.equals("LeftTeleport") &&
                             !map[y][x-1].getPossibleMoves().contains(Direction.RIGHT))
                         return false;
                     break;
                 case RIGHT:
-                    if (!map[y][x + 1].type.equals("RightTeleport") &&
+                    if (!map[y][x + 1]._type.equals("RightTeleport") &&
                             !map[y][x+1].getPossibleMoves().contains(Direction.LEFT))
                         return false;
                     break;
