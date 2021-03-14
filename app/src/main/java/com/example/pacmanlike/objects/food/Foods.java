@@ -1,4 +1,4 @@
-package com.example.pacmanlike.objects;
+package com.example.pacmanlike.objects.food;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.main.AppConstants;
+import com.example.pacmanlike.objects.Vector;
 
 /**
  *

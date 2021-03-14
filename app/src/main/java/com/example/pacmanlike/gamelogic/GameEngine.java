@@ -7,10 +7,10 @@ import android.graphics.Paint;
 import com.example.pacmanlike.objects.ArrowIndicator;
 import com.example.pacmanlike.objects.Direction;
 
-/*
-* Stores all object references that relevant for the game display
-* Calls objects business logic methods, and draw them to the given Canvas from DisplayThread
-* */
+/**
+ * Stores all object references that relevant for the game display
+ * Calls objects business logic methods, and draw them to the given Canvas from DisplayThread
+ */
 public abstract class GameEngine {
     /*MEMBERS*/
 

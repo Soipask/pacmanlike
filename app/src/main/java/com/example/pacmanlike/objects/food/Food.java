@@ -1,4 +1,4 @@
-package com.example.pacmanlike.objects;
+package com.example.pacmanlike.objects.food;
 
 /**
  * Enum representing the different types of objects (foods)
