@@ -1,6 +1,7 @@
 package com.example.pacmanlike.gamelogic;
 
 import android.accessibilityservice.AccessibilityService;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -92,7 +93,11 @@ public class DisplayThread extends Thread {
         // end game
         // new activity
         if(AppConstants.getEngine().isEndGame()){
+            Intent current = ((Activity) context).getIntent();
+            String levelName = current.getStringExtra(AppConstants.SELECTED_LEVEL);
+
             Intent intent = new Intent(context, GameOverActivity.class);
+            intent.putExtra(AppConstants.LEVEL_NAME, levelName);
             context.startActivity(intent);
         }
     }

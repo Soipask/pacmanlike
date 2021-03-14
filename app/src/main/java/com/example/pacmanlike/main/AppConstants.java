@@ -29,6 +29,10 @@ public class AppConstants {
     public static int SCREEN_WIDTH,
             SCREEN_HEIGHT;
 
+    public static final String LEVEL_NAME = "com.example.pacmanlike.LEVEL_NAME";
+    public static final String SELECTED_LEVEL = "com.example.pacmanlike.SELECTED_LEVEL";
+    public static final String STORAGE_ASSETS = "Assets", STORAGE_INTERNAL = "Internal";
+
     // Game constants
     public static String PAC_STARTING_KEYWORD = "PAC", POWER_STARTING_KEYWORD = "POWER";
     public static String CSV_DELIMITER = ",", KEY_VALUE_DELIMITER = "=", COORDS_DELIMITER = ";", MORE_DATA_DELIMITER = "/";
@@ -38,7 +42,7 @@ public class AppConstants {
 
 
     /**
-     * Initiates the applciation constants
+     * Initiates the application constants
      * */
     public static void initialization(Context context, GameMap map) {
         _gameMap = map;

@@ -14,6 +14,7 @@ import android.widget.TableLayout;
 
 import com.example.pacmanlike.R;
 import com.example.pacmanlike.gamemap.GameMap;
+import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.view.LevelParser;
 import com.example.pacmanlike.view.LevelView;
 
@@ -21,9 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SelectionScreen extends AppCompatActivity {
-    public static final String SELECTED_LEVEL = "com.example.pacmanlike.SELECTED_LEVEL";
-    public static final String ASSETS = "Assets";
-    public static final String INTERNAL = "Internal";
     public static final String BASIC_MAP = "basicmap.csv";
     public static final String NARROW_MAP = "narrowmap.csv";
 
@@ -101,7 +99,7 @@ public class SelectionScreen extends AppCompatActivity {
 
         // Select which storage type should be used as the basic map is stored in Assets
         // Custom maps are stored in internal storage
-        intent.putExtra(SELECTED_LEVEL, levelPath);
+        intent.putExtra(AppConstants.SELECTED_LEVEL, levelPath);
 
         startActivity(intent);
     }

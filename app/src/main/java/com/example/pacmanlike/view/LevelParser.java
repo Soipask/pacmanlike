@@ -25,16 +25,16 @@ public class LevelParser {
     private HashMap<String, String> _dictionary = new HashMap<>();
 
     public void init(String fileName, Context context) throws Exception {
-        String storageType = SelectionScreen.INTERNAL;
+        String storageType = AppConstants.STORAGE_INTERNAL;
         if (SelectionScreen._internalMaps.contains(fileName)) {
-            storageType = SelectionScreen.ASSETS;
+            storageType = AppConstants.STORAGE_ASSETS;
         }
 
         _reader = null;
-        if (storageType.equals(SelectionScreen.ASSETS)) {
+        if (storageType.equals(AppConstants.STORAGE_ASSETS)) {
             InputStream stream = context.getAssets().open(fileName);
             _reader = new Scanner(stream);
-        } else if (storageType.equals(SelectionScreen.INTERNAL)) {
+        } else if (storageType.equals(AppConstants.STORAGE_INTERNAL)) {
             File file = new File(context.getApplicationContext().getFilesDir(), fileName);
             _reader = new Scanner(file);
         } else{

@@ -25,7 +25,7 @@ public class GameScreen extends AppCompatActivity {
         // New View
 
         Intent intent = getIntent();
-        String levelPath = intent.getStringExtra(SelectionScreen.SELECTED_LEVEL);
+        String levelPath = intent.getStringExtra(AppConstants.SELECTED_LEVEL);
 
         try {
 
