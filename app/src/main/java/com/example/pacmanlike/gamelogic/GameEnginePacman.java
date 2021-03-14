@@ -11,7 +11,7 @@ import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.DrawableObjects;
 import com.example.pacmanlike.objects.PacMan;
-import com.example.pacmanlike.objects.food.Foods;
+import com.example.pacmanlike.objects.food.GameFoods;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.objects.ghosts.Ghost;
 import com.example.pacmanlike.objects.ghosts.engine.GhostsEngine;
@@ -37,7 +37,7 @@ public class GameEnginePacman extends GameEngine {
     private static GhostsEngine _ghostsEngine;
 
     // food association on the map
-    private static Foods _foods;
+    private static GameFoods _foods;
     private Paint _paintPells, _paintPowerPells;
 
     /**
@@ -66,7 +66,7 @@ public class GameEnginePacman extends GameEngine {
 
         // Adds game objects
         _pacman = new PacMan(context, AppConstants.getGameMap().getStartingPacPosition());
-        _foods = new Foods( AppConstants.getGameMap());
+        _foods = new GameFoods( AppConstants.getGameMap());
         _ghostsEngine = new GhostsEngineAdvanced(context, AppConstants.getGameMap().getHome().getCoordinates());
     }
 
@@ -302,7 +302,7 @@ public class GameEnginePacman extends GameEngine {
      * True if there is no food on the board
      */
     public void isVictory() {
-        if(_foods.getNumberOfPells() == 0){
+        if(_foods.getNumberOfFoods() == 0){
             _endGame = true;
         }
     }
