@@ -2,21 +2,10 @@ package com.example.pacmanlike.gamelogic;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import com.example.pacmanlike.gamemap.GameMap;
-import com.example.pacmanlike.gamemap.tiles.Tile;
-import com.example.pacmanlike.main.AppConstants;
-import com.example.pacmanlike.objects.DrawableObjects;
-import com.example.pacmanlike.objects.Food;
-import com.example.pacmanlike.objects.Pells;
-import com.example.pacmanlike.objects.ghosts.Ghost;
-import com.example.pacmanlike.objects.Vector;
+
 import com.example.pacmanlike.objects.ArrowIndicator;
 import com.example.pacmanlike.objects.Direction;
-import com.example.pacmanlike.objects.PacMan;
-import com.example.pacmanlike.objects.ghosts.engine.GhostsEngine;
-import com.example.pacmanlike.objects.ghosts.engine.GhostsEngineAdvanced;
 
 /*
 * Stores all object references that relevant for the game display
@@ -24,14 +13,31 @@ import com.example.pacmanlike.objects.ghosts.engine.GhostsEngineAdvanced;
 * */
 public abstract class GameEngine {
     /*MEMBERS*/
+
+    // information on the end of the game
     protected Boolean _endGame = false, _gameOver = false;
+
+    // the direction chosen by the player
     protected ArrowIndicator _arrowIdenticator;
+
+    // synchronization object
     static final Object _sync = new Object();
+
+    // last touch on the screen
     protected float _lastTouchedX, _lastTouchedY;
+
+    // current score in the game
     protected int _SCORE;
 
+    // basci paint (object)
     protected  Paint _paint;
 
+    /**
+     * Stores all object references that relevant for the game display
+     * Calls objects business logic methods, and draw them to the given Canvas from DisplayThread
+     * In the constructor I will set the properties to the default values
+     * @param context Given context
+     */
     public GameEngine(Context context) {
 
         _SCORE = 0;
@@ -55,17 +61,33 @@ public abstract class GameEngine {
     public abstract void draw(Canvas canvas);
 
     /**
-     * @return
+     * @return Player hero.
      * */
     public abstract Object getHero();
 
+    /**
+     * @return True if the game is over
+     */
     public boolean isEndGame(){return _endGame; }
 
+    /**
+     * @return True if the player lost
+     */
     public boolean isGameOver() {return _gameOver;}
 
+    /**
+     * @return The current score value in the game
+     */
     public Integer getScore() {return _SCORE; }
 
+    /**
+     *
+     * @param touchX
+     * @param touchY
+     */
     public void setSwipeDirection(int touchX, int touchY) {
+
+        //
         float xDiff = (touchX - _lastTouchedX);
         float yDiff = (touchY - _lastTouchedY);
 

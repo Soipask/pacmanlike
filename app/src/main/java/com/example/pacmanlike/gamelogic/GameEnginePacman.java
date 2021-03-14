@@ -11,7 +11,7 @@ import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 import com.example.pacmanlike.objects.DrawableObjects;
 import com.example.pacmanlike.objects.PacMan;
-import com.example.pacmanlike.objects.Pells;
+import com.example.pacmanlike.objects.Foods;
 import com.example.pacmanlike.objects.Vector;
 import com.example.pacmanlike.objects.ghosts.Ghost;
 import com.example.pacmanlike.objects.ghosts.engine.GhostsEngine;
@@ -23,7 +23,7 @@ public class GameEnginePacman extends GameEngine {
     private static int _pacSpeed , _ghostsSpeed, _pacStep;
     private static int _GHOSTSCORE = 200;
     private static GhostsEngine _ghostsEngine;
-    private static Pells _pells;
+    private static Foods _foods;
     private Paint _paintPells, _paintPowerPells;
 
     public GameEnginePacman(Context context) {
@@ -42,7 +42,7 @@ public class GameEnginePacman extends GameEngine {
 
         // Adds game objects
         _pacman = new PacMan(context, AppConstants.getGameMap().getStartingPacPosition());
-        _pells = new Pells( AppConstants.getGameMap());
+        _foods = new Foods( AppConstants.getGameMap());
         _ghostsEngine = new GhostsEngineAdvanced(context, AppConstants.getGameMap().getHome().getCoordinates());
     }
 
@@ -55,9 +55,9 @@ public class GameEnginePacman extends GameEngine {
                 detectWallCollision();
                 _ghostsEngine.update();
 
-                _SCORE += _pells.update();
+                _SCORE += _foods.update();
                 movePacman(_pacStep);
-                _SCORE += _pells.update();
+                _SCORE += _foods.update();
 
                 upadateTeleporation(_pacman);
 
@@ -77,7 +77,7 @@ public class GameEnginePacman extends GameEngine {
     @Override
     public void draw(Canvas canvas) {
         AppConstants.getGameMap().draw(canvas, _paint);
-        _pells.draw(canvas, _paintPells, _paintPowerPells);
+        _foods.draw(canvas, _paintPells, _paintPowerPells);
         _ghostsEngine.draw(canvas, _paint);
         _pacman.draw(canvas, _paint);
         _arrowIdenticator.draw(canvas, _paint);
@@ -198,7 +198,7 @@ public class GameEnginePacman extends GameEngine {
     }
 
     public void isVictory() {
-        if(_pells.getNumberOfPells() == 0){
+        if(_foods.getNumberOfPells() == 0){
             _endGame = true;
         }
     }

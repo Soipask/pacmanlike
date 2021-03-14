@@ -6,16 +6,23 @@ import android.graphics.Paint;
 import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.main.AppConstants;
-import com.example.pacmanlike.objects.ghosts.Ghost;
 
-public class Pells {
+/**
+ *
+ */
+public class Foods {
 
+    //
     int _numberOfPells;
+
+    //
     private static int _PELLSCORE = 20, _POWERPELLSCORE = 50;
 
-    public int getNumberOfPells() {return _numberOfPells; }
-
-    public Pells(GameMap map) {
+    /**
+     *
+     * @param map
+     */
+    public Foods(GameMap map) {
         _numberOfPells = 0;
 
         for (Vector powerPell :map.getPowerPelletsPosition()) {
@@ -48,6 +55,17 @@ public class Pells {
         }
     }
 
+
+    /**
+     *
+     * @return
+     */
+    public int getNumberOfPells() {return _numberOfPells; }
+
+    /**
+     *
+     * @return
+     */
     public int update(){
         GameMap gameMap = AppConstants.getGameMap();
         Vector position = AppConstants.getEngine().getPacman().getAbsolutePosition();
@@ -72,6 +90,12 @@ public class Pells {
         return 0;
     }
 
+    /**
+     *
+     * @param canvas
+     * @param _paintPells
+     * @param _paintPowerPells
+     */
     public void draw(Canvas canvas, Paint _paintPells, Paint _paintPowerPells) {
 
         GameMap map = AppConstants.getGameMap();
