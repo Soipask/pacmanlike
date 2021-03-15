@@ -50,7 +50,6 @@ public class LevelMakerActivity extends AppCompatActivity {
 
     private final GameMap _gameMap = new GameMap();
 
-    private ImageButton _pacPosition;
     private final ImageButton[] _powerPellets = new ImageButton[AppConstants.MAX_POWER_PELLETS];
     private final ArrayList<Vector> _powerPelletVectors = new ArrayList<>();
 
@@ -58,15 +57,19 @@ public class LevelMakerActivity extends AppCompatActivity {
 
     // last stage doesn't need its own place as it doesn't have implementation of StageInterface
     // after clicking it just returns
-    private StageInterface[] _stages = new StageInterface[StageEnum.count - 1];
+    private final StageInterface[] _stages = new StageInterface[StageEnum.count - 1];
 
+    /**
+     * Initializes everything needed, especially tiles to the middle of the screen
+     * @param savedInstanceState
+     */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_maker);
 
-        _tileSize = 125;
+        calculateTileSize();
 
         _oneTimeButtons = (HorizontalScrollView) findViewById(R.id.oneTimeButtonsScrollView);
         _repeatableButtons = (HorizontalScrollView) findViewById(R.id.repeatableButtonsScrollView);
@@ -79,9 +82,31 @@ public class LevelMakerActivity extends AppCompatActivity {
         // onChangeSelected listeners for repeatable ones
         setOnChangeSelectedToRadio();
 
+        // Sets dictionaries and arrays
+        fillViewChars();
+        fillBackgroundDictionary();
+        setOneTimeIds();
+
+        setStages();
+
         init();
     }
 
+    /**
+     * Takes screen height and width and calculates which is the optimal tile size
+     */
+    private void calculateTileSize(){
+        int maxHeightSize = (AppConstants.SCREEN_HEIGHT - AppConstants.BOTTOM_BAR_SIZE) /
+                (AppConstants.MAP_SIZE_Y + AppConstants.LM_BLOCKSIZE_PADDING);
+        int maxWidthSize = AppConstants.SCREEN_WIDTH /
+                (AppConstants.MAP_SIZE_X + AppConstants.LM_BLOCKSIZE_PADDING);
+
+        _tileSize = Math.min(maxHeightSize, maxWidthSize);
+    }
+
+    /**
+     * Sets onClick to one time buttons
+     */
     private void setOnClickToButtons(){
         LinearLayout layout = (LinearLayout) _oneTimeButtons.getChildAt(0);
         for(int i = 0; i < layout.getChildCount(); i++){
@@ -95,6 +120,9 @@ public class LevelMakerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets onClick to radio group in repeatable buttons section
+     */
     private void setOnChangeSelectedToRadio(){
         RadioGroup radioGroup = (RadioGroup) _repeatableButtons.getChildAt(0);
 
@@ -106,10 +134,15 @@ public class LevelMakerActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes Stage 1 - ONE_TIMES
+     */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void init(){
+        // Draws tiles
         prepareTiles();
 
+        // Sets visibilities on bottom bars and buttons
         _oneTimeButtons.setVisibility(View.VISIBLE);
         _repeatableButtons.setVisibility(View.INVISIBLE);
         _instructions.setVisibility(View.INVISIBLE);
@@ -120,19 +153,17 @@ public class LevelMakerActivity extends AppCompatActivity {
         btn.setVisibility(View.INVISIBLE);
         textView.setVisibility(View.INVISIBLE);
 
-        _selected = R.id.emptyButton;
-        fillViewChars();
-        fillBackgroundDictionary();
-        setOneTimeIds();
-
         // We would like to have this list operating more as an array for simplicity
         for (int i = 0; i < 4; i++){
             _powerPelletVectors.add(null);
         }
 
-        setStages();
+        _selected = R.id.emptyButton;
     }
 
+    /**
+     * Draws empty tiles in the middle of the map
+     */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void prepareTiles(){
         TableLayout tbl = (TableLayout) findViewById(R.id.newLevel);
@@ -177,6 +208,30 @@ public class LevelMakerActivity extends AppCompatActivity {
         tbl.requestLayout();
     }
 
+    /**
+     * Selects what happens with the help of stages.
+     * Acts as onClick for tiles representing maps.
+     * <br>
+     * <br>
+     * These buttons can be clicked on whenever, but only in certain
+     * stages it does something:
+     * <ul>
+     *     <li> ONE_TIMES (Stage 1): Tile gets background that was selected
+     *      in the bottom bar and that button gets invisible.
+     *     </li>
+     *     <li> REPEATABLE (Stage 2): Tile gets background that was selected
+     *          in the bottom bar's radio group or gets rotated if Rotate was selected.
+     *     </li>
+     *     <li> PAC (Stage 3): Sets pacman as image resource for the selected tile.
+     *          If on tile was already selected, pacman gets deleted from the old tile.
+     *     </li>
+     *     <li> POWERS (Stage 4): Sets up to 4 power pellets (whole pacman circle for the simplicity)
+     *          into the tiles that were clicked on, if user clicked on 5+ tiles, the last one's
+     *          image gets deleted, so there are only 4 newest tiles.
+     *     </li>
+     * </ul>
+     * @param button Tile of the map that was clicked on
+     */
     private void onClickMap(ImageButton button) throws Exception {
         int id = button.getId();
         MapSquare square = _buttonDictionary.get(id);
@@ -188,20 +243,27 @@ public class LevelMakerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Fills dictionary where key is id of a button (image or radio)
+     * and value is the char representing it in MapSquare.
+     */
     private void fillViewChars(){
         // repeatable
-        _viewChars.put(R.id.emptyButton, 'X');
-        _viewChars.put(R.id.crossroadButton, 'C');
-        _viewChars.put(R.id.halfCrossroadButton, 'H');
-        _viewChars.put(R.id.turnButton, 'T');
-        _viewChars.put(R.id.straightButton, 'S');
+        _viewChars.put(R.id.emptyButton, AppConstants.CHAR_EMPTY);
+        _viewChars.put(R.id.crossroadButton, AppConstants.CHAR_CROSSROAD);
+        _viewChars.put(R.id.halfCrossroadButton, AppConstants.CHAR_HALFXROAD);
+        _viewChars.put(R.id.turnButton, AppConstants.CHAR_TURN);
+        _viewChars.put(R.id.straightButton, AppConstants.CHAR_STRAIGHT);
 
         // one-time
-        _viewChars.put(R.id.leftTeleportButton, 'L');
-        _viewChars.put(R.id.rightTeleportButton, 'R');
-        _viewChars.put(R.id.doorButton, 'D');
+        _viewChars.put(R.id.leftTeleportButton, AppConstants.CHAR_LEFT_TELEPORT);
+        _viewChars.put(R.id.rightTeleportButton, AppConstants.CHAR_RIGHT_TELEPORT);
+        _viewChars.put(R.id.doorButton, AppConstants.CHAR_DOOR);
     }
 
+    /**
+     * Fills dictionary where keys are ids of a button and values are ids of its background
+     */
     private void fillBackgroundDictionary(){
         // repeatable
         _buttonBackgroundResource.put(R.id.emptyButton, R.drawable.empty);
@@ -216,12 +278,18 @@ public class LevelMakerActivity extends AppCompatActivity {
         _buttonBackgroundResource.put(R.id.doorButton, R.drawable.door);
     }
 
+    /**
+     * Fills list of one time buttons for
+     */
     private void setOneTimeIds(){
         _oneTimeIds.add(R.id.leftTeleportButton);
         _oneTimeIds.add(R.id.rightTeleportButton);
         _oneTimeIds.add(R.id.doorButton);
     }
 
+    /**
+     * Sets stages in the dictionary for easier work
+     */
     private void setStages(){
         _stages[StageEnum.ONE_TIMES.getValue()] = new OneTimesStage(this, _mapSquares, _buttonBackgroundResource, _viewChars);
         _stages[StageEnum.REPEATABLE.getValue()] = new RepeatableStage(this, _buttonBackgroundResource, _viewChars);
@@ -233,6 +301,33 @@ public class LevelMakerActivity extends AppCompatActivity {
         _stages[StageEnum.IMPORT_EXPORT.getValue()] = new ImportExportStage(this);
     }
 
+    /**
+     * <p>Shifts to next stage, every stage except IMPORT has a role here.
+     * Usually serves as a continue onClick call (except first stage)</p>
+     * <br>
+     * <ul>
+     *     <li>
+     *         ONE_TIMES (Stage 1), REPEATABLE (Stage 2) and PAC (Stage 3): Changes the layout to prepare for next stage and shifts to it
+     *     </li>
+     *     <li>
+     *         POWERS (Stage 4): Validates the map and either goes back to RETURN stage (validation failed), or goes to the next stage
+     *     </li>
+     *     <li>
+     *         PRE_SAVE (Stage 5): Changes the layout to prepare for next stage and shifts to it
+     *     </li>
+     *     <li>
+     *         CHOOSE_NAME (Stage 6): Saves the map with the given name
+     *         (if it contains only alphanumeric characters, otherwise writes info and stays on this stage)
+     *         and shifts to the END stage
+     *     </li>
+     *     <li>
+     *         RETURN: Prepares to go back to Stage 2.
+     *     </li>
+     *     <li>
+     *         END: Closes the activity
+     *     </li>
+     * </ul>
+     */
     public void goToNextStage() throws Exception {
         Button continueButton = (Button) findViewById(R.id.continueButton);
         Button ieButton = (Button) findViewById(R.id.importExportButton);
@@ -246,10 +341,34 @@ public class LevelMakerActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Click on Continue button
+     * @param view View that has been clicked on
+     */
     public void onContinueClick(View view) throws Exception {
         goToNextStage();
     }
 
+    /**
+     * <p>Click on Import/Export button.
+     * This button is visible only in the following stages:</p>
+     * <br>
+     * <ul>
+     *     <li>
+     *         ONE_TIMES (Stage 1): Prepares for import ->
+     *         mainly sets editable multiline textbox visible
+     *     </li>
+     *     <li>
+     *         IMPORT: Validates the import string for map.
+     *         If it is a correct map, goes right to CHOOSE_NAME stage
+     *     </li>
+     *     <li>
+     *         CHOOSE_NAME: Prepares for export ->
+     *         mainly shows export string and copies it to clipboard
+     *     </li>
+     * </ul>
+     * @param view
+     */
     public void onImportExportClick(View view){
         Button btn = (Button) findViewById(R.id.continueButton);
         Button exportButton = (Button) findViewById(R.id.importExportButton);

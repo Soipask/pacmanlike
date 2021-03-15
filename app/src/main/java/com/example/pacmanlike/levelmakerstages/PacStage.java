@@ -2,7 +2,6 @@ package com.example.pacmanlike.levelmakerstages;
 
 import android.view.View;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -11,8 +10,6 @@ import com.example.pacmanlike.activities.LevelMakerActivity;
 import com.example.pacmanlike.gamemap.GameMap;
 import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.view.MapSquare;
-
-import java.util.HashMap;
 
 /**
  * Stage 3 of the level making process.
@@ -44,7 +41,7 @@ public class PacStage implements StageInterface {
      */
     @Override
     public void onClickMap(MapSquare square, ImageButton button, int selected) throws Exception {
-        if (square.letter == AppConstants.CHAR_EMPTY_TILE || square.letter == AppConstants.CHAR_HOME_TILE)
+        if (square.letter == AppConstants.CHAR_EMPTY || square.letter == AppConstants.CHAR_HOME)
             return;
 
         _gameMap.setStartingPacPosition(square.position);

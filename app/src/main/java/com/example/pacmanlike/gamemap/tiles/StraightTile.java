@@ -1,6 +1,7 @@
 package com.example.pacmanlike.gamemap.tiles;
 
 import com.example.pacmanlike.R;
+import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 
 public class StraightTile extends Tile {
@@ -26,6 +27,6 @@ public class StraightTile extends Tile {
 
     @Override
     public String toString() {
-        return "S" + _rotation;
+        return String.valueOf(AppConstants.CHAR_STRAIGHT) + _rotation;
     }
 }

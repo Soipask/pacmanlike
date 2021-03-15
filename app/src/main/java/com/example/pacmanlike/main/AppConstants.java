@@ -20,7 +20,7 @@ public class AppConstants {
     static GameMap _gameMap;
 
     // map size
-    public static int MAP_SIZE_X = 7, MAP_SIZE_Y = 9;
+    public static final int MAP_SIZE_X = 7, MAP_SIZE_Y = 9;
 
     // tile size
     private static int _blockSize;
@@ -34,20 +34,26 @@ public class AppConstants {
     public static final String STORAGE_ASSETS = "Assets", STORAGE_INTERNAL = "Internal";
 
     // Game constants
-    public static String PAC_STARTING_KEYWORD = "PAC", POWER_STARTING_KEYWORD = "POWER";
-    public static String CSV_DELIMITER = ",", KEY_VALUE_DELIMITER = "=", COORDS_DELIMITER = ";", MORE_DATA_DELIMITER = "/";
-    public static char CHAR_CSV_DELIMITER = ',', CHAR_KEY_VALUE = '=', CHAR_COORDS = ';', CHAR_MORE_DATA = '/';
-    public static char CHAR_CSV_NEWLINE = '\n';
-    public static String LEFT_TELEPORT = "LeftTeleport", RIGHT_TELEPORT = "RightTeleport", HOME_TILE = "Home";
-    public static String CSV_EXTENSION = ".csv", HIGHSCORE_EXTENSION = ".hsc";
-    public static String CLIPBOARD_LABEL = "Export a map";
-    public static char CHAR_EMPTY_TILE = 'X', CHAR_HOME_TILE = 'A';
+    public static final String PAC_STARTING_KEYWORD = "PAC", POWER_STARTING_KEYWORD = "POWER";
+    public static final String CSV_DELIMITER = ",", KEY_VALUE_DELIMITER = "=", COORDS_DELIMITER = ";", MORE_DATA_DELIMITER = "/";
+    public static final char CHAR_CSV_DELIMITER = ',', CHAR_KEY_VALUE = '=', CHAR_COORDS = ';', CHAR_MORE_DATA = '/';
+    public static final char CHAR_CSV_NEWLINE = '\n';
+    public static final String LEFT_TELEPORT = "LeftTeleport", RIGHT_TELEPORT = "RightTeleport", HOME_TILE = "Home";
+    public static final String CSV_EXTENSION = ".csv", HIGHSCORE_EXTENSION = ".hsc";
+    public static final String CLIPBOARD_LABEL = "Export a map";
+
+    // Tile constants
+    public static final char CHAR_EMPTY = 'X', CHAR_HOME = 'A';
+    public static final char CHAR_CROSSROAD = 'C', CHAR_HALFXROAD = 'H', CHAR_TURN = 'T', CHAR_STRAIGHT = 'S';
+    public static final char CHAR_LEFT_TELEPORT = 'L', CHAR_RIGHT_TELEPORT = 'R', CHAR_DOOR = 'D';
 
     // Export and import
-    public static char EXPORT_CSV_DELIMITER = 'x', EXPORT_KEY_VALUE ='k', EXPORT_COORDS = 'c', EXPORT_MORE_DATA = 'm';
-    public static char EXPORT_NEW_LINE = 'n';
+    public static final char EXPORT_CSV_DELIMITER = 'x', EXPORT_KEY_VALUE ='k', EXPORT_COORDS = 'c', EXPORT_MORE_DATA = 'm';
+    public static final char EXPORT_NEW_LINE = 'n';
 
-    public static int MAX_POWER_PELLETS = 4;
+    // Level Maker constants
+    public static final int MAX_POWER_PELLETS = 4;
+    public static final int BOTTOM_BAR_SIZE = 300, LM_BLOCKSIZE_PADDING = 2;
 
 
     /**
@@ -78,7 +84,7 @@ public class AppConstants {
     /**
      * Sets screen size constants accordingly to device screen size
      * */
-    private static void setScreenSize(Context context) {
+    public static void setScreenSize(Context context) {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();

@@ -1,6 +1,7 @@
 package com.example.pacmanlike.gamemap.tiles;
 
 import com.example.pacmanlike.R;
+import com.example.pacmanlike.main.AppConstants;
 import com.example.pacmanlike.objects.Direction;
 
 public class DoorTile extends Tile {
@@ -26,6 +27,6 @@ public class DoorTile extends Tile {
 
     @Override
     public String toString() {
-        return "D" + _rotation;
+        return String.valueOf(AppConstants.CHAR_DOOR) + _rotation;
     }
 }

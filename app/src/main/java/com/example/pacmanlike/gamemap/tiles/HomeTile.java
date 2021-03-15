@@ -25,6 +25,6 @@ public class HomeTile extends Tile {
 
     @Override
     public String toString() {
-        return "A" + number;
+        return String.valueOf(AppConstants.CHAR_HOME) + number;
     }
 }

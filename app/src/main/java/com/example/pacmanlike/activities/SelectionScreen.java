@@ -41,6 +41,9 @@ public class SelectionScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection_screen);
 
+        // Setting screen size
+        AppConstants.setScreenSize(this);
+
         // Find radio group and populate it with basic maps
         RadioGroup rgp = (RadioGroup) findViewById(R.id.radioGroup);
         _mapDictionary.put(R.id.basicMapRadio, BASIC_MAP);

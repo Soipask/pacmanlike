@@ -56,8 +56,8 @@ public class PowersStage implements StageInterface {
     public void onClickMap(MapSquare square, ImageButton button, int selected) throws Exception {
         // if not position not in array, shift the whole array and keep the odd one
         if(_powerPelletVectors.contains(square.position) ||
-                square.letter == AppConstants.CHAR_EMPTY_TILE ||
-                square.letter == AppConstants.CHAR_HOME_TILE
+                square.letter == AppConstants.CHAR_EMPTY ||
+                square.letter == AppConstants.CHAR_HOME
         )
             return;
 

@@ -19,6 +19,6 @@ public class RightTeleportTile extends Tile {
 
     @Override
     public String toString() {
-        return "R";
+        return String.valueOf(AppConstants.CHAR_RIGHT_TELEPORT);
     }
 }
