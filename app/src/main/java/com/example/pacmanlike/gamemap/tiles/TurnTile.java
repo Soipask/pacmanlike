@@ -12,7 +12,6 @@ public class TurnTile extends Tile {
         fillMoves();
     }
 
-    // TODO: Check rotation
     private void fillMoves(){
         switch (_rotation){
             case 0:

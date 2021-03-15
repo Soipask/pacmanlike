@@ -39,7 +39,11 @@ public class SelectionScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_selection_screen);
+        try {
+            setContentView(R.layout.activity_selection_screen);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         // Setting screen size
         AppConstants.setScreenSize(this);

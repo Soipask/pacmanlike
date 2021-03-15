@@ -10,6 +10,7 @@ import com.example.pacmanlike.gamemap.tiles.RightTeleportTile;
 import com.example.pacmanlike.gamemap.tiles.StraightTile;
 import com.example.pacmanlike.gamemap.tiles.Tile;
 import com.example.pacmanlike.gamemap.tiles.TurnTile;
+import com.example.pacmanlike.main.AppConstants;
 
 public class TileFactory {
 
@@ -24,15 +25,15 @@ public class TileFactory {
         Tile tile;
 
         switch (tileName){
-            case 'S' : tile = new StraightTile(argument); break;
-            case 'T' : tile = new TurnTile(argument); break;
-            case 'H' : tile = new HalfcrossroadTile(argument); break;
-            case 'C' : tile = new CrossroadTile(); break;
-            case 'R' : tile = new RightTeleportTile(); break;
-            case 'L' : tile = new LeftTeleportTile(); break;
-            case 'X' : tile = new EmptyTile(); break;
-            case 'A' : tile = new HomeTile(argument); break;
-            case 'D' : tile = new DoorTile(); break;
+            case AppConstants.CHAR_STRAIGHT : tile = new StraightTile(argument); break;
+            case AppConstants.CHAR_TURN : tile = new TurnTile(argument); break;
+            case AppConstants.CHAR_HALFXROAD : tile = new HalfcrossroadTile(argument); break;
+            case AppConstants.CHAR_CROSSROAD : tile = new CrossroadTile(); break;
+            case AppConstants.CHAR_RIGHT_TELEPORT : tile = new RightTeleportTile(); break;
+            case AppConstants.CHAR_LEFT_TELEPORT : tile = new LeftTeleportTile(); break;
+            case AppConstants.CHAR_EMPTY : tile = new EmptyTile(); break;
+            case AppConstants.CHAR_HOME : tile = new HomeTile(argument); break;
+            case AppConstants.CHAR_DOOR : tile = new DoorTile(); break;
             default: throw new Exception("Wrong tile format.");
         }
         return tile;

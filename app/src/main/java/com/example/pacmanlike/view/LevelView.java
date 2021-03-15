@@ -31,8 +31,12 @@ public class LevelView {
         this.map = map;
     }
 
+    /**
+     * Creates a level (used only for level preview).
+     * Finds a table and spawns just enough tiles,
+     * fills background and rotates them to create a complete map picture.
+     */
     public void createLevel() {
-
         // Get table
         // RadioGroup rgp = (RadioGroup) findViewById(R.id.radioGroup);
         TableLayout tbl = (TableLayout) activity.findViewById(R.id.table);
@@ -54,10 +58,13 @@ public class LevelView {
                 image.getLayoutParams().height = _tileSize;
             }
         }
-
-        // Look if there really are LevelParser.MAP_SIZE_Y rows
     }
 
+    /**
+     * Creates and draws a bitmap from GameMap given in the constructor
+     * @param context Current context
+     * @return
+     */
     public Bitmap createLevelBitmap(Context context) {
 
 
