@@ -101,7 +101,7 @@ public class PowersStage implements StageInterface {
         // else continue to save state
         buildMap();
 
-        if (!isMapValid()){
+        if (!GameMap.isMapValid(_gameMap)){
             continueButton.setText(R.string.return_button);
             _instructions.setText(R.string.instructions_return);
             return LevelMakerActivity.StageEnum.RETURN;
@@ -117,66 +117,12 @@ public class PowersStage implements StageInterface {
     private void buildMap() throws Exception {
         Tile[][] tileMap = new Tile[AppConstants.MAP_SIZE_Y][AppConstants.MAP_SIZE_X];
 
-        for (int i = 0; i < AppConstants.MAP_SIZE_Y; i++){
-            for (int j = 0; j < AppConstants.MAP_SIZE_X; j++){
+        for (int i = 0; i < AppConstants.MAP_SIZE_Y; i++) {
+            for (int j = 0; j < AppConstants.MAP_SIZE_X; j++) {
                 tileMap[i][j] = TileFactory.createTile(_mapSquares[i][j].toString());
             }
         }
         _gameMap.setMap(tileMap);
-    }
-
-    private boolean isMapValid(){
-        Tile[][] map = _gameMap.getMap();
-        for (int i = 0; i < AppConstants.MAP_SIZE_Y; i++){
-            for (int j = 0; j < AppConstants.MAP_SIZE_X; j++){
-                try{
-                    if (!isTileValid(i , j, map))
-                        return false;
-                } catch (Exception e){
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private boolean isTileValid(int y, int x, Tile[][] map){
-        // Tile is valid when from all the tiles you can go from here, you can get back
-        Tile tile = map[y][x];
-        boolean valid = true;
-        if (tile._type.equals(AppConstants.LEFT_TELEPORT) ||
-                tile._type.equals(AppConstants.RIGHT_TELEPORT) ||
-                tile._type.equals(AppConstants.HOME_TILE)){
-            return true;
-        }
-
-        List<Direction> moves = tile.getPossibleMoves();
-
-        for (Direction dir : moves){
-            switch (dir){
-                case UP:
-                    if (!map[y - 1][x].getPossibleMoves().contains(Direction.DOWN))
-                        return false;
-                    break;
-                case DOWN:
-                    if (!map[y + 1][x].getPossibleMoves().contains(Direction.UP))
-                        return false;
-                    break;
-                case LEFT:
-                    if (!map[y][x - 1]._type.equals("LeftTeleport") &&
-                            !map[y][x-1].getPossibleMoves().contains(Direction.RIGHT))
-                        return false;
-                    break;
-                case RIGHT:
-                    if (!map[y][x + 1]._type.equals("RightTeleport") &&
-                            !map[y][x+1].getPossibleMoves().contains(Direction.LEFT))
-                        return false;
-                    break;
-            }
-        }
-
-        return valid;
     }
 
 

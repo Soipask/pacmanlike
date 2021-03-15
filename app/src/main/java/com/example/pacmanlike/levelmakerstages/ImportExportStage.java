@@ -67,8 +67,14 @@ public class ImportExportStage implements StageInterface {
             LevelParser parser = new LevelParser();
             parser.initImportControl(_activity.levelString);
             GameMap map = parser.parse();
+            if (!GameMap.isMapValid(map)){
+                _instructions.setVisibility(View.VISIBLE);
+                _instructions.setText(R.string.instructions_failed_import);
+                return LevelMakerActivity.StageEnum.IMPORT_EXPORT;
+            }
         } catch (Exception e){
             // if parse failed, give user a second chance
+            _instructions.setVisibility(View.VISIBLE);
             _instructions.setText(R.string.instructions_failed_import);
             return LevelMakerActivity.StageEnum.IMPORT_EXPORT;
         }

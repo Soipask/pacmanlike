@@ -61,7 +61,6 @@ public class LevelMakerActivity extends AppCompatActivity {
 
     /**
      * Initializes everything needed, especially tiles to the middle of the screen
-     * @param savedInstanceState
      */
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
